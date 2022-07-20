@@ -1,0 +1,8 @@
+{
+    "name": "basic",
+    "desc": "?",
+    "version": "ruaAuraAuraAura",
+    "author": "nicoshi_",
+    "entry": "src/index.js",
+    "reload": ["src/suggest.js", "src/help.js"]
+}

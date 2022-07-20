@@ -1,0 +1,7 @@
+node_modules
+old-src
+.env
+.env_d
+.env.disabled
+json.sqlite
+package-lock.json

@@ -1,0 +1,41 @@
+{
+    "name": "miraicle",
+    "version": "1.2.7",
+    "description": "newest core",
+    "main": "dist/index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "deploy": "node src/services/deploy/run.js",
+        "lint": "eslint --fix src/*.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@jimp/types": "^0.16.1",
+        "@zerotwobot/discord-modals": "^2.0.1",
+        "axios": "^0.26.1",
+        "better-sqlite3": "^7.5.0",
+        "canvas": "^2.9.1",
+        "chalk": "^4.1.2",
+        "cowsay": "^1.5.0",
+        "discord.js": "^14.0.2",
+        "dotenv": "^16.0.0",
+        "fast-glob": "^3.2.11",
+        "jimp": "^0.16.1",
+        "lodash": "^4.17.21",
+        "mathjs": "^10.6.1",
+        "pretty-ms": "^7.0.1",
+        "quick.db": "^7.1.3"
+    },
+    "_moduleAliases": {
+        "@root": ".",
+        "@inv": "src/services/inventory",
+        "@color": "src/services/color.json",
+        "@random": "src/services/random",
+        "@cfg": "src/services/global.json",
+        "@db": "src/core/database"
+    },
+    "devDependencies": {
+        "eslint": "^8.16.0"
+    }
+}
