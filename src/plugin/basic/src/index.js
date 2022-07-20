@@ -293,6 +293,19 @@ async function load(client, cm) {
             await msg.reply(`Ping! :ping_pong: ${Date.now() - msg.createdTimestamp}`);
         }//ずっと輝いて SO STARRY
     });
+
+    cm.register({
+        command: "uw",
+        category: "Basic",
+        desc: "Display bot information",
+        handler: async (msg, { prefix }) => {
+            console.log("UW")
+            let args = ap(msg.content, true)[1].split("///");
+            console.log(args)
+            if(!IsJsonString(args[0])) return msg.channel.send("NOT");
+            return msg.channel.send(`${lodash.get(JSON.parse(args[0]), args[1])}`)
+        }//ずっと輝いて SO STARRY
+    });
     cm.register({
         command: "eval",
         category: "Basic",
