@@ -21,8 +21,9 @@ interface Command {
 
 
 interface Runner {
+    name: string;
+    disabled?: boolean;
     handler: (message: Message) => any;
-    "//"?: string;
 }
 
 export type { Command, Message, Runner };

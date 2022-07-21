@@ -7,6 +7,7 @@ export let langs = { en, cn, tw }
 export let globes = {
     color: parseInt("CFF2FF", 16)
 }
+export type langTypes = keyof typeof langs;
 class i18n{
     public globe: any
     constructor(){
