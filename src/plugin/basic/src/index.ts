@@ -16,7 +16,7 @@ async function load(client, cm) {
         category: "Basic",
         desc: "Say something you want to say -> [json builder](https://eb.mewdeko.tech)",
         handler: async msg => {
-            args = ap(msg.content, true);
+            const args = ap(msg.content, true);
             if (!args[1])
                 return msg.channel.send({
                     embeds: [
@@ -74,7 +74,7 @@ async function load(client, cm) {
             let args = ap(msg.content);
 
             if (args[1].toLowerCase() === "category") {
-                let used = [[], []],
+                let used: [any[], any[]] = [[], []],
                     amount = [0, 0];
 
                 global.mappings.each((cmd, key) => {
@@ -105,7 +105,7 @@ async function load(client, cm) {
             }
 
             if (args[1].toLowerCase() === "command") {
-                let bool = -1;
+                let bool: boolean | number = -1;
                 global.mappings.each((cmd, key) => {
                     if (cmd.force) return;
                     if (cmd.command.toLowerCase() === args[2].toLowerCase()) {

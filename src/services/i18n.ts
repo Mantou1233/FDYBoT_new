@@ -4,6 +4,11 @@ import tw from "../assets/lang/zh_tw.json";
 
 export let langs = { en, cn, tw }
 
+export const langAlias = {
+    zh: ["zh-cn"],
+    tw: ["zh-tw"]
+}
+
 export let globes = {
     color: parseInt("CFF2FF", 16)
 }
