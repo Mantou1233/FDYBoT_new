@@ -1,0 +1,5 @@
+{
+    "name": "economy",
+    "entry": "src/index.js",
+    "reload": ["src/suggest.js", "src/help.js"]
+}

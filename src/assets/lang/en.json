@@ -1,10 +1,14 @@
 {
     "command.run.cooldown": "You have to wait %s to use the command again!",
     "command.run.error": "Oops! a error appeared: %s",
+    "command.run.notfound": "Command not found.",
     "basic.say.description": "Say something you want to say. supports raw ctx.",
     "basic.say.usage": "Say something you want to say. supports raw ctx.",
     "basic.say.error.invaildparams": "there is a error when sending a embed, try again and check is the embed legal or not.",
     "basic.say.error.noargs": "what do you want to say??",
     "basic.toggle.description": "Toggle specified modules.",
-    "basic.toggle.usage": "%stoggle <category|command> <name> [--s|--l]"
+    "basic.toggle.usage": "%stoggle <category|command> <name> [--s|--l]",
+    "basic.toggle.command.toggled": "%s is %s",
+    "basic.toggle.command.enabledText": "enabled",
+    "basic.toggle.command.disaledText": "disabled"
 }

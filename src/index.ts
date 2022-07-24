@@ -1,4 +1,3 @@
-declare var i18n: (string, ...opt) => string
 import "./services/i18n";
 import "./services/ap";
 import dotenv from "dotenv"

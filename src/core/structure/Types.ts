@@ -1,5 +1,9 @@
 import { Message } from 'discord.js';
+import { langTypes } from './../../services/i18n';
 
+type OverrideLangString = {
+    [key in langTypes]?: string
+}
 interface Command {
     display?: string; //display in help command
     command: string; //command name
@@ -15,7 +19,10 @@ interface Command {
     pass?: boolean;
     flags?: string[];
     from?: string;
-    override?: {cooldown: {}, error: {}}; //user override
+    override?: {
+        cooldown?: OverrideLangString,
+        error?: OverrideLangString
+    }; 
     handler: (message: Message, ext: any) => any;
 }
 

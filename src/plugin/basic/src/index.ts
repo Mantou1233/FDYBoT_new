@@ -1,3 +1,4 @@
+import CommandManager from './../../../core/CommandManager';
 const { version } = { version: "1.3.3"};
 const ms = require("pretty-ms");
 const { version: discordjsVersion } = require("discord.js");
@@ -10,7 +11,7 @@ const admins = ["842757573709922314", "611118369474740244"];
 /**
  * @returns void
  */
-async function load(client, cm) {
+async function load(client, cm: CommandManager) {
     cm.register({
         command: "say",
         category: "Basic",
@@ -85,11 +86,11 @@ async function load(client, cm) {
                             disabled: !cmd.disabled
                         });
 
-                        if (!cmd.disabled === true) {
+                        if (!cmd.disabled) {
                             used[0].push(cmd.command);
                             amount[0]++;
                         }
-                        if (!cmd.disabled === false) {
+                        if (cmd.disabled) {
                             used[1].push(cmd.command);
                             amount[1]++;
                         }
@@ -117,13 +118,13 @@ async function load(client, cm) {
                         bool = !cmd.disabled;
                     }
                 });
-                if (bool === -1) return msg.reply("Command not found");
+                if (bool === -1) return msg.reply(i18n.parse(msg.lang, "command.run.notfound"));
                 return msg.reply(
                     `${args[2]} is ${bool ? "disabled" : "enabled"}!`
                 );
             }
 
-            msg.reply("not found...");
+            msg.reply(i18n.parse(msg.lang, "command.run.notfound"));
         }
     });
     const ux = (name, value, inline = false) => {return {name, value, inline}}
@@ -200,6 +201,13 @@ async function load(client, cm) {
         }
     });
     cm.register({
+        command: "sus",
+        category: "Basic",
+        handler: async (msg, { prefix }) => {
+            msg.channel.send("https://tenor.com/view/sus-omori-sussy-gif-gif-24107578")
+        }
+    });
+    cm.register({
         command: "help",
         category: "Basic",
         desc: "Display bot information",
@@ -220,7 +228,6 @@ async function load(client, cm) {
         cooldown: 5 * 1000,
         force: true,
         handler: async (msg, { prefix }) => {
-            let _$ = 0;
             const args = ap(msg.content, true);
             const id =
                 msg.mentions.users.first()?.id || args[1] || msg.author.id;
@@ -230,38 +237,20 @@ async function load(client, cm) {
                         Authorization: `Bot ${process.env.TOKEN}`
                     }
                 })
-                .catch(e => {
-                    _$ = 1;
-                    return msg.channel.send(`An error happened: ${e.message}`);
-                });
-            if (_$) return;
+                .catch(e => { throw e });
             let { username, discriminator, banner, avatar, banner_color } =
                 response.data;
-            let extension,
-                aurl = "",
-                burl = "";
+            let _0 = "discord.com"
 
             let embed = new Discord.EmbedBuilder();
             embed.setTitle(`${username}#${discriminator}`);
-            if (avatar) {
-                extension = avatar.startsWith("a_") ? ".gif" : ".png";
-                aurl = `https://cdn.discordapp.com/avatars/${id}/${avatar}${extension}?size=256`;
-                embed.setThumbnail(aurl);
-            }
-            if (banner) {
-                extension = banner.startsWith("a_") ? ".gif" : ".png";
-                burl = `https://cdn.discordapp.com/banners/${id}/${banner}${extension}?size=2048`;
-                embed.setImage(burl);
-            } else {
-                burl = `https://serux.pro/rendercolour?hex=${banner_color?.replace(
-                    "#",
-                    ""
-                )}&height=200&width=512`;
-                embed.setImage(burl);
-            }
+            if (avatar) embed.setThumbnail(`https://cdn.discordapp.com/avatars/${id}/${avatar}${avatar.startsWith("a_") ? ".gif" : ".png"}?size=256`);
+            if (banner) _0 = `https://cdn.discordapp.com/banners/${id}/${banner}${banner.startsWith("a_") ? ".gif" : ".png"}?size=2048`;
+            else _0 = `https://serux.pro/rendercolour?hex=${banner_color?.replace("#","")}&height=200&width=512`;
+            embed.setImage(_0);
             embed.setColor(banner_color);
             embed.setDescription(
-                `Account Created on ${""} | [Avatar](${aurl}) | [Banner](${burl}) | Color: ${banner_color}`
+                `Account Created on ${""} | [Avatar](${`https://cdn.discordapp.com/avatars/${id}/${avatar}${avatar.startsWith("a_") ? ".gif" : ".png"}?size=256`}) | [Banner](${_0}) | Color: ${banner_color}`
             );
             //snowflake
             //       .convertSnowflakeToDate(id)

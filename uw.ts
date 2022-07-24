@@ -1,1 +1,0 @@
-process.stdout.write("sb", (er) => console.log(`douterr: ${er}`))

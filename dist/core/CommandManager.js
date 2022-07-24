@@ -21,10 +21,12 @@ class CommandManager {
         });
     }
     registerBeforeChatEvent(runner) {
-        this.beforeChat.push(runner);
+        this.beforeChat.push({ disabled: false, ...runner });
     }
     async runBeforeChatEvents(msg) {
-        for (const { handler } of this.beforeChat) {
+        for (const { disabled, handler } of this.beforeChat) {
+            if (disabled)
+                continue;
             try {
                 await handler(msg);
             }
