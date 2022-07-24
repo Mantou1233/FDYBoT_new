@@ -77,6 +77,12 @@ class PluginLoader {
         log(1, "Plugin loaded!");
         log(0, "Bot started!");
     }
+    async expo() {
+        for (let uw of Object.keys(require.cache)) {
+            delete require.cache[uw];
+        }
+        require("../");
+    }
 }
 exports.default = PluginLoader;
 //# sourceMappingURL=PluginLoader.js.map
