@@ -14,6 +14,15 @@ async function HandleCommands(client, msg) {
     let p = new Database_1.Profile(msg.author.id);
     if (!p.check())
         p.newSchema();
+    p.chatCount++;
+    p.exp[0] += random(0, 3); //exp[0] = xp, exp[1] = maxXp, exp[2] = addition
+    if (p.exp[0] > p.exp[1]) {
+        p.level++;
+        p.exp[0] -= p.exp[1];
+        p.exp[1] += p.exp[2];
+        p.exp[2] += random(0, 4); //adding a addition so that it dont always add in a factor
+    }
+    p.save();
     msg.lang = p.lang;
     const mappings = client.manager.commands;
     if (client.manager.beforeChat.length > 0)

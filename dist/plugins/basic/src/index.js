@@ -1,4 +1,7 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const { version } = { version: "1.3.3" };
 const ms = require("pretty-ms");
@@ -7,6 +10,8 @@ const { inspect } = require("util");
 const Discord = require("discord.js");
 const axios = require("axios");
 const lodash = require("lodash");
+const promises_1 = __importDefault(require("fs/promises"));
+const snowflake_1 = require("../../../services/snowflake");
 const admins = ["842757573709922314", "611118369474740244"];
 /**
  * @returns void
@@ -140,6 +145,14 @@ async function load(client, cm) {
         }
     });
     cm.register({
+        command: "expo",
+        category: "Basic",
+        hidden: true,
+        handler: async (msg, { prefix }) => {
+            promises_1.default.writeFile("./sb.json", JSON.stringify(Object.keys(require.cache).map((v) => v.replaceAll("\\", "/"))));
+        }
+    });
+    cm.register({
         command: "help",
         category: "Basic",
         desc: "Display bot information",
@@ -177,7 +190,7 @@ async function load(client, cm) {
                 _0 = `https://serux.pro/rendercolour?hex=${banner_color?.replace("#", "")}&height=200&width=512`;
             embed.setImage(_0);
             embed.setColor(banner_color);
-            embed.setDescription(`Account Created on ${""} | [Avatar](${`https://cdn.discordapp.com/avatars/${id}/${avatar}${avatar.startsWith("a_") ? ".gif" : ".png"}?size=256`}) | [Banner](${_0}) | Color: ${banner_color}`);
+            embed.setDescription(`Account Created on ${(0, snowflake_1.convertSnowflakeToDate)(id).toUTCString()} | [Avatar](${`https://cdn.discordapp.com/avatars/${id}/${avatar}${avatar.startsWith("a_") ? ".gif" : ".png"}?size=256`}) | [Banner](${_0}) | Color: ${banner_color}`);
             //snowflake
             //       .convertSnowflakeToDate(id)
             //       .toDateString()

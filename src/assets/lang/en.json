@@ -10,5 +10,7 @@
     "basic.toggle.usage": "%stoggle <category|command> <name> [--s|--l]",
     "basic.toggle.command.toggled": "%s is %s",
     "basic.toggle.command.enabledText": "enabled",
-    "basic.toggle.command.disaledText": "disabled"
+    "basic.toggle.command.disaledText": "disabled",
+    "item.bread": ""
+
 }

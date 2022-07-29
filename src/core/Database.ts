@@ -38,11 +38,9 @@ export class Profile {
     }
 
     save() {
-        const { __id: id } = this;
         const data = JSON.parse(JSON.stringify(this));
         delete data["__id"];
-        db.set(`${id}${suffix}`, data);
-        return this;
+        return void db.set(`${this.__id}${suffix}`, data) ?? this;
     }
 
     get raw() {

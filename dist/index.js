@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("./services/i18n");
+require("./services/random");
 require("./services/ap");
 const dotenv_1 = __importDefault(require("dotenv"));
 const discord_js_1 = __importDefault(require("discord.js"));

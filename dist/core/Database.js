@@ -43,11 +43,9 @@ class Profile {
         return void this.save() ?? this;
     }
     save() {
-        const { __id: id } = this;
         const data = JSON.parse(JSON.stringify(this));
         delete data["__id"];
-        quick_db_1.default.set(`${id}${suffix}`, data);
-        return this;
+        return void quick_db_1.default.set(`${this.__id}${suffix}`, data) ?? this;
     }
     get raw() {
         const tmp = JSON.parse(JSON.stringify(this));

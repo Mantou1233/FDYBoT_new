@@ -15,7 +15,7 @@ export let globes = {
 
 export type langTypes = keyof typeof langs;
 
-class i18n{
+class i18n {
     public globe: any
     constructor(){
         this.globe = globes

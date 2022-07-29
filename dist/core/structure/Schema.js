@@ -7,6 +7,8 @@ exports.default = {
         coinFactor: 0,
         bank: 2000,
         bankAmount: 5000,
+        bankLastAction: 0,
+        bankInterestFactor: -1,
         bankFactor: 0.1,
         signCount: 0,
         lastSign: 0,

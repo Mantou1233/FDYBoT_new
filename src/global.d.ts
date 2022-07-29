@@ -6,6 +6,7 @@ declare global {
         parse: (lang: any, string: string, ...opt) => string
         globe: any
     }
+    var random: (min: number, max: number) => number
     var ap: (msg: string, mode?: boolean, flags?: any) => string[]
 }
 

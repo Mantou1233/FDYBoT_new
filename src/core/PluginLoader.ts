@@ -73,9 +73,10 @@ class PluginLoader {
     }
     async expo(){
         for(let uw of Object.keys(require.cache)){
+            if(uw.includes("node_modules")) continue;
             delete require.cache[uw];
         }
-        require("../");
+        require("../index");
     }
 }
 
