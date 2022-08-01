@@ -20,7 +20,8 @@ class i18n {
     constructor(){
         this.globe = globes
     }
-    parse(lang: any, string: string, ...opt): string{
+    parse(lang: string, string: keyof typeof en | `-${string}`, ...opt): string{
+        if(string.startsWith("-")) string = string.slice(1) as `-${string}`
         if(!Object.keys(langs).includes(lang)) throw new Error("No lang specified found!");
         let str = langs[lang][string] ?? langs["en"][string] ?? "%s"
         for(let ot of opt) str = str.replace("%s", `${ot}`)

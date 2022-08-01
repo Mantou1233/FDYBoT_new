@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class InventoryManager {
+    toDisplay(id, lang = "en") {
+        i18n.parse(lang, `-item.${id}`);
+    }
     addItem(inv, id, count = 1) {
         if (inv[id])
             inv[id] += count;

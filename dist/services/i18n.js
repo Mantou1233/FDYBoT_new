@@ -20,6 +20,8 @@ class i18n {
         this.globe = exports.globes;
     }
     parse(lang, string, ...opt) {
+        if (string.startsWith("-"))
+            string = string.slice(1);
         if (!Object.keys(exports.langs).includes(lang))
             throw new Error("No lang specified found!");
         let str = exports.langs[lang][string] ?? exports.langs["en"][string] ?? "%s";

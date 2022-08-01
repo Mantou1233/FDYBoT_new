@@ -1,13 +1,15 @@
-import CommandManager from '../../../core/CommandManager';
-const { version } = { version: "1.3.3"};
+import CommandManager from "../../../core/CommandManager";
+const { version } = { version: "1.3.3" };
 const ms = require("pretty-ms");
 const { version: discordjsVersion } = require("discord.js");
 const { inspect } = require("util");
 const Discord = require("discord.js");
 const axios = require("axios");
 const lodash = require("lodash");
-import fs from "fs/promises"
-import { convertSnowflakeToDate } from '../../../services/snowflake';
+import fs from "fs/promises";
+import { convertSnowflakeToDate } from "../../../services/snowflake";
+import { Profile } from "../../../core/Database";
+import { langs } from "../../../services/i18n";
 
 const admins = ["842757573709922314", "611118369474740244"];
 /**
@@ -24,14 +26,19 @@ async function load(client, cm: CommandManager) {
                 return msg.channel.send({
                     embeds: [
                         {
-                            description: i18n.parse(msg.lang, "basic.say.error.noargs"),
+                            description: i18n.parse(
+                                msg.lang,
+                                "basic.say.error.noargs"
+                            ),
                             color: i18n.globe["color"]
                         }
                     ]
                 });
             if (!IsJsonString(args[1]))
                 return msg.channel.send({
-                    embeds: [{ description: args[1], color: i18n.globe["color"] }]
+                    embeds: [
+                        { description: args[1], color: i18n.globe["color"] }
+                    ]
                 });
             let data = JSON.parse(args[1]);
             let result = data;
@@ -44,7 +51,7 @@ async function load(client, cm: CommandManager) {
                 .send(result)
                 .catch(err =>
                     msg.channel.send(
-                        i18n.parse(msg.lang, "basic.say.error.invaildparam")
+                        i18n.parse(msg.lang, "basic.say.error.invaildparams")
                     )
                 );
         }
@@ -80,10 +87,10 @@ async function load(client, cm: CommandManager) {
                 let used: [any[], any[]] = [[], []],
                     amount = [0, 0];
 
-                global.mappings.each((cmd, key) => {
+                client.manager.commands.each((cmd, key) => {
                     if (cmd.force) return;
                     if (cmd.category.toLowerCase() === args[2].toLowerCase()) {
-                        global.mappings.set(key, {
+                        client.manager.commands.set(key, {
                             ...cmd,
                             disabled: !cmd.disabled
                         });
@@ -109,10 +116,10 @@ async function load(client, cm: CommandManager) {
 
             if (args[1].toLowerCase() === "command") {
                 let bool: boolean | number = -1;
-                global.mappings.each((cmd, key) => {
+                client.manager.commands.each((cmd, key) => {
                     if (cmd.force) return;
                     if (cmd.command.toLowerCase() === args[2].toLowerCase()) {
-                        global.mappings.set(key, {
+                        client.manager.commands.set(key, {
                             ...cmd,
                             disabled: !cmd.disabled
                         });
@@ -120,16 +127,34 @@ async function load(client, cm: CommandManager) {
                         bool = !cmd.disabled;
                     }
                 });
-                if (bool === -1) return msg.reply(i18n.parse(msg.lang, "command.run.notfound"));
+                if (bool === -1)
+                    return msg.reply(
+                        i18n.parse(msg.lang, "command.run.notfound")
+                    );
                 return msg.reply(
-                    `${args[2]} is ${bool ? "disabled" : "enabled"}!`
+                    i18n.parse(
+                        msg.lang,
+                        "basic.toggle.command.toggled",
+                        args[2],
+                        bool
+                            ? i18n.parse(
+                                  msg.lang,
+                                  "basic.toggle.command.disabledText"
+                              )
+                            : i18n.parse(
+                                  msg.lang,
+                                  "basic.toggle.command.enabledText"
+                              )
+                    )
                 );
             }
 
             msg.reply(i18n.parse(msg.lang, "command.run.notfound"));
         }
     });
-    const ux = (name, value, inline = false) => {return {name, value, inline}}
+    const ux = (name, value, inline = false) => {
+        return { name, value, inline };
+    };
     cm.register({
         command: "botinfo",
         category: "Basic",
@@ -191,11 +216,7 @@ async function load(client, cm: CommandManager) {
                                 `${client.users.cache.size} users\n${client.emojis.cache.size} emojis`,
                                 true
                             ),
-                            ux(
-                                "				**❯ Discord.js:**",
-                                `${discordjsVersion}`,
-                                true
-                            )
+                            ux("				**❯ Discord.js:**", `${discordjsVersion}`, true)
                         )
                         .setTimestamp()
                 ]
@@ -206,7 +227,9 @@ async function load(client, cm: CommandManager) {
         command: "sus",
         category: "Basic",
         handler: async (msg, { prefix }) => {
-            msg.channel.send("https://tenor.com/view/sus-omori-sussy-gif-gif-24107578")
+            msg.channel.send(
+                "https://tenor.com/view/sus-omori-sussy-gif-gif-24107578"
+            );
         }
     });
     cm.register({
@@ -214,7 +237,12 @@ async function load(client, cm: CommandManager) {
         category: "Basic",
         hidden: true,
         handler: async (msg, { prefix }) => {
-            fs.writeFile("./sb.json", JSON.stringify(Object.keys(require.cache).map((v) => v.replaceAll("\\", "/"))));
+            fs.writeFile(
+                "./sb.json",
+                JSON.stringify(
+                    Object.keys(require.cache).map(v => v.replaceAll("\\", "/"))
+                )
+            );
         }
     });
     cm.register({
@@ -227,7 +255,7 @@ async function load(client, cm: CommandManager) {
             require("../../../services/helpCommand")(
                 msg,
                 { prefix: prefix, _: lodash },
-                client.manager.commands,
+                client.manager.commands
             );
         }
     });
@@ -247,20 +275,38 @@ async function load(client, cm: CommandManager) {
                         Authorization: `Bot ${process.env.TOKEN}`
                     }
                 })
-                .catch(e => { throw e });
+                .catch(e => {
+                    throw e;
+                });
             let { username, discriminator, banner, avatar, banner_color } =
                 response.data;
-            let _0 = "discord.com"
+            let _0 = "discord.com";
 
             let embed = new Discord.EmbedBuilder();
             embed.setTitle(`${username}#${discriminator}`);
-            if (avatar) embed.setThumbnail(`https://cdn.discordapp.com/avatars/${id}/${avatar}${avatar.startsWith("a_") ? ".gif" : ".png"}?size=256`);
-            if (banner) _0 = `https://cdn.discordapp.com/banners/${id}/${banner}${banner.startsWith("a_") ? ".gif" : ".png"}?size=2048`;
-            else _0 = `https://serux.pro/rendercolour?hex=${banner_color?.replace("#","")}&height=200&width=512`;
+            if (avatar)
+                embed.setThumbnail(
+                    `https://cdn.discordapp.com/avatars/${id}/${avatar}${
+                        avatar.startsWith("a_") ? ".gif" : ".png"
+                    }?size=256`
+                );
+            if (banner)
+                _0 = `https://cdn.discordapp.com/banners/${id}/${banner}${
+                    banner.startsWith("a_") ? ".gif" : ".png"
+                }?size=2048`;
+            else
+                _0 = `https://serux.pro/rendercolour?hex=${banner_color?.replace(
+                    "#",
+                    ""
+                )}&height=200&width=512`;
             embed.setImage(_0);
             embed.setColor(banner_color);
             embed.setDescription(
-                `Account Created on ${convertSnowflakeToDate(id).toUTCString()} | [Avatar](${`https://cdn.discordapp.com/avatars/${id}/${avatar}${avatar.startsWith("a_") ? ".gif" : ".png"}?size=256`}) | [Banner](${_0}) | Color: ${banner_color}`
+                `Account Created on ${convertSnowflakeToDate(
+                    id
+                ).toUTCString()} | [Avatar](${`https://cdn.discordapp.com/avatars/${id}/${avatar}${
+                    avatar.startsWith("a_") ? ".gif" : ".png"
+                }?size=256`}) | [Banner](${_0}) | Color: ${banner_color}`
             );
             //snowflake
             //       .convertSnowflakeToDate(id)
@@ -276,35 +322,44 @@ async function load(client, cm: CommandManager) {
         }
     });
     cm.register({
-        command: "reload",
-        category: "Basic",
-        desc: "Display bot information",
-        handler: async (msg, { prefix }) => {
-            if (!admins.includes(msg.author.id)) return;
-            //client.loaderInstance.reload(msg.channel, client);
-        }
-    });
-    cm.register({
         command: "ping",
         category: "Basic",
         desc: "Display bot information",
         handler: async (msg, { prefix }) => {
-            await msg.reply(`Ping! :ping_pong: ${Date.now() - msg.createdTimestamp}`);
-        }//ずっと輝いて SO STARRY
+            await msg.reply(
+                i18n.parse(
+                    msg.lang,
+                    "basic.ping.pong",
+                    `${Date.now() - msg.createdTimestamp}`
+                )
+            );
+        }
     });
 
     cm.register({
-        command: "uw",
-        category: "Basic",
-        desc: "Display bot information",
-        handler: async (msg, { prefix }) => {
-            console.log("UW")
-            let args = ap(msg.content, true)[1].split("///");
-            console.log(args)
-            if(!IsJsonString(args[0])) return msg.channel.send("NOT");
-            return msg.channel.send(`${lodash.get(JSON.parse(args[0]), args[1])}`)
-        }//ずっと輝いて SO STARRY
+        command: "lang",
+        category: "Currency",
+        desc: "Get how many money you got!",
+        handler: async msg => {
+            let args = ap(msg.content);
+            let p = new Profile(msg.author.id);
+
+            if (args.length == 1 || !Object.keys(langs).includes(args[1]))
+                return msg.channel.send(
+                    i18n.parse(
+                        msg.lang,
+                        "basic.lang.current",
+                        msg.lang,
+                        Object.keys(langs).length,
+                        `\`${Object.keys(langs).join("`,`")}\``
+                    )
+                );
+            p.lang = args[1];
+            p.save();
+            msg.channel.send(i18n.parse(msg.lang, "basic.lang.set", args[1]));
+        }
     });
+
     cm.register({
         command: "eval",
         category: "Basic",
@@ -353,8 +408,6 @@ async function load(client, cm: CommandManager) {
             }
         }
     });
-    //require("./suggest")(ext);
-    //require("./help")(ext);
 }
 
 module.exports = load;

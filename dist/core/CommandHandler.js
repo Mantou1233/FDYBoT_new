@@ -25,6 +25,11 @@ async function HandleCommands(client, msg) {
     p.save();
     msg.lang = p.lang;
     const mappings = client.manager.commands;
+    let ou = false;
+    if (msg.content.includes("--dout")) {
+        msg.content = msg.content.replaceAll("--dout", "");
+        ou = true;
+    }
     if (client.manager.beforeChat.length > 0)
         await client.manager.runBeforeChatEvents(msg);
     const isp = msg.content.startsWith(prefix);
@@ -43,6 +48,8 @@ async function HandleCommands(client, msg) {
         await command.handler(msg, { prefix });
     }
     catch (e) {
+        if (ou)
+            console.log(e);
         return msg.channel.send((command.override?.error?.[p.lang] ??
             command.override?.error?.["en"] ??
             i18n.parse(p.lang, "command.run.error")).replaceAll("%s", `${e.message}`));

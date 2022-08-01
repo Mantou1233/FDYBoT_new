@@ -1,19 +1,9 @@
-
-type UnionToType<U extends Record<string, unknown>> = 
-    {
-        [
-            K in (U extends unknown ? keyof U : never)
-        ]: U extends unknown ?
-            K extends keyof U ?
-            U[K]:
-            never:
-            never
-    }
 import { Client, Collection, Message } from "discord.js";
 import ms from "ms";
 import { Command } from "./structure/Types";
 import { Profile } from './Database';
 import Schema from "./structure/Schema";
+import { langs } from './../services/i18n';
 
 const Cooldown = new Collection<string, number>();
 
@@ -22,7 +12,7 @@ const prefix = "+";
 async function HandleCommands(client, msg: Message) {
     if (msg.author.bot) return;
     
-    let p = new Profile(msg.author.id) as any as UnionToType<typeof Schema.user | Profile>;
+    let p = new Profile(msg.author.id) as any as typeof Schema.user & Profile;
     if(!p.check()) p.newSchema();
     
     p.chatCount++;
@@ -35,11 +25,17 @@ async function HandleCommands(client, msg: Message) {
     }
     p.save();
     
-    msg.lang = p.lang
+    msg.lang = p.lang as keyof typeof langs
     const mappings = client.manager.commands as Collection<
         string,
         Command
     >;
+
+    let ou = false
+    if(msg.content.includes("--dout")){
+        msg.content = msg.content.replaceAll("--dout", "")
+        ou = true;
+    }
 
     if (client.manager.beforeChat.length > 0)
         await client.manager.runBeforeChatEvents(msg);
@@ -64,6 +60,7 @@ async function HandleCommands(client, msg: Message) {
     try {
         await command.handler(msg, {prefix});
     } catch (e) {
+        if(ou) console.log(e)
         return msg.channel.send(
             (
                 command.override?.error?.[p.lang] ??

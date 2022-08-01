@@ -1,4 +1,7 @@
 class InventoryManager{
+    toDisplay(id, lang = "en"){
+        i18n.parse(lang, `-item.${id}`)
+    }
     addItem(inv, id, count = 1) {
         if (inv[id]) inv[id] += count;
         else inv[id] = count;

@@ -25,7 +25,7 @@ class CommandManager {
         });
     }
 
-    registerBeforeChatEvent(runner: Runner) {
+    registerBeforeChatEvent(runner: Runner) { // TODO redo rbce,,, the runner is too much of a quick implelment
         this.beforeChat.push({disabled: false, ...runner});
     }
 

@@ -210,7 +210,7 @@ async function load(client, cm) {
                 .setDescription(
                     desc.replace("  Inversed color of", "").replace("…", "")
                 )
-                .setFooter("tags: " + key)
+                .setFooter({text: "tags: " + key})
                 .setColor("#" + color);
 
             msg.reply({ embeds: [main, shades, tints], files: [atta1, atta2] });
@@ -229,7 +229,6 @@ async function load(client, cm) {
                     .first()
                     .displayAvatarURL({ extension: "png" });
             }
-            console.log(target)
             let angle = Math.floor(Math.random() * 360);
             if (args[2]) if (args[2] % 1 === 0) angle = args[2] * 1;
             pic = target;
@@ -279,20 +278,23 @@ async function load(client, cm) {
             }
 
             let embed = new Discord.EmbedBuilder()
-                .setColor("GREEN")
-                .setAuthor(
-                    `${client.user.username} Calculator`,
-                    msg.author.displayAvatarURL({ dynamic: true })
-                )
-                .addField(
-                    "**Operation**",
-                    `\`\`\`js\n${calc
+                .setColor("Green")
+                .setAuthor({
+                    name: `fdy calculator`,
+                    iconURL: msg.author.displayAvatarURL({ dynamic: true })
+                })
+                .addFields({
+                    name: "**Operation**",
+                    value: `\`\`\`js\n${calc
                         .replace(/[x]/gi, "*")
                         .replace(/[,]/g, ".")
                         .replace(/[÷]/gi, "/")}\`\`\``
-                )
-                .addField("**Result**", `\`\`\`js\n${result}\`\`\``)
-                .setFooter(msg.guild.name, msg.guild.iconURL());
+                })
+                .addFields({
+                    name: "**Result**",
+                    value: `\`\`\`js\n${result}\`\`\``
+                })
+                .setFooter({text: msg.guild.name, iconURL: msg.guild.iconURL()});
             msg.channel.send({ embeds: [embed] });
         }
     });
@@ -314,20 +316,18 @@ async function load(client, cm) {
         desc: "whos gae",
         handler: async msg => {
             let pic;
-            let target = msg.author.avatarURL({ extension: "png" });
+            let target = msg.author;
             let args = ap(msg.content);
             if (msg.mentions.users.first()) {
                 target = msg.mentions.users
                     .first()
-                    .avatarURL({ extension: "png" });
             }
             if (args[1] === "self")
-                target = msg.author.avatarURL({ extension: "png" });
-            if (args[1].includes("cdn.discordapp.com")) target = args[1];
-            pic = target;
+                target = msg.author;
+            pic = target.avatarURL({ extension: "png" });;
             let img = await new DIG.Gay().getImage(pic);
             // Add the image as an attachement
-            let attach = new Discord.MessageAttachment(img, "gay.png");
+            let attach = new Discord.AttachmentBuilder(img, "gay.png");
             let content = "gae";
             if (target.username.toLowerCase().includes("paketa"))
                 content =
@@ -361,7 +361,7 @@ async function load(client, cm) {
                     ctx.fillRect(j * 25, i * 25, 25, 25);
                 }
             }
-            const attach = new Discord.MessageAttachment(
+            const attach = new Discord.AttachmentBuilder(
                 canvas.toBuffer(),
                 "gradient.png"
             );
@@ -403,7 +403,7 @@ async function load(client, cm) {
                 ctx.fillStyle = "#" + args[i];
                 ctx.fillRect(i * size, 0, size, size);
             }
-            const attach = new Discord.MessageAttachment(
+            const attach = new Discord.AttachmentBuilder(
                 canvas.toBuffer(),
                 "color.png"
             );
@@ -433,7 +433,6 @@ async function load(client, cm) {
                     size: 128,
                     dynamic: false
                 });
-            if (args[1].includes("cdn.discordapp.com")) target = args[1];
             let avatar = (pic = target);
 
             let welcome = await jimp.read(avatar);
@@ -454,7 +453,7 @@ async function load(client, cm) {
             ).then(image => {
                 ctx.drawImage(image, 0, 0);
             });
-            const attach = new Discord.MessageAttachment(
+            const attach = new Discord.AttachmentBuilder(
                 canvas.toBuffer(),
                 "rip.png"
             );

@@ -1,3 +1,17 @@
 {
-    "command.cooldown.error": "哦喲，有一個錯誤出現了：%s"
+    "command.run.cooldown": "你需要等待 %s 才能再次使用该指令！",
+    "command.run.error": "哦哟，有一个错误出現了：%s",
+    "command.run.notfound": "指令不存在。",
+    "basic.say.description": "Say something you want to say. supports raw ctx.",
+    "basic.say.usage": "Say something you want to say. supports raw ctx.",
+    "basic.say.error.invaildparams": "发送错误。",
+    "basic.say.error.noargs": "你要说啥？？",
+    "basic.toggle.description": "Toggle specified modules.",
+    "basic.toggle.usage": "%stoggle <category|command> <name> [--s|--l]",
+    "basic.toggle.command.toggled": "已经将指令%s%s",
+    "basic.toggle.command.enabledText": "开启",
+    "basic.toggle.command.disabledText": "关闭",
+    "basic.ping.pong": "叮! :ping_pong: %sms",
+    "basic.lang.current": "你目前设置的语言是%s.\n有%s个语言可供使用:%s",
+    "basic.lang.set": "已经把你的语言设置成%s!"
 }

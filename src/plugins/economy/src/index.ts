@@ -3,6 +3,7 @@ import { progressBar, toPercent, toSizing } from '../../../services/math';
 import Discord from 'discord.js';
 import { Profile } from './../../../core/Database';
 import { langs } from './../../../services/i18n';
+import inventoryManager from '../../../services/inventory';
 
 /**
  * @returns void
@@ -30,26 +31,30 @@ async function load(client, cm: CommandManager) {
         }
     });
     cm.register({
-        command: "uwu",
+        command: "inventory",
         category: "Currency",
-        desc: "Get how many money you got!",
-        alias: ["bal"],
+        desc: "See what do you got in your inventory",
+        alias: ["inv"],
         handler: async msg => {
-            let args = ap(msg.content);
-            let p = new Profile(msg.author.id)
+            let id = msg.author.id;
+            let args = ap(msg.content, true);
+            let p = new Profile(`${id}`);
 
-            msg.channel.send(`seethe to ${args.join(", ")}`);
-            if(args.length == 1 || !Object.keys(langs).includes(args[1])) return;
-            p.lang = args[1]
-            msg.channel.send(`seethe to ${args[1]}`);
-        }
-    });
-    cm.register({
-        command: "err",
-        category: "Currency",
-        desc: "Get how many money you got!",
-        handler: async msg => {
-            throw new Error("test")
+            let text = "";
+            for (let [item, count] of p.inv.entryz()) {
+                if (count === 0) {
+                    delete p.inv[item];
+                    continue;
+                }
+                text += `${inventoryManager.toDisplay(item)} ─ ${count}\n`;
+            }
+            p.save();
+            const embed = new Discord.EmbedBuilder()
+                .setColor("#CFF2FF")
+                .setTitle(`${p.name}'s inventory`)
+                .setDescription(text);
+
+            msg.channel.send({ embeds: [embed] });
         }
     });
 }

@@ -1,4 +1,4 @@
-import db from "quick.db";
+import db from "quick.db"; // TODO go fuck off quick db and use sqlite 
 import Schema from "./structure/Schema";
 const suffix = "";
 

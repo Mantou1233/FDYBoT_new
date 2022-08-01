@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Profile = void 0;
-const quick_db_1 = __importDefault(require("quick.db"));
+const quick_db_1 = __importDefault(require("quick.db")); // TODO go fuck off quick db and use sqlite 
 const Schema_1 = __importDefault(require("./structure/Schema"));
 const suffix = "";
 class Profile {

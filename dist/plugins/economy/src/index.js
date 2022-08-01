@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const math_1 = require("../../../services/math");
 const discord_js_1 = __importDefault(require("discord.js"));
 const Database_1 = require("./../../../core/Database");
-const i18n_1 = require("./../../../services/i18n");
+const inventory_1 = __importDefault(require("../../../services/inventory"));
 /**
  * @returns void
  */
@@ -28,26 +28,28 @@ async function load(client, cm) {
         }
     });
     cm.register({
-        command: "uwu",
+        command: "inventory",
         category: "Currency",
-        desc: "Get how many money you got!",
-        alias: ["bal"],
+        desc: "See what do you got in your inventory",
+        alias: ["inv"],
         handler: async (msg) => {
-            let args = ap(msg.content);
-            let p = new Database_1.Profile(msg.author.id);
-            msg.channel.send(`seethe to ${args.join(", ")}`);
-            if (args.length == 1 || !Object.keys(i18n_1.langs).includes(args[1]))
-                return;
-            p.lang = args[1];
-            msg.channel.send(`seethe to ${args[1]}`);
-        }
-    });
-    cm.register({
-        command: "err",
-        category: "Currency",
-        desc: "Get how many money you got!",
-        handler: async (msg) => {
-            throw new Error("test");
+            let id = msg.author.id;
+            let args = ap(msg.content, true);
+            let p = new Database_1.Profile(`${id}`);
+            let text = "";
+            for (let [item, count] of p.inv.entryz()) {
+                if (count === 0) {
+                    delete p.inv[item];
+                    continue;
+                }
+                text += `${inventory_1.default.toDisplay(item)} ─ ${count}\n`;
+            }
+            p.save();
+            const embed = new discord_js_1.default.EmbedBuilder()
+                .setColor("#CFF2FF")
+                .setTitle(`${p.name}'s inventory`)
+                .setDescription(text);
+            msg.channel.send({ embeds: [embed] });
         }
     });
 }
