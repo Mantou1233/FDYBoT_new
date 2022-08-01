@@ -2,7 +2,6 @@ import CommandManager from '../../../core/CommandManager';
 import { progressBar, toPercent, toSizing } from '../../../services/math';
 import Discord from 'discord.js';
 import { Profile } from './../../../core/Database';
-import { langs } from './../../../services/i18n';
 import inventoryManager from '../../../services/inventory';
 
 /**
