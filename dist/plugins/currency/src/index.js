@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const math_1 = require("../../../services/math");
 const discord_js_1 = __importDefault(require("discord.js"));
-const Database_1 = require("./../../../core/Database");
+const Database_1 = require("../../../core/Database");
 const inventory_1 = __importDefault(require("../../../services/inventory"));
 /**
  * @returns void
@@ -22,7 +22,7 @@ async function load(client, cm) {
             const bar = (0, math_1.progressBar)((0, math_1.toSizing)(p.bank, p.bankAmount), 100, 10);
             const embed = new discord_js_1.default.EmbedBuilder()
                 .setColor("#CFF2FF")
-                .setTitle(`${p.name}'s profile`)
+                .setTitle(`${msg.author.username}'s profile`)
                 .setDescription(`Wallet: ${p.coin}\nBank: ${p.bank} / ${p.bankAmount} (${bar}${percent})`);
             msg.channel.send({ embeds: [embed] });
         }
@@ -37,17 +37,17 @@ async function load(client, cm) {
             let args = ap(msg.content, true);
             let p = new Database_1.Profile(`${id}`);
             let text = "";
-            for (let [item, count] of p.inv.entryz()) {
+            for (let [item, count] of Object.entries(p.inv)) {
                 if (count === 0) {
                     delete p.inv[item];
                     continue;
                 }
-                text += `${inventory_1.default.toDisplay(item)} ─ ${count}\n`;
+                text += `${inventory_1.default.toDisplay(msg.lang, item)} ─ ${count}\n`;
             }
             p.save();
             const embed = new discord_js_1.default.EmbedBuilder()
                 .setColor("#CFF2FF")
-                .setTitle(`${p.name}'s inventory`)
+                .setTitle(`${msg.author.username}'s inventory`)
                 .setDescription(text);
             msg.channel.send({ embeds: [embed] });
         }

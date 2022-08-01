@@ -1,14 +1,14 @@
 import "./services/i18n";
 import "./services/random";
 import "./services/ap";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 import Discord from "discord.js";
 import PluginLoader from "./core/PluginLoader";
 import CommandHandler from "./core/CommandHandler";
 console.log("Starting miraicle...");
 
-const {GatewayIntentBits, Partials} = Discord
-dotenv.config()
+const {GatewayIntentBits, Partials} = Discord;
+dotenv.config();
 
 async function main() {
     // Legacy DiscordJS Client

@@ -1,8 +1,8 @@
-import CommandManager from '../../../core/CommandManager';
-import { progressBar, toPercent, toSizing } from '../../../services/math';
-import Discord from 'discord.js';
-import { Profile } from './../../../core/Database';
-import inventoryManager from '../../../services/inventory';
+import CommandManager from "../../../core/CommandManager";
+import { progressBar, toPercent, toSizing } from "../../../services/math";
+import Discord from "discord.js";
+import { Profile } from "../../../core/Database";
+import inventoryManager from "../../../services/inventory";
 
 /**
  * @returns void
@@ -14,14 +14,14 @@ async function load(client, cm: CommandManager) {
         desc: "Get how many money you got!",
         alias: ["bal"],
         handler: async msg => {
-            let p = new Profile(msg.author.id)
+            let p = new Profile(msg.author.id);
 
             const percent = toPercent(p.bank, p.bankAmount);
             const bar = progressBar(toSizing(p.bank, p.bankAmount), 100, 10);
 
             const embed = new Discord.EmbedBuilder()
                 .setColor("#CFF2FF")
-                .setTitle(`${p.name}'s profile`)
+                .setTitle(`${msg.author.username}'s profile`)
                 .setDescription(
                     `Wallet: ${p.coin}\nBank: ${p.bank} / ${p.bankAmount} (${bar}${percent})`
                 );
@@ -40,17 +40,17 @@ async function load(client, cm: CommandManager) {
             let p = new Profile(`${id}`);
 
             let text = "";
-            for (let [item, count] of p.inv.entryz()) {
+            for (let [item, count] of Object.entries(p.inv)) {
                 if (count === 0) {
                     delete p.inv[item];
                     continue;
                 }
-                text += `${inventoryManager.toDisplay(item)} ─ ${count}\n`;
+                text += `${inventoryManager.toDisplay(msg.lang, item)} ─ ${count}\n`;
             }
             p.save();
             const embed = new Discord.EmbedBuilder()
                 .setColor("#CFF2FF")
-                .setTitle(`${p.name}'s inventory`)
+                .setTitle(`${msg.author.username}'s inventory`)
                 .setDescription(text);
 
             msg.channel.send({ embeds: [embed] });

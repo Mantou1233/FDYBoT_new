@@ -13,7 +13,7 @@ export default {
         exp: [0, 75, 9], // [0] = xp, [1] = max xp, [2] = factor
         level: 1,
         inv: {
-            new_package: 1
+            bundle: 1
         },
         chatCount: 0,
     }

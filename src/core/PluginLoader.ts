@@ -14,7 +14,7 @@ class PluginLoader {
     constructor(client) {
         global.loading = -1;
         client.manager = new CommandManager(client);
-        this.client = client
+        this.client = client;
         this.loadedList = [];
         this.unloadList = [];
         this.loadedNames = [];

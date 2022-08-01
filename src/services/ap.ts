@@ -1,6 +1,6 @@
 function argumentParser(msg, mode = false, flags = []) {
     if (mode) {
-        var temp = msg.split(/ +/);
+        let temp = msg.split(/ +/);
         temp.shift();
         return [msg.split(/ +/)[0], temp.join(" ")];
     }
@@ -8,13 +8,13 @@ function argumentParser(msg, mode = false, flags = []) {
 }
 
 function getArguments(body) {
-    var args: any[] = [];
-    var str = body.trim();
+    let args: any[] = [];
+    let str = body.trim();
     while (str.length) {
-        var arg;
-        if (str.startsWith('"') && str.indexOf('"', 1) > 0) {
-            arg = str.slice(1, str.indexOf('"', 1));
-            str = str.slice(str.indexOf('"', 1) + 1);
+        let arg;
+        if (str.startsWith("\"") && str.indexOf("\"", 1) > 0) {
+            arg = str.slice(1, str.indexOf("\"", 1));
+            str = str.slice(str.indexOf("\"", 1) + 1);
         } else if (str.startsWith("'") && str.indexOf("'", 1) > 0) {
             arg = str.slice(1, str.indexOf("'", 1));
             str = str.slice(str.indexOf("'", 1) + 1);

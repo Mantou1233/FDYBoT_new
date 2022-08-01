@@ -1,15 +1,37 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const { version } = { version: "1.3.3" };
-const ms = require("pretty-ms");
-const { version: discordjsVersion } = require("discord.js");
-const { inspect } = require("util");
-const Discord = require("discord.js");
-const axios = require("axios");
-const lodash = require("lodash");
+const pretty_ms_1 = __importDefault(require("pretty-ms"));
+const discord_js_1 = require("discord.js");
+const util_1 = require("util");
+const Discord = __importStar(require("discord.js"));
+const axios_1 = __importDefault(require("axios"));
+const lodash = __importStar(require("lodash"));
 const promises_1 = __importDefault(require("fs/promises"));
 const snowflake_1 = require("../../../services/snowflake");
 const Database_1 = require("../../../core/Database");
@@ -133,13 +155,13 @@ async function load(client, cm) {
                 embeds: [
                     new Discord.EmbedBuilder()
                         .setColor("#CFF2FF")
-                        .setTitle(`FDYbot ${version}`)
+                        .setTitle(`FDYbot ${"1.6"}`)
                         .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
-                        .setFields(ux("				**❯ Uptime:**", `${ms(client.uptime)}`, true), ux("				**❯ WebSocket Ping:**", `${client.ws.ping}ms`, true), ux("				**❯ Memory:**", `${(process.memoryUsage().rss /
+                        .setFields(ux("				**❯ Uptime:**", `${(0, pretty_ms_1.default)(client.uptime)}`, true), ux("				**❯ WebSocket Ping:**", `${client.ws.ping}ms`, true), ux("				**❯ Memory:**", `${(process.memoryUsage().rss /
                         1024 /
                         1024).toFixed(2)} MB RSS\n${(process.memoryUsage().heapUsed /
                         1024 /
-                        1024).toFixed(2)} MB Heap`, true), ux("				**❯ Guild Count:**", `${client.guilds.cache.size} guilds`, true), ux(`				**❯ User Count:**`, `${client.guilds.cache.reduce((users, value) => users + value.memberCount, 0)} users`, true), ux("				**❯ Commands:**", `${client.manager.commands.size} cmds`, true), ux("				**❯ Node:**", `${process.version} on ${process.platform} ${process.arch}`, true), ux("				**❯ Cached Data:**", `${client.users.cache.size} users\n${client.emojis.cache.size} emojis`, true), ux("				**❯ Discord.js:**", `${discordjsVersion}`, true))
+                        1024).toFixed(2)} MB Heap`, true), ux("				**❯ Guild Count:**", `${client.guilds.cache.size} guilds`, true), ux("				**❯ User Count:**", `${client.guilds.cache.reduce((users, value) => users + value.memberCount, 0)} users`, true), ux("				**❯ Commands:**", `${client.manager.commands.size} cmds`, true), ux("				**❯ Node:**", `${process.version} on ${process.platform} ${process.arch}`, true), ux("				**❯ Cached Data:**", `${client.users.cache.size} users\n${client.emojis.cache.size} emojis`, true), ux("				**❯ Discord.js:**", `${discord_js_1.version}`, true))
                         .setTimestamp()
                 ]
             });
@@ -167,7 +189,7 @@ async function load(client, cm) {
         alias: ["h"],
         force: true,
         handler: async (msg, { prefix }) => {
-            require("../../../services/helpCommand")(msg, { prefix: prefix, _: lodash }, client.manager.commands);
+            (await Promise.resolve().then(() => __importStar(require("../../../services/helpCommand"))))(msg, { prefix: prefix, _: lodash }, client.manager.commands);
         }
     });
     cm.register({
@@ -179,7 +201,7 @@ async function load(client, cm) {
         handler: async (msg, { prefix }) => {
             const args = ap(msg.content, true);
             const id = msg.mentions.users.first()?.id || args[1] || msg.author.id;
-            let response = await axios
+            let response = await axios_1.default
                 .get(`https://discord.com/api/users/${id}`, {
                 headers: {
                     Authorization: `Bot ${process.env.TOKEN}`
@@ -252,7 +274,7 @@ async function load(client, cm) {
                         typeof output.then === "function" &&
                         typeof output.catch === "function"))
                     output = await output;
-                output = inspect(output, {
+                output = (0, util_1.inspect)(output, {
                     depth: 0,
                     maxArrayLength: null
                 });
@@ -286,8 +308,9 @@ async function load(client, cm) {
 }
 module.exports = load;
 function IsJsonString(str) {
+    let o;
     try {
-        var o = JSON.parse(str);
+        o = JSON.parse(str);
     }
     catch (e) {
         return false;

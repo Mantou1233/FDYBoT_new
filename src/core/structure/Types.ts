@@ -1,5 +1,5 @@
-import { Message } from 'discord.js';
-import { langs } from './../../services/i18n';
+import { Message } from "discord.js";
+import { langs } from "./../../services/i18n";
 type OverrideLangString<T> = {
     [key in keyof typeof langs]?: T
 }

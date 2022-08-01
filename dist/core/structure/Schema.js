@@ -15,7 +15,7 @@ exports.default = {
         exp: [0, 75, 9],
         level: 1,
         inv: {
-            new_package: 1
+            bundle: 1
         },
         chatCount: 0,
     }

@@ -13,5 +13,10 @@
     "basic.toggle.command.disabledText": "disabled",
     "basic.ping.pong": "Pong! :ping_pong: %s ms",
     "basic.lang.current": "Your current language on the bot is %s.\ncurrently %s langs available: %s",
-    "basic.lang.set": "I have set your language to %s!"
+    "basic.lang.set": "I have set your language to %s!",
+
+    "//1": "Item",
+
+    "item.fish": "fish",
+    "item.bundle": "<:item_bundle:954265210808594452> bundle"
 }

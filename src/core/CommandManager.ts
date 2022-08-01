@@ -6,7 +6,7 @@ class CommandManager {
     beforeChat: Array<Runner>;
 
     constructor(client) {
-        this.client = client
+        this.client = client;
         this.commands = new Collection();
         this.beforeChat = [];
     }
@@ -35,7 +35,7 @@ class CommandManager {
             try {
                 await handler(msg);
             } catch (e) {
-                return msg.channel.send(`Oops, a error appeared: ${e.message}`)
+                return msg.channel.send(`Oops, a error appeared: ${e.message}`);
             }
         }
     }

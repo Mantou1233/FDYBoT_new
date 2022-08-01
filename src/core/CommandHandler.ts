@@ -1,9 +1,9 @@
 import { Client, Collection, Message } from "discord.js";
 import ms from "ms";
 import { Command } from "./structure/Types";
-import { Profile } from './Database';
+import { Profile } from "./Database";
 import Schema from "./structure/Schema";
-import { langs } from './../services/i18n';
+import { langs } from "./../services/i18n";
 
 const Cooldown = new Collection<string, number>();
 
@@ -25,15 +25,15 @@ async function HandleCommands(client, msg: Message) {
     }
     p.save();
     
-    msg.lang = p.lang as keyof typeof langs
+    msg.lang = p.lang as keyof typeof langs;
     const mappings = client.manager.commands as Collection<
         string,
         Command
     >;
 
-    let ou = false
+    let ou = false;
     if(msg.content.includes("--dout")){
-        msg.content = msg.content.replaceAll("--dout", "")
+        msg.content = msg.content.replaceAll("--dout", "");
         ou = true;
     }
 
@@ -56,17 +56,17 @@ async function HandleCommands(client, msg: Message) {
                 command.override?.cooldown?.[p.lang] ??
                 command.override?.cooldown?.["en"] ??
                 i18n.parse(p.lang, "command.run.cooldown")
-            ).replaceAll("%s", `${ms(Cooldown.get(msg.author.id))}`))
+            ).replaceAll("%s", `${ms(Cooldown.get(msg.author.id))}`));
     try {
         await command.handler(msg, {prefix});
     } catch (e) {
-        if(ou) console.log(e)
+        if(ou) console.log(e);
         return msg.channel.send(
             (
                 command.override?.error?.[p.lang] ??
                 command.override?.error?.["en"] ??
                 i18n.parse(p.lang, "command.run.error")
-            ).replaceAll("%s", `${e.message}`))
+            ).replaceAll("%s", `${e.message}`));
     }
     if (command.cooldown) {
         Cooldown.set(msg.author.id, command.cooldown);

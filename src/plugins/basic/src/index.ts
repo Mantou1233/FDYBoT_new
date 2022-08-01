@@ -1,11 +1,10 @@
 import CommandManager from "../../../core/CommandManager";
-const { version } = { version: "1.3.3" };
-const ms = require("pretty-ms");
-const { version: discordjsVersion } = require("discord.js");
-const { inspect } = require("util");
-const Discord = require("discord.js");
-const axios = require("axios");
-const lodash = require("lodash");
+import ms from "pretty-ms";
+import { version } from "discord.js";
+import { inspect } from "util";
+import * as Discord from "discord.js";
+import axios from "axios";
+import * as lodash from "lodash";
 import fs from "fs/promises";
 import { convertSnowflakeToDate } from "../../../services/snowflake";
 import { Profile } from "../../../core/Database";
@@ -164,7 +163,7 @@ async function load(client, cm: CommandManager) {
                 embeds: [
                     new Discord.EmbedBuilder()
                         .setColor("#CFF2FF")
-                        .setTitle(`FDYbot ${version}`)
+                        .setTitle(`FDYbot ${"1.6"}`)
                         .setThumbnail(
                             client.user.displayAvatarURL({ dynamic: true })
                         )
@@ -194,7 +193,7 @@ async function load(client, cm: CommandManager) {
                                 true
                             ),
                             ux(
-                                `				**❯ User Count:**`,
+                                "				**❯ User Count:**",
                                 `${client.guilds.cache.reduce(
                                     (users, value) => users + value.memberCount,
                                     0
@@ -216,7 +215,7 @@ async function load(client, cm: CommandManager) {
                                 `${client.users.cache.size} users\n${client.emojis.cache.size} emojis`,
                                 true
                             ),
-                            ux("				**❯ Discord.js:**", `${discordjsVersion}`, true)
+                            ux("				**❯ Discord.js:**", `${version}`, true)
                         )
                         .setTimestamp()
                 ]
@@ -252,7 +251,7 @@ async function load(client, cm: CommandManager) {
         alias: ["h"],
         force: true,
         handler: async (msg, { prefix }) => {
-            require("../../../services/helpCommand")(
+            (await import("../../../services/helpCommand") as any)(
                 msg,
                 { prefix: prefix, _: lodash },
                 client.manager.commands
@@ -413,8 +412,9 @@ async function load(client, cm: CommandManager) {
 module.exports = load;
 
 function IsJsonString(str) {
+    let o;
     try {
-        var o = JSON.parse(str);
+        o = JSON.parse(str);
     } catch (e) {
         return false;
     }
