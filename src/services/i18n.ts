@@ -9,10 +9,6 @@ export const langAlias = {
     tw: ["zh-tw"]
 };
 
-export let globes = {
-    color: parseInt("CFF2FF", 16)
-};
-
 export type langKeys =
     | Exclude<
           keyof typeof langs[keyof typeof langs],
@@ -22,6 +18,9 @@ export type langKeys =
 
 export type langTypes = keyof typeof langs;
 
+export let globes = {
+    color: parseInt("CFF2FF", 16)
+};
 class i18n {
     public globe: any;
     constructor() {

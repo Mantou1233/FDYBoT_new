@@ -96,27 +96,6 @@ async function load(client, cm) {
         }
     });
     cm.register({
-        command: "shitpost",
-        category: "Fun",
-        desc: "gets a random text",
-        handler: async (msg) => {
-            axios.defaults.headers = {
-                Accept: "plain/text"
-            };
-            const response = await axios.get("https://shitpostgen.herokuapp.com/?count=200");
-            msg.reply({
-                embeds: [
-                    new Discord.EmbedBuilder()
-                        .setDescription(he.decode(response.data
-                        .split(`<div class="text">`)[1]
-                        .split("</div>")[0]))
-                        .setFooter("text generated from https://shitpostgen.herokuapp.com i do not own any of the texts generated.")
-                        .setColor("#CFF2FF")
-                ]
-            });
-        }
-    });
-    cm.register({
         command: "colorf",
         category: "Fun",
         cooldown: 60000,

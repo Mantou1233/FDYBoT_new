@@ -14,7 +14,11 @@
     "basic.ping.pong": "Pong! :ping_pong: %s ms",
     "basic.lang.current": "Your current language on the bot is %s.\ncurrently %s langs available: %s",
     "basic.lang.set": "I have set your language to %s!",
+    "currency.inventory.result": "%s ─ %s",
+    "currency.fish.noRod": "You dont have a fishing rod equipped!\nif you have a fishing rod, you can use `%sequip <rod>` to equip.\nYou can get a starter fishing rod by opening a bundle using `%sopen bundle`.",
+    "currency.fish.result": "%s ─ %s",
     "//1": "Item",
     "item.fish": "fish",
-    "item.bundle": "<:item_bundle:954265210808594452> bundle"
+    "item.bundle": "<:item_bundle:954265210808594452> bundle",
+    "item.fishing_rod": "Fishing rod"
 }

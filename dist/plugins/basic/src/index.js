@@ -44,7 +44,7 @@ async function load(client, cm) {
     cm.register({
         command: "say",
         category: "Basic",
-        desc: "Say something you want to say -> [json builder](https://eb.mewdeko.tech)",
+        desc: "Say something you want to say -> [json builder](https://glitchii.github.io/embedbuilder/?username=FDYBoT&guitabs=title,fields,description&avatar=https://cdn.discordapp.com/avatars/977542041670152212/cf54c7c185fa433014bfd2ec79df0f21.png&data=JTdCJTIyZW1iZWQlMjIlM0ElN0IlMjJ0aXRsZSUyMiUzQSUyMkxvcmVtJTIwaXBzdW0lMjIlMkMlMjJkZXNjcmlwdGlvbiUyMiUzQSUyMkRvbG9yJTIwc2l0JTIwYW1ldC4uLiUyMiUyQyUyMmNvbG9yJTIyJTNBMzkxMjklN0QlN0Q=))",
         handler: async (msg) => {
             const args = ap(msg.content, true);
             if (!args[1])
@@ -77,7 +77,7 @@ async function load(client, cm) {
     cm.register({
         command: "random",
         category: "Basic",
-        desc: "something will happen!",
+        desc: "generate random strings (for test purpose)",
         handler: async (msg) => {
             let member = msg.member;
             let texts = "ABCDEFGHIJKLMOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
@@ -143,9 +143,7 @@ async function load(client, cm) {
             msg.reply(i18n.parse(msg.lang, "command.run.notfound"));
         }
     });
-    const ux = (name, value, inline = false) => {
-        return { name, value, inline };
-    };
+    const ux = (name, value, inline = false) => ({ name, value, inline });
     cm.register({
         command: "botinfo",
         category: "Basic",
@@ -183,13 +181,24 @@ async function load(client, cm) {
         }
     });
     cm.register({
+        command: "br",
+        category: "Basic",
+        desc: "Display bot information",
+        handler: async (msg) => {
+            const messages = await msg.channel.messages.fetch({ limit: 1, after: "0" });
+            const msg2 = messages.first();
+            msg2.reply(`[Click Me](${msg.url})`);
+        }
+    });
+    cm.register({
         command: "help",
         category: "Basic",
         desc: "Display bot information",
         alias: ["h"],
         force: true,
         handler: async (msg, { prefix }) => {
-            (await Promise.resolve().then(() => __importStar(require("../../../services/helpCommand"))))(msg, { prefix: prefix, _: lodash }, client.manager.commands);
+            // eslint-disable-next-line @typescript-eslint/no-var-requires 
+            require("../../../services/helpCommand")(msg, { prefix: prefix, _: lodash }, client.manager.commands);
         }
     });
     cm.register({
@@ -240,7 +249,7 @@ async function load(client, cm) {
         category: "Basic",
         desc: "Display bot information",
         handler: async (msg, { prefix }) => {
-            await msg.reply(i18n.parse(msg.lang, "basic.ping.pong", `${Date.now() - msg.createdTimestamp}`));
+            await msg.reply(i18n.parse(msg.lang, "basic.ping.pong", `${Math.abs(Date.now() - msg.createdTimestamp)}`));
         }
     });
     cm.register({
@@ -254,18 +263,21 @@ async function load(client, cm) {
                 return msg.channel.send(i18n.parse(msg.lang, "basic.lang.current", msg.lang, Object.keys(i18n_1.langs).length, `\`${Object.keys(i18n_1.langs).join("`,`")}\``));
             p.lang = args[1];
             p.save();
-            msg.channel.send(i18n.parse(msg.lang, "basic.lang.set", args[1]));
+            msg.channel.send(i18n.parse(args[1], "basic.lang.set", args[1]));
         }
     });
     cm.register({
         command: "eval",
         category: "Basic",
         desc: "Display bot information",
+        hidden: true,
         handler: async (msg, ext) => {
-            if (!admins.includes(msg.author.id))
-                return;
+            if (ext.info.commandInfo.permissionLevel < 2)
+                return msg.channel.send("Insuffent permission.");
             let args = ap(msg.content, true);
             const code = args[1];
+            if (code.trim() === "")
+                return msg.channel.send("Dont give me nothing u dumb!!");
             let msg2 = await msg.channel.send("evaling...");
             try {
                 let output = await eval(code);
@@ -303,6 +315,14 @@ async function load(client, cm) {
                     ]
                 }).catch(() => { });
             }
+        }
+    });
+    cm.register({
+        command: "prefix",
+        category: "Basic",
+        desc: "Set prefix of the current guild or global.",
+        handler: async (msg) => {
+            throw new Error("This function is not available yet. in the meantime go loop spd gar for 100 times! (/j)");
         }
     });
 }

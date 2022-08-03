@@ -9,6 +9,7 @@ import fs from "fs/promises";
 import { convertSnowflakeToDate } from "../../../services/snowflake";
 import { Profile } from "../../../core/Database";
 import { langs } from "../../../services/i18n";
+import Schema from "../../../core/structure/Schema";
 
 const admins = ["842757573709922314", "611118369474740244"];
 /**
@@ -18,7 +19,7 @@ async function load(client, cm: CommandManager) {
     cm.register({
         command: "say",
         category: "Basic",
-        desc: "Say something you want to say -> [json builder](https://eb.mewdeko.tech)",
+        desc: "Say something you want to say -> [json builder](https://glitchii.github.io/embedbuilder/?username=FDYBoT&guitabs=title,fields,description&avatar=https://cdn.discordapp.com/avatars/977542041670152212/cf54c7c185fa433014bfd2ec79df0f21.png&data=JTdCJTIyZW1iZWQlMjIlM0ElN0IlMjJ0aXRsZSUyMiUzQSUyMkxvcmVtJTIwaXBzdW0lMjIlMkMlMjJkZXNjcmlwdGlvbiUyMiUzQSUyMkRvbG9yJTIwc2l0JTIwYW1ldC4uLiUyMiUyQyUyMmNvbG9yJTIyJTNBMzkxMjklN0QlN0Q=))",
         handler: async msg => {
             const args = ap(msg.content, true);
             if (!args[1])
@@ -58,7 +59,7 @@ async function load(client, cm: CommandManager) {
     cm.register({
         command: "random",
         category: "Basic",
-        desc: "something will happen!",
+        desc: "generate random strings (for test purpose)",
         handler: async msg => {
             let member = msg.member;
             let texts =
@@ -151,9 +152,7 @@ async function load(client, cm: CommandManager) {
             msg.reply(i18n.parse(msg.lang, "command.run.notfound"));
         }
     });
-    const ux = (name, value, inline = false) => {
-        return { name, value, inline };
-    };
+    const ux = (name, value, inline = false) => ({ name, value, inline });
     cm.register({
         command: "botinfo",
         category: "Basic",
@@ -245,13 +244,24 @@ async function load(client, cm: CommandManager) {
         }
     });
     cm.register({
+        command: "br",
+        category: "Basic",
+        desc: "Display bot information",
+        handler: async (msg) => {
+            const messages = await msg.channel.messages.fetch({ limit: 1, after: "0" });
+            const msg2 = messages.first() as Discord.Message;
+            msg2.reply(`[Click Me](${msg.url})`);
+        }
+    });
+    cm.register({
         command: "help",
         category: "Basic",
         desc: "Display bot information",
         alias: ["h"],
         force: true,
         handler: async (msg, { prefix }) => {
-            (await import("../../../services/helpCommand") as any)(
+            // eslint-disable-next-line @typescript-eslint/no-var-requires 
+            (require("../../../services/helpCommand") as any)( 
                 msg,
                 { prefix: prefix, _: lodash },
                 client.manager.commands
@@ -329,7 +339,7 @@ async function load(client, cm: CommandManager) {
                 i18n.parse(
                     msg.lang,
                     "basic.ping.pong",
-                    `${Date.now() - msg.createdTimestamp}`
+                    `${Math.abs(Date.now() - msg.createdTimestamp)}`
                 )
             );
         }
@@ -355,7 +365,7 @@ async function load(client, cm: CommandManager) {
                 );
             p.lang = args[1];
             p.save();
-            msg.channel.send(i18n.parse(msg.lang, "basic.lang.set", args[1]));
+            msg.channel.send(i18n.parse(args[1], "basic.lang.set", args[1]));
         }
     });
 
@@ -363,10 +373,12 @@ async function load(client, cm: CommandManager) {
         command: "eval",
         category: "Basic",
         desc: "Display bot information",
+        hidden: true,
         handler: async (msg, ext) => {
-            if (!admins.includes(msg.author.id)) return;
+            if ((ext.info as typeof Schema.user).commandInfo.permissionLevel < 2) return msg.channel.send("Insuffent permission.");
             let args = ap(msg.content, true);
             const code = args[1];
+            if(code.trim() === "") return msg.channel.send("Dont give me nothing u dumb!!");
             let msg2 = await msg.channel.send("evaling...");
             try {
                 let output = await eval(code);
@@ -405,6 +417,14 @@ async function load(client, cm: CommandManager) {
                     ]
                 }).catch(() => {});
             }
+        }
+    });
+    cm.register({
+        command: "prefix",
+        category: "Basic",
+        desc: "Set prefix of the current guild or global.",
+        handler: async msg => {
+            throw new Error("This function is not available yet. in the meantime go loop spd gar for 100 times! (/j)");
         }
     });
 }

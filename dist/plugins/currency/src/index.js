@@ -6,7 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const math_1 = require("../../../services/math");
 const discord_js_1 = __importDefault(require("discord.js"));
 const Database_1 = require("../../../core/Database");
-const inventory_1 = __importDefault(require("../../../services/inventory"));
+const inventory_1 = __importDefault(require("./inventory"));
+const fish_1 = __importDefault(require("./fish"));
 /**
  * @returns void
  */
@@ -28,30 +29,91 @@ async function load(client, cm) {
         }
     });
     cm.register({
-        command: "inventory",
+        command: "deposit",
         category: "Currency",
-        desc: "See what do you got in your inventory",
-        alias: ["inv"],
+        desc: "Get how many money you got!",
+        alias: ["dep"],
         handler: async (msg) => {
-            let id = msg.author.id;
-            let args = ap(msg.content, true);
-            let p = new Database_1.Profile(`${id}`);
-            let text = "";
-            for (let [item, count] of Object.entries(p.inv)) {
-                if (count === 0) {
-                    delete p.inv[item];
-                    continue;
+            let p = new Database_1.Profile(msg.author.id);
+            let args = ap(msg.content);
+            if (args.length === 1)
+                return msg.channel.send("pleease give a amount of money you wish to deposit (or `all`)!");
+            if (args[1] === "all") {
+                let amount = p.bankAmount - p.bank;
+                if (p.coin < amount) {
+                    let stored = p.coin;
+                    p.bank += p.coin;
+                    p.coin -= p.coin;
+                    msg.channel.send(`i have deposited ${stored} to your bank!`);
+                    return p.save();
                 }
-                text += `${inventory_1.default.toDisplay(msg.lang, item)} ─ ${count}\n`;
+                else {
+                    p.coin -= amount;
+                    p.bank = p.bankAmount;
+                    msg.channel.send("i have filled your bank!");
+                    p.save();
+                    return;
+                }
             }
-            p.save();
-            const embed = new discord_js_1.default.EmbedBuilder()
-                .setColor("#CFF2FF")
-                .setTitle(`${msg.author.username}'s inventory`)
-                .setDescription(text);
-            msg.channel.send({ embeds: [embed] });
+            else {
+                let amount = (args[1]);
+                if (amount % 1 !== 0)
+                    return msg.channel.send("please give me a value to deposit!");
+                else if (amount < 0)
+                    return msg.channel.send("please dont give me a negative value!");
+                else if (amount > p.coin)
+                    return msg.channel.send("you dont have that much coins to store into the bank!");
+                else if (amount + p.bank > p.bankAmount)
+                    return msg.channel.send("storing your argumented coins will fill up the bank! if you are willing to do that, use `>deposit alll`!");
+                else {
+                    p.coin -= amount;
+                    p.bank += amount;
+                    p.save();
+                    return msg.channel.send(`success! you now have ${p.bank}$ in your bank.`);
+                }
+            }
         }
     });
+    cm.register({
+        command: "withdraw",
+        category: "Currency",
+        desc: "Get how many money you got!",
+        alias: ["with", "wd"],
+        handler: async (msg) => {
+            let p = new Database_1.Profile(msg.author.id);
+            let args = ap(msg.content);
+            if (args.length === 1)
+                return msg.channel.send("please give a amount of money you wish to withdraw (or `all`)!");
+            if (args[1] == "all") {
+                if (p.bank !== 0) {
+                    let amount = p.bank;
+                    p.coin += amount;
+                    p.bank -= amount;
+                    msg.channel.send("You have withdrawn everything in your bank to your wallet!");
+                    return p.save();
+                }
+                else
+                    return msg.channel.send("you got nothing in your inventory bozo :skull:");
+            }
+            else {
+                let amount = (args[1]);
+                if (amount % 1 !== 0)
+                    return msg.channel.send("please give me a value to withdraw!");
+                else if (amount < 0)
+                    return msg.channel.send("please dont give me a negative value!");
+                else if (amount > p.bank)
+                    return msg.channel.send("you dont have that many coins in the bank! if you are willing to do that, use `>withdraw alll`!");
+                else {
+                    p.coin += amount;
+                    p.bank -= amount;
+                    p.save();
+                    return msg.channel.send(`success! you now have ${p.coin}$ in your wallet.`);
+                }
+            }
+        }
+    });
+    (0, inventory_1.default)(client, cm);
+    (0, fish_1.default)(client, cm);
 }
-module.exports = load;
+exports.default = load;
 //# sourceMappingURL=index.js.map

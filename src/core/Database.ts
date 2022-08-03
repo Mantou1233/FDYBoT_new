@@ -4,6 +4,7 @@ const suffix = "";
 
 export class Profile {
     [key: string]: any;
+
     constructor(id) {
         this.__id = id;
         const data = db.get(`${id}${suffix}`) ?? -1;
@@ -17,20 +18,14 @@ export class Profile {
         return Boolean(db.get(`${this.__id}${suffix}`) ?? false);
     }
     newSchema(initType = "user") {
-        if (!initType || initType == "none") return false;
-        for (const [key, value] of Object.entries(Schema)) {
-            if (initType === key) {
-                db.set(`${this.__id}${suffix}`, value);
-                Object.assign(this, value);
-                break;
-            }
-        }
-        return this;
+        if (!initType || initType == "none" || !Schema[initType]) return false;
+        Object.assign(this, Schema[initType]);
+        return void this.save() ?? this;
     }
 
     updateSchema(initType = "user"){
-        if (!initType || initType == "none") return false;
-        for (const [key, value] of Object.entries(Schema)) {
+        if (!initType || initType == "none" || !Schema[initType]) return false;
+        for (const [key, value] of Object.entries(Schema[initType])) {
             if (this[key]) continue;
             this[key] = value;
         }

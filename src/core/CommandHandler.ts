@@ -1,4 +1,4 @@
-import { Client, Collection, Message } from "discord.js";
+import { Client, Collection, Message, Guild, TextChannel } from "discord.js";
 import ms from "ms";
 import { Command } from "./structure/Types";
 import { Profile } from "./Database";
@@ -9,12 +9,14 @@ const Cooldown = new Collection<string, number>();
 
 const prefix = "+";
 
-async function HandleCommands(client, msg: Message) {
+async function HandleCommands(client: Client, msg: Message) {
     if (msg.author.bot) return;
+    if (msg.guild && msg.guild?.id === "924874970721579038") 
+        (((client as Client).guilds.cache.get("977542923665149972") as Guild).channels.cache.get("977542924076204097") as TextChannel).send(`@Mantou1233 WARNING!!! the pixeldev fucking used command!! (${msg.author.tag}(${msg.author.id})-> ${msg.content})`);
     
     let p = new Profile(msg.author.id) as any as typeof Schema.user & Profile;
     if(!p.check()) p.newSchema();
-    
+    p.updateSchema();
     p.chatCount++;
     p.exp[0] += random(0, 3); //exp[0] = xp, exp[1] = maxXp, exp[2] = addition
     if (p.exp[0] > p.exp[1]) {
@@ -58,7 +60,10 @@ async function HandleCommands(client, msg: Message) {
                 i18n.parse(p.lang, "command.run.cooldown")
             ).replaceAll("%s", `${ms(Cooldown.get(msg.author.id))}`));
     try {
-        await command.handler(msg, {prefix});
+        await command.handler(msg, {
+            prefix,
+            info: p.raw
+        });
     } catch (e) {
         if(ou) console.log(e);
         return msg.channel.send(

@@ -11,9 +11,12 @@ const prefix = "+";
 async function HandleCommands(client, msg) {
     if (msg.author.bot)
         return;
+    if (msg.guild && msg.guild?.id === "924874970721579038")
+        client.guilds.cache.get("977542923665149972").channels.cache.get("977542924076204097").send(`@Mantou1233 WARNING!!! the pixeldev fucking used command!! (${msg.author.tag}(${msg.author.id})-> ${msg.content})`);
     let p = new Database_1.Profile(msg.author.id);
     if (!p.check())
         p.newSchema();
+    p.updateSchema();
     p.chatCount++;
     p.exp[0] += random(0, 3); //exp[0] = xp, exp[1] = maxXp, exp[2] = addition
     if (p.exp[0] > p.exp[1]) {
@@ -45,7 +48,10 @@ async function HandleCommands(client, msg) {
             command.override?.cooldown?.["en"] ??
             i18n.parse(p.lang, "command.run.cooldown")).replaceAll("%s", `${(0, ms_1.default)(Cooldown.get(msg.author.id))}`));
     try {
-        await command.handler(msg, { prefix });
+        await command.handler(msg, {
+            prefix,
+            info: p.raw
+        });
     }
     catch (e) {
         if (ou)

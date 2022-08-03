@@ -21,21 +21,15 @@ class Profile {
         return Boolean(quick_db_1.default.get(`${this.__id}${suffix}`) ?? false);
     }
     newSchema(initType = "user") {
-        if (!initType || initType == "none")
+        if (!initType || initType == "none" || !Schema_1.default[initType])
             return false;
-        for (const [key, value] of Object.entries(Schema_1.default)) {
-            if (initType === key) {
-                quick_db_1.default.set(`${this.__id}${suffix}`, value);
-                Object.assign(this, value);
-                break;
-            }
-        }
-        return this;
+        Object.assign(this, Schema_1.default[initType]);
+        return void this.save() ?? this;
     }
     updateSchema(initType = "user") {
-        if (!initType || initType == "none")
+        if (!initType || initType == "none" || !Schema_1.default[initType])
             return false;
-        for (const [key, value] of Object.entries(Schema_1.default)) {
+        for (const [key, value] of Object.entries(Schema_1.default[initType])) {
             if (this[key])
                 continue;
             this[key] = value;
