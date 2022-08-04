@@ -253,17 +253,48 @@ async function load(client, cm) {
         }
     });
     cm.register({
+        command: "test",
+        category: "Basic",
+        desc: "Display bot information",
+        override: {
+            cooldown: {
+                zh: "OverrideStringTest: Zh - CD",
+                en: "OverrideStringTest: English - CD",
+                tw: "OverrideStringTest: Tw - CD"
+            }
+        },
+        handler: async (msg, { prefix, flags }) => {
+            msg.reply((0, util_1.inspect)(flags, {
+                depth: 0,
+                maxArrayLength: null
+            }));
+        }
+    });
+    cm.register({
         command: "lang",
         category: "Currency",
         desc: "Get how many money you got!",
         handler: async (msg) => {
             let args = ap(msg.content);
             let p = new Database_1.Profile(msg.author.id);
-            if (args.length == 1 || !Object.keys(i18n_1.langs).includes(args[1]))
-                return msg.channel.send(i18n.parse(msg.lang, "basic.lang.current", msg.lang, Object.keys(i18n_1.langs).length, `\`${Object.keys(i18n_1.langs).join("`,`")}\``));
-            p.lang = args[1];
+            let pass = (function (pa) {
+                for (let [key, [...rest]] of Object.entries(i18n_1.langAlias)) {
+                    if (rest.includes(pa))
+                        return key;
+                }
+                return false;
+            })(args[1]);
+            if (args.length == 1 || !pass)
+                return msg.channel.send(i18n.parse(msg.lang, "basic.lang.current", msg.lang, Object.keys(i18n_1.langs).length, `\`${(function () {
+                    let r = "";
+                    for (let [key, ...rest] of Object.values(i18n_1.langAlias)) {
+                        r += `\n${key} - ${rest.join(",")}`;
+                    }
+                    return r;
+                })()}\``));
+            p.lang = pass;
             p.save();
-            msg.channel.send(i18n.parse(args[1], "basic.lang.set", args[1]));
+            msg.channel.send(i18n.parse(pass, "basic.lang.set", pass));
         }
     });
     cm.register({

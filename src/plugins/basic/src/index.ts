@@ -8,7 +8,7 @@ import * as lodash from "lodash";
 import fs from "fs/promises";
 import { convertSnowflakeToDate } from "../../../services/snowflake";
 import { Profile } from "../../../core/Database";
-import { langs } from "../../../services/i18n";
+import { langs, langAlias } from "../../../services/i18n";
 import Schema from "../../../core/structure/Schema";
 
 const admins = ["842757573709922314", "611118369474740244"];
@@ -346,6 +346,25 @@ async function load(client, cm: CommandManager) {
     });
 
     cm.register({
+        command: "test",
+        category: "Basic",
+        desc: "Display bot information",
+        override: {
+            cooldown: {
+                zh: "OverrideStringTest: Zh - CD",
+                en: "OverrideStringTest: English - CD",
+                tw: "OverrideStringTest: Tw - CD"
+            }
+        },
+        handler: async (msg, { prefix, flags }) => {
+            msg.reply(inspect(flags, {
+                depth: 0,
+                maxArrayLength: null
+            }));
+        }
+    });
+
+    cm.register({
         command: "lang",
         category: "Currency",
         desc: "Get how many money you got!",
@@ -353,19 +372,32 @@ async function load(client, cm: CommandManager) {
             let args = ap(msg.content);
             let p = new Profile(msg.author.id);
 
-            if (args.length == 1 || !Object.keys(langs).includes(args[1]))
+            let pass = (function (pa) {
+                for(let [key, [...rest]] of Object.entries(langAlias)){
+                    if(rest.includes(pa)) return key;
+                }
+                return false;
+            })(args[1]);
+            if (args.length == 1 || !pass)
                 return msg.channel.send(
                     i18n.parse(
                         msg.lang,
                         "basic.lang.current",
                         msg.lang,
                         Object.keys(langs).length,
-                        `\`${Object.keys(langs).join("`,`")}\``
+                        `\`${(function(){
+                            let r = "";
+                            for(let [key, ...rest] of Object.values(langAlias)){
+                                r += `\n${key} - ${rest.join(",")}`;
+                            }
+                            return r;
+                        })()}\``
                     )
                 );
-            p.lang = args[1];
+            
+            p.lang = pass;
             p.save();
-            msg.channel.send(i18n.parse(args[1], "basic.lang.set", args[1]));
+            msg.channel.send(i18n.parse(pass, "basic.lang.set", pass));
         }
     });
 

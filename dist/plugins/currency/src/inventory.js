@@ -33,7 +33,7 @@ async function load(client, cm) {
                     delete p.inv[item];
                     continue;
                 }
-                text += `${i18n.parse(msg.lang, "currency")}\n`;
+                text += `${inventory_1.default.toDisplay(msg.lang, item) + " ─ " + count}\n`;
             }
             p.save();
             const embed = new discord_js_1.default.EmbedBuilder()

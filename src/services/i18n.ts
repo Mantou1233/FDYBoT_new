@@ -1,17 +1,20 @@
 import en from "../assets/lang/en.json";
-import cn from "../assets/lang/zh_cn.json";
+import zh from "../assets/lang/zh_zh.json";
 import tw from "../assets/lang/zh_tw.json";
 
-export let langs = { en, cn, tw };
+export let langs = { en, zh, tw };
 
 export const langAlias = {
-    zh: ["zh-cn"],
-    tw: ["zh-tw"]
+    en: ["en", "english"],
+    zh: ["zh", "zh-cn", "简体中文"],
+    tw: ["tw", "zh-tw", "繁體中文"]
 };
+type AllKeysOf<T> = T extends T ? keyof T : never;
+type KeyOfUnion<T> = (T[keyof T])
 
 export type langKeys =
     | Exclude<
-          keyof typeof langs[keyof typeof langs],
+          AllKeysOf<KeyOfUnion<typeof langs>>,
           `item.${string}` | `//${string}`
       >
     | `-${string}`;

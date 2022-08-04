@@ -11,10 +11,10 @@ async function load(client, cm: CommandManager) {
         command: "fish",
         category: "Currency",
         desc: "See what do you got in your inventory",
-        handler: async msg => {
+        handler: async (msg, {prefix}) => {
             let p = new Profile(msg.author.id) as UserSchema;
 
-            if(p.equip.rod === -1) return msg.channel.send(i18n.parse(msg.lang, "currency.fish.noRod"));
+            if(p.equip.rod === -1) return msg.channel.send(i18n.parse(msg.lang, "currency.fish.noRod", prefix, prefix));
         }
     });
 }

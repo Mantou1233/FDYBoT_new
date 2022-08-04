@@ -1,4 +1,4 @@
-import { Client, Collection, Message, Guild, TextChannel } from "discord.js";
+import { Client, Collection, Message, Guild, TextChannel, GuildChannelManager} from "discord.js";
 import ms from "ms";
 import { Command } from "./structure/Types";
 import { Profile } from "./Database";
@@ -8,6 +8,7 @@ import { langs } from "./../services/i18n";
 const Cooldown = new Collection<string, number>();
 
 const prefix = "+";
+
 
 async function HandleCommands(client: Client, msg: Message) {
     if (msg.author.bot) return;
@@ -26,18 +27,15 @@ async function HandleCommands(client: Client, msg: Message) {
         p.exp[2] += random(0, 4); //adding a addition so that it dont always add in a factor
     }
     p.save();
-    
+
     msg.lang = p.lang as keyof typeof langs;
     const mappings = client.manager.commands as Collection<
         string,
         Command
     >;
-
-    let ou = false;
-    if(msg.content.includes("--dout")){
-        msg.content = msg.content.replaceAll("--dout", "");
-        ou = true;
-    }
+    
+    
+    
 
     if (client.manager.beforeChat.length > 0)
         await client.manager.runBeforeChatEvents(msg);
@@ -59,13 +57,23 @@ async function HandleCommands(client: Client, msg: Message) {
                 command.override?.cooldown?.["en"] ??
                 i18n.parse(p.lang, "command.run.cooldown")
             ).replaceAll("%s", `${ms(Cooldown.get(msg.author.id))}`));
+
+    let flags = {};
+    for(let ou of ["-dout", ...command.flags ?? []]){
+        flags[ou] = false;
+        if(msg.content.includes(ou)){
+            msg.content = msg.content.replaceAll(ou, "").trim();
+            flags[ou] = true;
+        }
+    }
     try {
         await command.handler(msg, {
             prefix,
-            info: p.raw
+            info: p.raw,
+            flags
         });
     } catch (e) {
-        if(ou) console.log(e);
+        if(flags["-dout"]) console.log(e);
         return msg.channel.send(
             (
                 command.override?.error?.[p.lang] ??

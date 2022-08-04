@@ -34,7 +34,7 @@ async function load(client, cm: CommandManager) {
                     delete p.inv[item];
                     continue;
                 }
-                text += `${i18n.parse(msg.lang, "currency")}\n`;
+                text += `${inventoryManager.toDisplay(msg.lang, item) + " ─ " + count}\n`;
             }
             p.save();
             const embed = new Discord.EmbedBuilder()

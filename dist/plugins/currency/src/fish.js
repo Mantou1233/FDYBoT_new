@@ -9,10 +9,10 @@ async function load(client, cm) {
         command: "fish",
         category: "Currency",
         desc: "See what do you got in your inventory",
-        handler: async (msg) => {
+        handler: async (msg, { prefix }) => {
             let p = new Database_1.Profile(msg.author.id);
             if (p.equip.rod === -1)
-                return msg.channel.send(i18n.parse(msg.lang, "currency.fish.noRod"));
+                return msg.channel.send(i18n.parse(msg.lang, "currency.fish.noRod", prefix, prefix));
         }
     });
 }
