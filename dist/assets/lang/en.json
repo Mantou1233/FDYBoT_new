@@ -17,7 +17,10 @@
     "currency.format.result": "%s ─ %s",
     "currency.fish.noRod": "You dont have a fishing rod equipped!\nif you have a fishing rod, you can use `%sequip <rod>` to equip.\nYou can get a starter fishing rod by opening a bundle using `%sopen bundle`.",
     "//1": "Item",
-    "item.fish": "fish",
+    "item.cod": "<:fish_cod:945585528521236491> cod",
+    "item.fish": "<:fish_normal:945536845096288256> fish",
+    "item.salmon": "<:fish_salmon:945536393956978689> salmon",
+    "item.squid": "<:fish_squid:945560976684625940> squid",
     "item.bundle": "<:item_bundle:954265210808594452> bundle",
-    "item.fishing_rod": "Fishing rod"
+    "item.fishing_rod": "<:fishing_rod:1004744912065015918> fishing rod"
 }

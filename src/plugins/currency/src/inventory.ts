@@ -1,6 +1,6 @@
 import CommandManager from "../../../core/CommandManager";
 import Discord from "discord.js";
-import inventoryManager from "../../../services/inventory";
+import im from "../../../services/inventory";
 import { Profile } from "../../../core/Database";
 import { UserSchema } from "../../../core/structure/Schema";
 /**
@@ -15,7 +15,7 @@ async function load(client, cm: CommandManager) {
             let p = new Profile(msg.author.id) as UserSchema;
 
             msg.channel.send(
-                `You chatted ${p.chatCount} times! \nLevel ${p.level}, ${p.exp[0]} / ${p.exp[1]}\nCurrently equipped ${p.equip.rod !== -1? inventoryManager.toDisplay(msg.lang, p.equip.rod) : "no fishing rod"}`
+                `You chatted ${p.chatCount} times! \nLevel ${p.level}, ${p.exp[0]} / ${p.exp[1]}\nCurrently equipped ${p.equip.rod !== -1? im.toDisplay(msg.lang, p.equip.rod) : "no fishing rod"}`
             );
         }
     });
@@ -34,13 +34,14 @@ async function load(client, cm: CommandManager) {
                     delete p.inv[item];
                     continue;
                 }
-                text += `${inventoryManager.toDisplay(msg.lang, item) + " ─ " + count}\n`;
+                text += `${im.toDisplay(msg.lang, item) + " ─ " + count}\n`;
             }
             p.save();
             const embed = new Discord.EmbedBuilder()
-                .setColor("#CFF2FF")
+                .setColor(i18n.globe.color)
                 .setTitle(`${msg.author.username}'s inventory`)
-                .setDescription(text);
+                .addFields({name: "Equipment", value: `currently equipped ${p.equip.rod == -1 ? "nothing" : im.toDisplay(msg.lang, p.equip.rod) + " as fishing rod"}`, inline: true})
+                .addFields({name: "Inventory", value: text, inline: true});
 
             msg.channel.send({ embeds: [embed] });
         }

@@ -14,7 +14,7 @@ exports.langAlias = {
     tw: ["tw", "zh-tw", "繁體中文"]
 };
 exports.globes = {
-    color: parseInt("CFF2FF", 16)
+    color: "#CFF2FF"
 };
 class i18n {
     constructor() {

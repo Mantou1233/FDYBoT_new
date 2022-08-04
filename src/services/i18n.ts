@@ -22,7 +22,7 @@ export type langKeys =
 export type langTypes = keyof typeof langs;
 
 export let globes = {
-    color: parseInt("CFF2FF", 16)
+    color: "#CFF2FF"
 };
 class i18n {
     public globe: any;
