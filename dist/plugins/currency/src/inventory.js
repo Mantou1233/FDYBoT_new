@@ -39,8 +39,8 @@ async function load(client, cm) {
             const embed = new discord_js_1.default.EmbedBuilder()
                 .setColor(i18n.globe.color)
                 .setTitle(`${msg.author.username}'s inventory`)
-                .addFields({ name: "Equipment", value: `currently equipped ${p.equip.rod == -1 ? "nothing" : inventory_1.default.toDisplay(msg.lang, p.equip.rod) + " as fishing rod"}`, inline: true })
-                .addFields({ name: "Inventory", value: text, inline: true });
+                .addFields({ name: "Equipment", value: `currently equipped ${p.equip.rod == -1 ? "nothing" : inventory_1.default.toDisplay(msg.lang, p.equip.rod) + " as fishing rod"}`, inline: false })
+                .addFields({ name: "Inventory", value: text, inline: false });
             msg.channel.send({ embeds: [embed] });
         }
     });
