@@ -34,7 +34,7 @@ async function load(client, cm: CommandManager) {
                     delete p.inv[item];
                     continue;
                 }
-                text += `${im.toDisplay(msg.lang, item) + " ─ " + count}\n`;
+                text += `${im.toDisplay(msg.lang, item, false) + " ─ " + count}\n`;
             }
             p.save();
             const embed = new Discord.EmbedBuilder()

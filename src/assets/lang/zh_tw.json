@@ -8,15 +8,24 @@
     "basic.say.error.noargs": "what do you want to say??",
     "basic.toggle.description": "Toggle specified modules.",
     "basic.toggle.usage": "%stoggle <category|command> <name> [--s|--l]",
-    "basic.toggle.command.toggled": "我已經將命令%s%s了！",
+    "basic.toggle.command.toggled": "我已經將命令%s%s了!",
     "basic.toggle.command.enabledText": "開啓",
     "basic.toggle.command.disabledText": "關閉",
     "basic.ping.pong": "叮! :ping_pong: %sms",
     "basic.lang.current": "你目前設置的語言是%s.\n有%s個語言可供使用:%s",
     "basic.lang.set": "已經把你的語言設置成%s!",
 
+    "currency.format.result": "%s ─ %s",
+    "currency.format.subjectNotFound": "沒有找到%s呢...",
+    "currency.format.subjectNotFoundOrUsable": "指定的物品不存在或無法使用。",
+    "currency.format.subjectDontHave": "你沒有這個物品呢...",
+    "currency.fish.noRod": "你沒有裝備上魚竿!\n如果你有魚竿,可以使用`%sequip <魚竿名>`裝備上.\n如果你沒有魚竿,可以使用`%sopen bundle`獲取新手魚竿.",
     "//1": "Item",
 
+    "item.cod": "鱈魚",
     "item.fish": "魚",
-    "item.bundle": "<:item_bundle:954265210808594452> 束口袋"
+    "item.salmon": "三文魚",
+    "item.squid": "墨魚",
+    "item.bundle": "束口袋",
+    "item.fishing_rod": "魚竿"
 }

@@ -253,24 +253,6 @@ async function load(client, cm) {
         }
     });
     cm.register({
-        command: "test",
-        category: "Basic",
-        desc: "Display bot information",
-        override: {
-            cooldown: {
-                zh: "OverrideStringTest: Zh - CD",
-                en: "OverrideStringTest: English - CD",
-                tw: "OverrideStringTest: Tw - CD"
-            }
-        },
-        handler: async (msg, { prefix, flags }) => {
-            msg.reply((0, util_1.inspect)(flags, {
-                depth: 0,
-                maxArrayLength: null
-            }));
-        }
-    });
-    cm.register({
         command: "lang",
         category: "Currency",
         desc: "Get how many money you got!",

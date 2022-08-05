@@ -2,6 +2,8 @@ import en from "../assets/lang/en.json";
 import zh from "../assets/lang/zh_zh.json";
 import tw from "../assets/lang/zh_tw.json";
 
+import icons from "../assets/icons.json";
+
 export let langs = { en, zh, tw };
 
 export const langAlias = {
@@ -9,6 +11,7 @@ export const langAlias = {
     zh: ["zh", "zh-cn", "简体中文"],
     tw: ["tw", "zh-tw", "繁體中文"]
 };
+
 type AllKeysOf<T> = T extends T ? keyof T : never;
 type KeyOfUnion<T> = (T[keyof T])
 
@@ -26,8 +29,10 @@ export let globes = {
 };
 class i18n {
     public globe: any;
+    public icon: typeof icons;
     constructor() {
         this.globe = globes;
+        this.icon = icons;
     }
     parse(
         lang: string,

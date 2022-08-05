@@ -1,7 +1,9 @@
 {
     "fishing": {
         "fishing_rod": {
-            "fish": 3
+            "cod": 5,
+            "fish": 3,
+            "salmon": 2
         }
     }
 }

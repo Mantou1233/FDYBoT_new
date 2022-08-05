@@ -33,7 +33,8 @@ async function load(client, cm: CommandManager) {
                                 (
                                     function(res, str = ""){
                                         for(let [k, v] of Object.entries(res)){
-                                            str += i18n.parse(msg.lang, "currency.format.result", im.toDisplay(msg.lang, k), `${v}`);
+                                            if((v as number) < 1) continue;
+                                            str += i18n.parse(msg.lang, "currency.format.result", im.toDisplay(msg.lang, k, true), `${v}\n`);
                                         }
                                         return str;
                                     }
