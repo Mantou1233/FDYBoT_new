@@ -235,16 +235,29 @@ async function load(client, cm: CommandManager) {
         category: "Basic",
         hidden: true,
         handler: async (msg, { prefix }) => {
-            fs.writeFile(
-                "./sb.json",
-                JSON.stringify(
-                    Object.keys(require.cache).map(v => v.replaceAll("\\", "/"))
-                )
+            client.loader.expo();
+        }
+    });
+    cm.register({
+        command: "choose",
+        category: "Basic",
+        desc: "Display bot information",
+        handler: async (msg) => {
+            const args = ap(msg.content, true);
+            let arr = args[1].split(";");
+            msg.reply(
+                    {
+                        embeds: [
+                            new Discord.EmbedBuilder()
+                            .setColor(i18n.globe.color)
+                            .setDescription(`:thinking:\n${arr[random(0, arr.length - 1)] ?? "NOTHING"}`)
+                    ]
+                }
             );
         }
     });
     cm.register({
-        command: "br",
+        command: "first-msg",
         category: "Basic",
         desc: "Display bot information",
         handler: async (msg) => {

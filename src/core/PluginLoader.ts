@@ -72,6 +72,7 @@ class PluginLoader {
         log(0, "Bot started!");
     }
     async expo(){
+        await this.client.destroy();
         for(let uw of Object.keys(require.cache)){
             if(uw.includes("node_modules")) continue;
             delete require.cache[uw];

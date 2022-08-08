@@ -1,5 +1,6 @@
 import { langTypes } from "../../services/i18n";
 import { Profile } from "../Database";
+import { Copy, RemoveIndex } from "../Utils";
 
 export default {
     user: {
@@ -69,5 +70,5 @@ export type RawUserSchema = {
     }
 };
 
-export type UserSchema = Profile & RawUserSchema
+export type UserSchema = RemoveIndex<Copy<Profile & RawUserSchema>>
 type eq = -1 | string;

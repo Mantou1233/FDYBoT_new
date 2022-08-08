@@ -1,3 +1,5 @@
+import { AllKeysOf, KeyOfUnion } from "../core/Utils";
+
 import en from "../assets/lang/en.json";
 import zh from "../assets/lang/zh_zh.json";
 import tw from "../assets/lang/zh_tw.json";
@@ -12,8 +14,7 @@ export const langAlias = {
     tw: ["tw", "zh-tw", "繁體中文"]
 };
 
-type AllKeysOf<T> = T extends T ? keyof T : never;
-type KeyOfUnion<T> = (T[keyof T])
+
 
 export type langKeys =
     | Exclude<

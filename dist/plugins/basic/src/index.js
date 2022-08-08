@@ -32,7 +32,6 @@ const util_1 = require("util");
 const Discord = __importStar(require("discord.js"));
 const axios_1 = __importDefault(require("axios"));
 const lodash = __importStar(require("lodash"));
-const promises_1 = __importDefault(require("fs/promises"));
 const snowflake_1 = require("../../../services/snowflake");
 const Database_1 = require("../../../core/Database");
 const i18n_1 = require("../../../services/i18n");
@@ -177,11 +176,27 @@ async function load(client, cm) {
         category: "Basic",
         hidden: true,
         handler: async (msg, { prefix }) => {
-            promises_1.default.writeFile("./sb.json", JSON.stringify(Object.keys(require.cache).map(v => v.replaceAll("\\", "/"))));
+            client.loader.expo();
         }
     });
     cm.register({
-        command: "br",
+        command: "choose",
+        category: "Basic",
+        desc: "Display bot information",
+        handler: async (msg) => {
+            const args = ap(msg.content, true);
+            let arr = args[1].split(";");
+            msg.reply({
+                embeds: [
+                    new Discord.EmbedBuilder()
+                        .setColor(i18n.globe.color)
+                        .setDescription(`:thinking:\n${arr[random(0, arr.length - 1)] ?? "NOTHING"}`)
+                ]
+            });
+        }
+    });
+    cm.register({
+        command: "first-msg",
         category: "Basic",
         desc: "Display bot information",
         handler: async (msg) => {
