@@ -6,6 +6,19 @@ export type RemoveIndex<T> = {
     [K in keyof T as {} extends Record<K, 1> ? never : K]: T[K];
 };
 
+export type NestedKeys<T> = {
+    [K in keyof T]: keyof T[K];
+}[keyof T];
+
+export type DeepNest<T> = T extends Record<string| number | symbol, any> ? 
+{
+    [K in keyof T]: DeepNest<T[K]>;
+} : T;
+
+export type Flux<U extends Record<string, any>> = {
+    [K in keyof U]: K
+};
+
 type MatchNameHelper<T, L> = {
     [K in keyof T]: T[K] extends L ? K : never;
 }[keyof T];
@@ -31,19 +44,6 @@ export type Reverse<T extends boolean> = true extends T ? false : true;
 export type Callback<T = void> = () => T;
 
 export type FuncCallback<P extends any[], R> = (...args: P) => R;
-
-export type NestedKeys<T> = {
-    [K in keyof T]: keyof T[K];
-}[keyof T];
-
-export type DeepNest<T> = T extends object ? 
-{
-    [K in keyof T]: DeepNest<T[K]>;
-} : T;
-
-export type Flux<U extends Record<string, any>> = {
-    [K in keyof U]: K
-};
 
 export type SetIntersection<A, B> = A extends B ? A : never;
 
