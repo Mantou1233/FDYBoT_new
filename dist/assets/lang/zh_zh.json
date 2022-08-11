@@ -14,7 +14,6 @@
     "basic.ping.pong": "叮! :ping_pong: %sms",
     "basic.lang.current": "你目前设置的语言是%s.\n有%s个语言可供使用:%s",
     "basic.lang.set": "已经把你的语言设置成%s!",
-    "//1": "format: item.x.x",
     "item.fish": "鱼",
     "item.bundle": "收纳袋"
 }

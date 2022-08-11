@@ -4,7 +4,10 @@ import { version } from "discord.js";
 import { inspect } from "util";
 import * as Discord from "discord.js";
 import axios from "axios";
+import os from "os";
+import * as child_process from "child_process";
 import * as lodash from "lodash";
+import pb from "../../../services/pb";
 import fs from "fs/promises";
 import { convertSnowflakeToDate } from "../../../services/snowflake";
 import { Profile } from "../../../core/Database";
@@ -153,6 +156,58 @@ async function load(client, cm: CommandManager) {
         }
     });
     const ux = (name, value, inline = false) => ({ name, value, inline });
+    cm.register({
+        command: "botstats",
+        category: "Basic",
+        desc: "Display bot information",
+        handler: async msg => {
+            let gitHash = "stable";
+            try {
+                gitHash = child_process
+                    .execSync("git rev-parse HEAD")
+                    .toString()
+                    .trim();
+            } catch (e) {
+                gitHash = "stable";
+            }
+            msg.channel.send({
+                embeds: [
+                    new Discord.EmbedBuilder()
+                        .setColor("#CFF2FF")
+                        .setTitle(`FDYbot ${"1.6"} ${(process.env.BUILD as string).toLowerCase()}`)
+                        .setThumbnail(
+                            client.user.displayAvatarURL({ dynamic: true })
+                        )
+                        .setDescription(`\`\`\`yml\n${client.user.username}#${client.user.discriminator} [${client.user.id}]\nping: ${Math.floor(msg.createdTimestamp - Date.now())}ms ping\n‎      ${client.ws.ping}ms heartbeat\nUptime: ${ms(client.uptime)}\n\`\`\``)
+                        .setFields(
+                            ux(":bar_chart: General statistics", `\`\`\`yml\n${client.guilds.cache.size} guilds\n${client.guilds.cache.reduce(
+                                (users, value) => users + (+value.memberCount || 0),
+                                0
+                            )} users\n\`\`\``, true),
+                            ux(":paperclip: Cache statistics", `\`\`\`yml\n${client.users.cache.size} users\n${client.channels.cache.size} channels\n${client.emojis.cache.size} emojis\`\`\``, true),
+                            ux(":gear: Performance statistics", `\`\`\`yml\nTotal Memory: ${pb(os.totalmem())}\nFree Memory: ${pb(os.freemem())} (${percentage(os.totalmem(), os.freemem()).toFixed(1)}%)\nUsed Memory: ${pb(os.totalmem() - os.freemem())} (${percentage(os.totalmem(), os.totalmem() - os.freemem()).toFixed(1)}%)\n\`\`\``),
+                            ux(
+                                ":computer: System statistics",
+                                `\`\`\`yml\n${process.platform} ${process.arch}\n${ms(os.uptime() * 1000)} uptime\n${(
+                                    process.memoryUsage().rss /
+                                    1024 /
+                                    1024
+                                ).toFixed(2)} MB RSS\n${(
+                                    process.memoryUsage().heapUsed /
+                                    1024 /
+                                    1024
+                                ).toFixed(2)} MB Heap\n\`\`\``
+                            ),
+                            ux(
+                                "Miscellaneous Statistics",
+                                `\`\`\`yml\n${client.manager.commands.size} cmds\ndiscord.js ${version}\nnode ${process.version}\n\`\`\``,
+                            )
+                        )
+                        .setFooter({text: `${gitHash} build`})
+                ]
+            });
+        }
+    });
     cm.register({
         command: "botinfo",
         category: "Basic",
@@ -467,3 +522,7 @@ function IsJsonString(str) {
     if (o && typeof o === "object") return true;
     return false;
 }
+
+function percentage(pv, tv) {
+    return Math.round((pv / tv) * 100);
+} 

@@ -19,7 +19,6 @@
     "currency.format.subjectNotFoundOrUsable": "指定的物品不存在或無法使用。",
     "currency.format.subjectDontHave": "你沒有這個物品呢...",
     "currency.fish.noRod": "你沒有裝備上魚竿!\n如果你有魚竿,可以使用`%sequip <魚竿名>`裝備上.\n如果你沒有魚竿,可以使用`%sopen bundle`獲取新手魚竿.",
-    "//1": "Item",
     "item.cod": "鱈魚",
     "item.fish": "魚",
     "item.salmon": "三文魚",

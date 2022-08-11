@@ -31,7 +31,10 @@ const discord_js_1 = require("discord.js");
 const util_1 = require("util");
 const Discord = __importStar(require("discord.js"));
 const axios_1 = __importDefault(require("axios"));
+const os_1 = __importDefault(require("os"));
+const child_process = __importStar(require("child_process"));
 const lodash = __importStar(require("lodash"));
+const pb_1 = __importDefault(require("../../../services/pb"));
 const snowflake_1 = require("../../../services/snowflake");
 const Database_1 = require("../../../core/Database");
 const i18n_1 = require("../../../services/i18n");
@@ -143,6 +146,38 @@ async function load(client, cm) {
         }
     });
     const ux = (name, value, inline = false) => ({ name, value, inline });
+    cm.register({
+        command: "botstats",
+        category: "Basic",
+        desc: "Display bot information",
+        handler: async (msg) => {
+            let gitHash = "stable";
+            try {
+                gitHash = child_process
+                    .execSync("git rev-parse HEAD")
+                    .toString()
+                    .trim();
+            }
+            catch (e) {
+                gitHash = "stable";
+            }
+            msg.channel.send({
+                embeds: [
+                    new Discord.EmbedBuilder()
+                        .setColor("#CFF2FF")
+                        .setTitle(`FDYbot ${"1.6"} ${process.env.BUILD.toLowerCase()}`)
+                        .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
+                        .setDescription(`\`\`\`yml\n${client.user.username}#${client.user.discriminator} [${client.user.id}]\nping: ${Math.floor(msg.createdTimestamp - Date.now())}ms ping\n‎      ${client.ws.ping}ms heartbeat\nUptime: ${(0, pretty_ms_1.default)(client.uptime)}\n\`\`\``)
+                        .setFields(ux(":bar_chart: General statistics", `\`\`\`yml\n${client.guilds.cache.size} guilds\n${client.guilds.cache.reduce((users, value) => users + (+value.memberCount || 0), 0)} users\n\`\`\``, true), ux(":paperclip: Cache statistics", `\`\`\`yml\n${client.users.cache.size} users\n${client.channels.cache.size} channels\n${client.emojis.cache.size} emojis\`\`\``, true), ux(":gear: Performance statistics", `\`\`\`yml\nTotal Memory: ${(0, pb_1.default)(os_1.default.totalmem())}\nFree Memory: ${(0, pb_1.default)(os_1.default.freemem())} (${percentage(os_1.default.totalmem(), os_1.default.freemem()).toFixed(1)}%)\nUsed Memory: ${(0, pb_1.default)(os_1.default.totalmem() - os_1.default.freemem())} (${percentage(os_1.default.totalmem(), os_1.default.totalmem() - os_1.default.freemem()).toFixed(1)}%)\n\`\`\``), ux(":computer: System statistics", `\`\`\`yml\n${process.platform} ${process.arch}\n${(0, pretty_ms_1.default)(os_1.default.uptime() * 1000)} uptime\n${(process.memoryUsage().rss /
+                        1024 /
+                        1024).toFixed(2)} MB RSS\n${(process.memoryUsage().heapUsed /
+                        1024 /
+                        1024).toFixed(2)} MB Heap\n\`\`\``), ux("Miscellaneous Statistics", `\`\`\`yml\n${client.manager.commands.size} cmds\ndiscord.js ${discord_js_1.version}\nnode ${process.version}\n\`\`\``))
+                        .setFooter({ text: `${gitHash} build` })
+                ]
+            });
+        }
+    });
     cm.register({
         command: "botinfo",
         category: "Basic",
@@ -366,5 +401,8 @@ function IsJsonString(str) {
     if (o && typeof o === "object")
         return true;
     return false;
+}
+function percentage(pv, tv) {
+    return Math.round((pv / tv) * 100);
 }
 //# sourceMappingURL=index.js.map

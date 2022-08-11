@@ -43,7 +43,7 @@ async function load(client, cm) {
             if (!p.inv[item])
                 return msg.channel.send(i18n.parse(msg.lang, "currency.format.subjectDontHave"));
             if (p.equip.rod !== -1)
-                return msg.channel.send("You already equipped a item! please unequip it using `" + prefix + "unequip`.");
+                return msg.channel.send(i18n.parse(msg.lang, "currency.equip.conflict", prefix));
             await usable_1.default.equip[item].add(msg, p);
         }
     });
@@ -54,7 +54,7 @@ async function load(client, cm) {
         handler: async (msg, { prefix }) => {
             let p = new Database_1.Profile(msg.author.id);
             if (p.equip.rod == -1)
-                return msg.channel.send("You Have no item equipped.");
+                return msg.channel.send(i18n.parse(msg.lang, "currency.unequip.conflict"));
             if (!usable_1.default.equip[p.equip.rod]?.remove)
                 throw new Error("Handler not found.");
             await usable_1.default.equip[p.equip.rod].remove(msg, p);

@@ -28,6 +28,7 @@
         "lodash.get": "^4.4.2",
         "mathjs": "^10.6.1",
         "node-lipsum": "^1.0.1",
+        "pretty-bytes": "^6.0.0",
         "pretty-ms": "^7.0.1",
         "quick.db": "^7.1.3"
     },
