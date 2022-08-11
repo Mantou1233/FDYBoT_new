@@ -38,7 +38,7 @@ async function load(client, cm: CommandManager) {
             if(!item) return msg.channel.send(i18n.parse(msg.lang, "currency.format.subjectNotFoundOrUsable"));
             if(!p.inv[item]) return msg.channel.send(i18n.parse(msg.lang, "currency.format.subjectDontHave"));
 
-            if(p.equip.rod !== -1) return msg.channel.send("You already equipped a item! please unequip it using `"+prefix+"unequip`.");
+            if(p.equip.rod !== -1) return msg.channel.send(i18n.parse(msg.lang, "currency.equip.conflict", prefix));
             await callers.equip[item].add(msg, p);
         }
     });
@@ -49,7 +49,7 @@ async function load(client, cm: CommandManager) {
         handler: async (msg, { prefix }) => {
             let p = new Profile(msg.author.id) as UserSchema;
             
-            if(p.equip.rod == -1) return msg.channel.send("You Have no item equipped.");
+            if(p.equip.rod == -1) return msg.channel.send(i18n.parse(msg.lang, "currency.unequip.conflict"));
             if(!callers.equip[p.equip.rod]?.remove) throw new Error("Handler not found.");
             await callers.equip[p.equip.rod].remove(msg, p);
         }

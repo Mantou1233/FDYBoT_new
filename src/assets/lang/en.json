@@ -22,11 +22,13 @@
     "currency.format.subjectNotFoundOrUsable": "That item may not exist or not usable.",
     "currency.format.subjectDontHave": "You dont have that item!",
     "currency.fish.noRod": "You dont have a fishing rod equipped!\nif you have a fishing rod, you can use `%sequip <rod>` to equip.\nYou can get a starter fishing rod by opening a bundle using `%sopen bundle`.",
-    "//1": "Item",
+    "currency.equip.conflict": "You already equipped a item! please unequip it via `%sunequip`.",
+    "currency.unequip.conflict": "You have no item equipped...",
 
     "item.cod": "cod",
     "item.fish": "fish",
     "item.salmon": "salmon",
+
     "item.squid": "squid",
     "item.bundle": "bundle",
     "item.fishing_rod": "fishing rod"
