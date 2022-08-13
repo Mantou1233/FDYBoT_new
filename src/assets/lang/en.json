@@ -1,9 +1,10 @@
 {
     "bot.info.name": "FDYBoT",
-    "bot.info.cute": "",
+    "bot.info.cute": "duck ya!!",
     "command.run.cooldown": "You have to wait %s to use the command again!",
     "command.run.error": "Oops! a error appeared: %s",
     "command.run.notfound": "Command not found.",
+    "command.run.invaild": "You have to fill a argument.",
     "basic.say.description": "Say something you want to say. supports raw ctx.",
     "basic.say.usage": "Say something you want to say. supports raw ctx.",
     "basic.say.error.invaildparams": "there is a error when sending a embed, try again and check is the embed legal or not.",

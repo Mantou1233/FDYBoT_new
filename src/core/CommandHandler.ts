@@ -50,6 +50,16 @@ async function HandleCommands(client: Client, msg: Message) {
 
     if (!command) return;
     if (command.disabled) return;
+    if (command.filter){
+        let mode = command.filter.mode ?? true;
+        if(mode){
+            if(!((command.filter.guilds ?? []).includes(msg!.guild!.id))) return;
+            if(!((command.filter.users ?? []).includes(msg!.author!.id))) return;
+        }else{
+            if(((command.filter.guilds ?? []).includes(msg!.guild!.id))) return;
+            if(((command.filter.users ?? []).includes(msg!.author!.id))) return;
+        }
+    }
     if (command.cooldown && Cooldown.has(msg.author.id))
         return msg.channel.send(
             (

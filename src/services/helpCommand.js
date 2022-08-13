@@ -41,7 +41,7 @@ const helpMessage = async (msg, { prefix, _ }, ccm) => {
         return msg.channel.send({ embeds: [newEmbed] });
     } else {
         const command = ccm.find(
-            a => (a.alias && a.alias.includes(args[1])) || a.command === args[1]
+            a => ((a.alias ?? []).includes(args[1])) || a.command === args[1]
         );
         if (command === undefined) return msg.channel.send({ embeds: [
             new Discord.EmbedBuilder()

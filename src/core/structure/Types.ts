@@ -3,6 +3,7 @@ import { langs } from "./../../services/i18n";
 type OverrideLangString<T> = {
     [key in keyof typeof langs]?: T
 }
+type snowflake = string
 interface Command {
     display?: string; 
     command: string; 
@@ -17,6 +18,12 @@ interface Command {
     hidden?: boolean;
     flags?: string[],
     from?: string;
+    filter?: {
+        /** @description true = whitelist, false = blacklist*/
+        mode?: boolean
+        guilds?: snowflake[],
+        users?: snowflake[]
+    }
     override?: {
         cooldown?: OverrideLangString<string>,
         error?: OverrideLangString<string>
@@ -34,3 +41,4 @@ interface Runner {
 type Awaitable<T> = T | PromiseLike<T>
 
 export type { Command, Message, Runner };
+
