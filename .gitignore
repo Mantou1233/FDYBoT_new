@@ -5,3 +5,4 @@ old-src
 .env.disabled
 json.sqlite
 package-lock.json
+.VSCodeCounter/

@@ -1,7 +1,7 @@
-const DISCORD_EPOCH = 1420070400000;
+export const DISCORD_EPOCH = 1420070400000;
 
 // Converts a snowflake ID string into a JS Date object using the provided epoch (in ms), or Discord's epoch if not provided
-function convertSnowflakeToDate(snowflake, epoch = DISCORD_EPOCH) {
+export function convertSnowflakeToDate(snowflake, epoch = DISCORD_EPOCH) {
     // Convert snowflake to BigInt to extract timestamp bits
     // https://discord.com/developers/docs/reference#snowflakes
     const milliseconds = BigInt(snowflake) >> 22n;
@@ -9,7 +9,7 @@ function convertSnowflakeToDate(snowflake, epoch = DISCORD_EPOCH) {
 }
 
 // Validates a snowflake ID string and returns a JS Date object if valid
-function validateSnowflake(snowflake) {
+export function validateSnowflake(snowflake) {
     if (!Number.isInteger(+snowflake)) {
         return "That doesn't look like a snowflake. Snowflakes contain only numbers.";
     }
@@ -26,5 +26,3 @@ function validateSnowflake(snowflake) {
 
     return timestamp;
 }
-
-module.exports = { validateSnowflake, convertSnowflakeToDate, DISCORD_EPOCH };
