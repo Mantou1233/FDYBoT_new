@@ -1,20 +1,25 @@
-import CommandManager from "../../../core/CommandManager";
-import ms from "pretty-ms";
 import { version } from "discord.js";
 import { inspect } from "util";
+
 import * as Discord from "discord.js";
-import axios from "axios";
-import os from "os";
 import * as child_process from "child_process";
 import * as lodash from "lodash";
-import pb from "../../../services/pb";
+
+import axios from "axios";
+import os from "os";
+import ms from "pretty-ms";
 import fs from "fs/promises";
-import { convertSnowflakeToDate } from "../../../services/snowflake";
+
+import CommandManager from "../../../core/CommandManager";
 import { Profile } from "../../../core/Database";
-import { langs, langAlias } from "../../../services/i18n";
 import Schema from "../../../core/structure/Schema";
 
-const admins = ["842757573709922314", "611118369474740244"];
+import { convertSnowflakeToDate } from "../../../services/snowflake";
+import { langs, langAlias } from "../../../services/i18n";
+import pb from "../../../services/pb";
+import help from "../../../services/help";
+
+
 /**
  * @returns void
  */
@@ -209,74 +214,6 @@ async function load(client, cm: CommandManager) {
         }
     });
     cm.register({
-        command: "botinfo",
-        category: "Basic",
-        desc: "Display bot information",
-        handler: async msg => {
-            msg.channel.send({
-                embeds: [
-                    new Discord.EmbedBuilder()
-                        .setColor("#CFF2FF")
-                        .setTitle(`FDYbot ${"1.6"}`)
-                        .setThumbnail(
-                            client.user.displayAvatarURL({ dynamic: true })
-                        )
-                        .setFields(
-                            ux("				**❯ Uptime:**", `${ms(client.uptime)}`, true),
-                            ux(
-                                "				**❯ WebSocket Ping:**",
-                                `${client.ws.ping}ms`,
-                                true
-                            ),
-                            ux(
-                                "				**❯ Memory:**",
-                                `${(
-                                    process.memoryUsage().rss /
-                                    1024 /
-                                    1024
-                                ).toFixed(2)} MB RSS\n${(
-                                    process.memoryUsage().heapUsed /
-                                    1024 /
-                                    1024
-                                ).toFixed(2)} MB Heap`,
-                                true
-                            ),
-                            ux(
-                                "				**❯ Guild Count:**",
-                                `${client.guilds.cache.size} guilds`,
-                                true
-                            ),
-                            ux(
-                                "				**❯ User Count:**",
-                                `${client.guilds.cache.reduce(
-                                    (users, value) => users + value.memberCount,
-                                    0
-                                )} users`,
-                                true
-                            ),
-                            ux(
-                                "				**❯ Commands:**",
-                                `${client.manager.commands.size} cmds`,
-                                true
-                            ),
-                            ux(
-                                "				**❯ Node:**",
-                                `${process.version} on ${process.platform} ${process.arch}`,
-                                true
-                            ),
-                            ux(
-                                "				**❯ Cached Data:**",
-                                `${client.users.cache.size} users\n${client.emojis.cache.size} emojis`,
-                                true
-                            ),
-                            ux("				**❯ Discord.js:**", `${version}`, true)
-                        )
-                        .setTimestamp()
-                ]
-            });
-        }
-    });
-    cm.register({
         command: "sus",
         category: "Basic",
         handler: async (msg, { prefix }) => {
@@ -328,12 +265,7 @@ async function load(client, cm: CommandManager) {
         alias: ["h"],
         force: true,
         handler: async (msg, { prefix }) => {
-            // eslint-disable-next-line @typescript-eslint/no-var-requires 
-            (require("../../../services/helpCommand") as any)( 
-                msg,
-                { prefix: prefix, _: lodash },
-                client.manager.commands
-            );
+            help(client, msg, prefix);
         }
     });
     cm.register({

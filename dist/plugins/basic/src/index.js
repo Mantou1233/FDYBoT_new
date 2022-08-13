@@ -26,19 +26,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const pretty_ms_1 = __importDefault(require("pretty-ms"));
 const discord_js_1 = require("discord.js");
 const util_1 = require("util");
 const Discord = __importStar(require("discord.js"));
+const child_process = __importStar(require("child_process"));
 const axios_1 = __importDefault(require("axios"));
 const os_1 = __importDefault(require("os"));
-const child_process = __importStar(require("child_process"));
-const lodash = __importStar(require("lodash"));
-const pb_1 = __importDefault(require("../../../services/pb"));
-const snowflake_1 = require("../../../services/snowflake");
+const pretty_ms_1 = __importDefault(require("pretty-ms"));
 const Database_1 = require("../../../core/Database");
+const snowflake_1 = require("../../../services/snowflake");
 const i18n_1 = require("../../../services/i18n");
-const admins = ["842757573709922314", "611118369474740244"];
+const pb_1 = __importDefault(require("../../../services/pb"));
+const help_1 = __importDefault(require("../../../services/help"));
 /**
  * @returns void
  */
@@ -179,27 +178,6 @@ async function load(client, cm) {
         }
     });
     cm.register({
-        command: "botinfo",
-        category: "Basic",
-        desc: "Display bot information",
-        handler: async (msg) => {
-            msg.channel.send({
-                embeds: [
-                    new Discord.EmbedBuilder()
-                        .setColor("#CFF2FF")
-                        .setTitle(`FDYbot ${"1.6"}`)
-                        .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
-                        .setFields(ux("				**❯ Uptime:**", `${(0, pretty_ms_1.default)(client.uptime)}`, true), ux("				**❯ WebSocket Ping:**", `${client.ws.ping}ms`, true), ux("				**❯ Memory:**", `${(process.memoryUsage().rss /
-                        1024 /
-                        1024).toFixed(2)} MB RSS\n${(process.memoryUsage().heapUsed /
-                        1024 /
-                        1024).toFixed(2)} MB Heap`, true), ux("				**❯ Guild Count:**", `${client.guilds.cache.size} guilds`, true), ux("				**❯ User Count:**", `${client.guilds.cache.reduce((users, value) => users + value.memberCount, 0)} users`, true), ux("				**❯ Commands:**", `${client.manager.commands.size} cmds`, true), ux("				**❯ Node:**", `${process.version} on ${process.platform} ${process.arch}`, true), ux("				**❯ Cached Data:**", `${client.users.cache.size} users\n${client.emojis.cache.size} emojis`, true), ux("				**❯ Discord.js:**", `${discord_js_1.version}`, true))
-                        .setTimestamp()
-                ]
-            });
-        }
-    });
-    cm.register({
         command: "sus",
         category: "Basic",
         handler: async (msg, { prefix }) => {
@@ -247,8 +225,7 @@ async function load(client, cm) {
         alias: ["h"],
         force: true,
         handler: async (msg, { prefix }) => {
-            // eslint-disable-next-line @typescript-eslint/no-var-requires 
-            require("../../../services/helpCommand")(msg, { prefix: prefix, _: lodash }, client.manager.commands);
+            (0, help_1.default)(client, msg, prefix);
         }
     });
     cm.register({
