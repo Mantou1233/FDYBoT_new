@@ -45,7 +45,7 @@ async function load(client, cm) {
     cm.register({
         command: "say",
         category: "Basic",
-        desc: "Say something you want to say -> [json builder](https://glitchii.github.io/embedbuilder/?username=FDYBoT&guitabs=title,fields,description&avatar=https://cdn.discordapp.com/avatars/977542041670152212/cf54c7c185fa433014bfd2ec79df0f21.png&data=JTdCJTIyZW1iZWQlMjIlM0ElN0IlMjJ0aXRsZSUyMiUzQSUyMkxvcmVtJTIwaXBzdW0lMjIlMkMlMjJkZXNjcmlwdGlvbiUyMiUzQSUyMkRvbG9yJTIwc2l0JTIwYW1ldC4uLiUyMiUyQyUyMmNvbG9yJTIyJTNBMzkxMjklN0QlN0Q=))",
+        desc: "Say something you want to say -> ([json builder](https://glitchii.github.io/embedbuilder/?username=FDYBoT&guitabs=title,fields,description&avatar=https://cdn.discordapp.com/avatars/977542041670152212/cf54c7c185fa433014bfd2ec79df0f21.png&data=JTdCJTIyZW1iZWQlMjIlM0ElN0IlMjJ0aXRsZSUyMiUzQSUyMkxvcmVtJTIwaXBzdW0lMjIlMkMlMjJkZXNjcmlwdGlvbiUyMiUzQSUyMkRvbG9yJTIwc2l0JTIwYW1ldC4uLiUyMiUyQyUyMmNvbG9yJTIyJTNBMzkxMjklN0QlN0Q=))",
         handler: async (msg) => {
             const args = ap(msg.content, true);
             if (!args[1])
@@ -53,26 +53,116 @@ async function load(client, cm) {
                     embeds: [
                         {
                             description: i18n.parse(msg.lang, "basic.say.error.noargs"),
-                            color: i18n.globe["color"]
+                            color: parseInt(i18n.globe["color"], 16)
                         }
                     ]
                 });
             if (!IsJsonString(args[1]))
                 return msg.channel.send({
                     embeds: [
-                        { description: args[1], color: i18n.globe["color"] }
+                        {
+                            description: args[1],
+                            color: parseInt(i18n.globe["color"], 16)
+                        }
                     ]
                 });
             let data = JSON.parse(args[1]);
+            if (data.length)
+                return msg.channel.send({
+                    embeds: [
+                        {
+                            description: "No arrays!!",
+                            color: parseInt(i18n.globe["color"], 16)
+                        }
+                    ]
+                });
             let result = data;
             if (data.embed) {
-                const { embed } = data;
-                result.embed = {};
-                result.embeds = [embed];
+                result.embeds = [...(result.embeds ?? []), data.embed];
+                delete result.embed;
             }
             msg.channel
                 .send(result)
                 .catch(err => msg.channel.send(i18n.parse(msg.lang, "basic.say.error.invaildparams")));
+        }
+    });
+    cm.register({
+        command: "edit",
+        category: "Basic",
+        desc: "edit something the bot said -> ([json builder](https://glitchii.github.io/embedbuilder/?username=FDYBoT&guitabs=title,fields,description&avatar=https://cdn.discordapp.com/avatars/977542041670152212/cf54c7c185fa433014bfd2ec79df0f21.png&data=JTdCJTIyZW1iZWQlMjIlM0ElN0IlMjJ0aXRsZSUyMiUzQSUyMkxvcmVtJTIwaXBzdW0lMjIlMkMlMjJkZXNjcmlwdGlvbiUyMiUzQSUyMkRvbG9yJTIwc2l0JTIwYW1ldC4uLiUyMiUyQyUyMmNvbG9yJTIyJTNBMzkxMjklN0QlN0Q=))",
+        handler: async (msg, ext) => {
+            let args = ap(msg.content, true)[1].split("/");
+            args = [args.splice(0, 1)[0], args.join("/")];
+            if (args.length < 2)
+                return msg.channel.send({
+                    embeds: [
+                        {
+                            description: i18n.parse(msg.lang, "basic.say.error.noargs"),
+                            color: parseInt(i18n.globe["color"], 16)
+                        }
+                    ]
+                });
+            try {
+                BigInt(args[0]);
+            }
+            catch (e) {
+                return msg.channel.send({
+                    embeds: [
+                        {
+                            description: `snowflake error: ${args[0]} not a snowflake`,
+                            color: parseInt(i18n.globe["color"], 16)
+                        }
+                    ]
+                });
+            }
+            let msg2;
+            try {
+                msg2 = (await msg.channel.messages.fetch(args[0]));
+            }
+            catch (e) {
+                return msg.channel.send({
+                    embeds: [
+                        {
+                            description: `nah, ${e.message}`,
+                            color: parseInt(i18n.globe["color"], 16)
+                        }
+                    ]
+                });
+            }
+            if (!msg2 || !msg2.editable)
+                return msg.channel.send({
+                    embeds: [
+                        {
+                            description: "nah, error dont exist",
+                            color: parseInt(i18n.globe["color"], 16)
+                        }
+                    ]
+                });
+            if (!IsJsonString(args[1]))
+                return msg2.edit({
+                    embeds: [
+                        {
+                            description: args[1],
+                            color: parseInt(i18n.globe["color"], 16)
+                        }
+                    ]
+                });
+            let data = JSON.parse(args[1]);
+            if (data.length)
+                return msg.channel.send({
+                    embeds: [
+                        {
+                            description: "No arrays!!",
+                            color: parseInt(i18n.globe["color"], 16)
+                        }
+                    ]
+                });
+            let result = data;
+            if (data.embed) {
+                result.embeds = [...(result.embeds ?? []), data.embed];
+                delete result.embed;
+            }
+            msg2.edit(result).catch(err => msg.channel.send(i18n.parse(msg.lang, "basic.say.error.invaildparams")));
         }
     });
     cm.register({
@@ -213,9 +303,12 @@ async function load(client, cm) {
         category: "Basic",
         desc: "Display bot information",
         handler: async (msg) => {
-            const messages = await msg.channel.messages.fetch({ limit: 1, after: "0" });
+            const messages = await msg.channel.messages.fetch({
+                limit: 1,
+                after: "0"
+            });
             const msg2 = messages.first();
-            msg2.reply(`[Click Me](${msg.url})`);
+            msg2.reply(`(Click Me)[${msg.url}]`);
         }
     });
     cm.register({

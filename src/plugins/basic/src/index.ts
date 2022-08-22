@@ -19,7 +19,6 @@ import { langs, langAlias } from "../../../services/i18n";
 import pb from "../../../services/pb";
 import help from "../../../services/help";
 
-
 /**
  * @returns void
  */
@@ -27,7 +26,7 @@ async function load(client, cm: CommandManager) {
     cm.register({
         command: "say",
         category: "Basic",
-        desc: "Say something you want to say -> [json builder](https://glitchii.github.io/embedbuilder/?username=FDYBoT&guitabs=title,fields,description&avatar=https://cdn.discordapp.com/avatars/977542041670152212/cf54c7c185fa433014bfd2ec79df0f21.png&data=JTdCJTIyZW1iZWQlMjIlM0ElN0IlMjJ0aXRsZSUyMiUzQSUyMkxvcmVtJTIwaXBzdW0lMjIlMkMlMjJkZXNjcmlwdGlvbiUyMiUzQSUyMkRvbG9yJTIwc2l0JTIwYW1ldC4uLiUyMiUyQyUyMmNvbG9yJTIyJTNBMzkxMjklN0QlN0Q=))",
+        desc: "Say something you want to say -> ([json builder](https://glitchii.github.io/embedbuilder/?username=FDYBoT&guitabs=title,fields,description&avatar=https://cdn.discordapp.com/avatars/977542041670152212/cf54c7c185fa433014bfd2ec79df0f21.png&data=JTdCJTIyZW1iZWQlMjIlM0ElN0IlMjJ0aXRsZSUyMiUzQSUyMkxvcmVtJTIwaXBzdW0lMjIlMkMlMjJkZXNjcmlwdGlvbiUyMiUzQSUyMkRvbG9yJTIwc2l0JTIwYW1ldC4uLiUyMiUyQyUyMmNvbG9yJTIyJTNBMzkxMjklN0QlN0Q=))",
         handler: async msg => {
             const args = ap(msg.content, true);
             if (!args[1])
@@ -38,22 +37,33 @@ async function load(client, cm: CommandManager) {
                                 msg.lang,
                                 "basic.say.error.noargs"
                             ),
-                            color: i18n.globe["color"]
+                            color: parseInt(i18n.globe["color"], 16)
                         }
                     ]
                 });
             if (!IsJsonString(args[1]))
                 return msg.channel.send({
                     embeds: [
-                        { description: args[1], color: i18n.globe["color"] }
+                        {
+                            description: args[1],
+                            color: parseInt(i18n.globe["color"], 16)
+                        }
                     ]
                 });
             let data = JSON.parse(args[1]);
+            if (data.length)
+                return msg.channel.send({
+                    embeds: [
+                        {
+                            description: "No arrays!!",
+                            color: parseInt(i18n.globe["color"], 16)
+                        }
+                    ]
+                });
             let result = data;
             if (data.embed) {
-                const { embed } = data;
-                result.embed = {};
-                result.embeds = [embed];
+                result.embeds = [...(result.embeds ?? []), data.embed];
+                delete result.embed;
             }
             msg.channel
                 .send(result)
@@ -62,6 +72,94 @@ async function load(client, cm: CommandManager) {
                         i18n.parse(msg.lang, "basic.say.error.invaildparams")
                     )
                 );
+        }
+    });
+    cm.register({
+        command: "edit",
+        category: "Basic",
+        desc: "edit something the bot said -> ([json builder](https://glitchii.github.io/embedbuilder/?username=FDYBoT&guitabs=title,fields,description&avatar=https://cdn.discordapp.com/avatars/977542041670152212/cf54c7c185fa433014bfd2ec79df0f21.png&data=JTdCJTIyZW1iZWQlMjIlM0ElN0IlMjJ0aXRsZSUyMiUzQSUyMkxvcmVtJTIwaXBzdW0lMjIlMkMlMjJkZXNjcmlwdGlvbiUyMiUzQSUyMkRvbG9yJTIwc2l0JTIwYW1ldC4uLiUyMiUyQyUyMmNvbG9yJTIyJTNBMzkxMjklN0QlN0Q=))",
+        handler: async (msg, ext) => {
+            let args: any = ap(msg.content, true)[1].split("/");
+            args = [args.splice(0, 1)[0], args.join("/")];
+
+            if (args.length < 2)
+                return msg.channel.send({
+                    embeds: [
+                        {
+                            description: i18n.parse(
+                                msg.lang,
+                                "basic.say.error.noargs"
+                            ),
+                            color: parseInt(i18n.globe["color"], 16)
+                        }
+                    ]
+                });
+
+            try{
+                BigInt(args[0]);
+            }catch(e){
+                return msg.channel.send({
+                    embeds: [
+                        {
+                            description: `snowflake error: ${args[0]} not a snowflake`,
+                            color: parseInt(i18n.globe["color"], 16)
+                        }
+                    ]
+                });
+            }
+            let msg2: Discord.Message<boolean>;
+
+            try {
+                msg2 = (await msg.channel.messages.fetch(args[0]))!;
+            } catch (e) {
+                return msg.channel.send({
+                    embeds: [
+                        {
+                            description: `nah, ${e.message}`,
+                            color: parseInt(i18n.globe["color"], 16)
+                        }
+                    ]
+                });
+            }
+
+            if (!msg2 || !msg2.editable)
+                return msg.channel.send({
+                    embeds: [
+                        {
+                            description: "nah, error dont exist",
+                            color: parseInt(i18n.globe["color"], 16)
+                        }
+                    ]
+                });
+            if (!IsJsonString(args[1]))
+                return msg2.edit({
+                    embeds: [
+                        {
+                            description: args[1],
+                            color: parseInt(i18n.globe["color"], 16)
+                        }
+                    ]
+                });
+            let data = JSON.parse(args[1]);
+            if (data.length)
+                return msg.channel.send({
+                    embeds: [
+                        {
+                            description: "No arrays!!",
+                            color: parseInt(i18n.globe["color"], 16)
+                        }
+                    ]
+                });
+            let result = data;
+            if (data.embed) {
+                result.embeds = [...(result.embeds ?? []), data.embed];
+                delete result.embed;
+            }
+            msg2.edit(result).catch(err =>
+                msg.channel.send(
+                    i18n.parse(msg.lang, "basic.say.error.invaildparams")
+                )
+            );
         }
     });
     cm.register({
@@ -179,21 +277,61 @@ async function load(client, cm: CommandManager) {
                 embeds: [
                     new Discord.EmbedBuilder()
                         .setColor("#CFF2FF")
-                        .setTitle(`FDYbot ${"1.6"} ${(process.env.BUILD as string).toLowerCase()}`)
+                        .setTitle(
+                            `FDYbot ${"1.6"} ${(
+                                process.env.BUILD as string
+                            ).toLowerCase()}`
+                        )
                         .setThumbnail(
                             client.user.displayAvatarURL({ dynamic: true })
                         )
-                        .setDescription(`\`\`\`yml\n${client.user.username}#${client.user.discriminator} [${client.user.id}]\nping: ${Math.floor(msg.createdTimestamp - Date.now())}ms ping\n‎      ${client.ws.ping}ms heartbeat\nUptime: ${ms(client.uptime)}\n\`\`\``)
+                        .setDescription(
+                            `\`\`\`yml\n${client.user.username}#${
+                                client.user.discriminator
+                            } [${client.user.id}]\nping: ${Math.floor(
+                                msg.createdTimestamp - Date.now()
+                            )}ms ping\n‎      ${
+                                client.ws.ping
+                            }ms heartbeat\nUptime: ${ms(client.uptime)}\n\`\`\``
+                        )
                         .setFields(
-                            ux(":bar_chart: General statistics", `\`\`\`yml\n${client.guilds.cache.size} guilds\n${client.guilds.cache.reduce(
-                                (users, value) => users + (+value.memberCount || 0),
-                                0
-                            )} users\n\`\`\``, true),
-                            ux(":paperclip: Cache statistics", `\`\`\`yml\n${client.users.cache.size} users\n${client.channels.cache.size} channels\n${client.emojis.cache.size} emojis\`\`\``, true),
-                            ux(":gear: Performance statistics", `\`\`\`yml\nTotal Memory: ${pb(os.totalmem())}\nFree Memory: ${pb(os.freemem())} (${percentage(os.totalmem(), os.freemem()).toFixed(1)}%)\nUsed Memory: ${pb(os.totalmem() - os.freemem())} (${percentage(os.totalmem(), os.totalmem() - os.freemem()).toFixed(1)}%)\n\`\`\``),
+                            ux(
+                                ":bar_chart: General statistics",
+                                `\`\`\`yml\n${
+                                    client.guilds.cache.size
+                                } guilds\n${client.guilds.cache.reduce(
+                                    (users, value) =>
+                                        users + (+value.memberCount || 0),
+                                    0
+                                )} users\n\`\`\``,
+                                true
+                            ),
+                            ux(
+                                ":paperclip: Cache statistics",
+                                `\`\`\`yml\n${client.users.cache.size} users\n${client.channels.cache.size} channels\n${client.emojis.cache.size} emojis\`\`\``,
+                                true
+                            ),
+                            ux(
+                                ":gear: Performance statistics",
+                                `\`\`\`yml\nTotal Memory: ${pb(
+                                    os.totalmem()
+                                )}\nFree Memory: ${pb(
+                                    os.freemem()
+                                )} (${percentage(
+                                    os.totalmem(),
+                                    os.freemem()
+                                ).toFixed(1)}%)\nUsed Memory: ${pb(
+                                    os.totalmem() - os.freemem()
+                                )} (${percentage(
+                                    os.totalmem(),
+                                    os.totalmem() - os.freemem()
+                                ).toFixed(1)}%)\n\`\`\``
+                            ),
                             ux(
                                 ":computer: System statistics",
-                                `\`\`\`yml\n${process.platform} ${process.arch}\n${ms(os.uptime() * 1000)} uptime\n${(
+                                `\`\`\`yml\n${process.platform} ${
+                                    process.arch
+                                }\n${ms(os.uptime() * 1000)} uptime\n${(
                                     process.memoryUsage().rss /
                                     1024 /
                                     1024
@@ -205,10 +343,10 @@ async function load(client, cm: CommandManager) {
                             ),
                             ux(
                                 "Miscellaneous Statistics",
-                                `\`\`\`yml\n${client.manager.commands.size} cmds\ndiscord.js ${version}\nnode ${process.version}\n\`\`\``,
+                                `\`\`\`yml\n${client.manager.commands.size} cmds\ndiscord.js ${version}\nnode ${process.version}\n\`\`\``
                             )
                         )
-                        .setFooter({text: `${gitHash} build`})
+                        .setFooter({ text: `${gitHash} build` })
                 ]
             });
         }
@@ -234,28 +372,33 @@ async function load(client, cm: CommandManager) {
         command: "choose",
         category: "Basic",
         desc: "Display bot information",
-        handler: async (msg) => {
+        handler: async msg => {
             const args = ap(msg.content, true);
             let arr = args[1].split(";");
-            msg.reply(
-                    {
-                        embeds: [
-                            new Discord.EmbedBuilder()
-                            .setColor(i18n.globe.color)
-                            .setDescription(`:thinking:\n${arr[random(0, arr.length - 1)] ?? "NOTHING"}`)
-                    ]
-                }
-            );
+            msg.reply({
+                embeds: [
+                    new Discord.EmbedBuilder()
+                        .setColor(i18n.globe.color)
+                        .setDescription(
+                            `:thinking:\n${
+                                arr[random(0, arr.length - 1)] ?? "NOTHING"
+                            }`
+                        )
+                ]
+            });
         }
     });
     cm.register({
         command: "first-msg",
         category: "Basic",
         desc: "Display bot information",
-        handler: async (msg) => {
-            const messages = await msg.channel.messages.fetch({ limit: 1, after: "0" });
+        handler: async msg => {
+            const messages = await msg.channel.messages.fetch({
+                limit: 1,
+                after: "0"
+            });
             const msg2 = messages.first() as Discord.Message;
-            msg2.reply(`[Click Me](${msg.url})`);
+            msg2.reply(`(Click Me)[${msg.url}]`);
         }
     });
     cm.register({
@@ -354,8 +497,8 @@ async function load(client, cm: CommandManager) {
             let p = new Profile(msg.author.id);
 
             let pass = (function (pa) {
-                for(let [key, [...rest]] of Object.entries(langAlias)){
-                    if(rest.includes(pa)) return key;
+                for (let [key, [...rest]] of Object.entries(langAlias)) {
+                    if (rest.includes(pa)) return key;
                 }
                 return false;
             })(args[1]);
@@ -366,16 +509,18 @@ async function load(client, cm: CommandManager) {
                         "basic.lang.current",
                         msg.lang,
                         Object.keys(langs).length,
-                        `\`${(function(){
+                        `\`${(function () {
                             let r = "";
-                            for(let [key, ...rest] of Object.values(langAlias)){
+                            for (let [key, ...rest] of Object.values(
+                                langAlias
+                            )) {
                                 r += `\n${key} - ${rest.join(",")}`;
                             }
                             return r;
                         })()}\``
                     )
                 );
-            
+
             p.lang = pass;
             p.save();
             msg.channel.send(i18n.parse(pass, "basic.lang.set", pass));
@@ -388,10 +533,14 @@ async function load(client, cm: CommandManager) {
         desc: "Display bot information",
         hidden: true,
         handler: async (msg, ext) => {
-            if ((ext.info as typeof Schema.user).commandInfo.permissionLevel < 2) return msg.channel.send("Insuffent permission.");
+            if (
+                (ext.info as typeof Schema.user).commandInfo.permissionLevel < 2
+            )
+                return msg.channel.send("Insuffent permission.");
             let args = ap(msg.content, true);
             const code = args[1];
-            if(code.trim() === "") return msg.channel.send("Dont give me nothing u dumb!!");
+            if (code.trim() === "")
+                return msg.channel.send("Dont give me nothing u dumb!!");
             let msg2 = await msg.channel.send("evaling...");
             try {
                 let output = await eval(code);
@@ -437,14 +586,16 @@ async function load(client, cm: CommandManager) {
         category: "Basic",
         desc: "Set prefix of the current guild or global.",
         handler: async msg => {
-            throw new Error("This function is not available yet. in the meantime go loop spd gar for 100 times! (/j)");
+            throw new Error(
+                "This function is not available yet. in the meantime go loop spd gar for 100 times! (/j)"
+            );
         }
     });
 }
 
 module.exports = load;
 
-function IsJsonString(str) {
+function IsJsonString(str: string) {
     let o;
     try {
         o = JSON.parse(str);
@@ -457,4 +608,4 @@ function IsJsonString(str) {
 
 function percentage(pv, tv) {
     return Math.round((pv / tv) * 100);
-} 
+}
