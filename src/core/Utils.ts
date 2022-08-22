@@ -111,6 +111,8 @@ export type PickByValueExact<T, ValueType> = Pick<
     }[keyof T]
 >;
 
+export type PickAll<T, ValueType extends keyof T = keyof T> = Pick<T, ValueType>
+
 export type OmitByValue<T, ValueType> = Pick<
     T,
     { [Key in keyof T]-?: T[Key] extends ValueType ? never : Key }[keyof T]
@@ -126,3 +128,5 @@ export type OmitByValueExact<T, ValueType> = Pick<
             : Key;
     }[keyof T]
 >;
+
+export type OmitAll<T, ValueType extends keyof T = keyof T> = Omit<T, ValueType>
