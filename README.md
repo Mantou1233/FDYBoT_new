@@ -1,3 +1,3 @@
 # FDYBoT
 
-Readme later™️
+Discord bot for FDY server.
