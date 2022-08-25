@@ -6,3 +6,4 @@ old-src
 json.sqlite
 package-lock.json
 .VSCodeCounter/
+**/*.temp

@@ -1,5 +1,7 @@
 import { Message } from "discord.js";
 import { langs } from "./../../services/i18n";
+import { Awaitable, Copy } from "../Utils";
+
 type OverrideLangString<T> = {
     [key in keyof typeof langs]?: T
 }
@@ -24,13 +26,9 @@ interface Command {
         guilds?: snowflake[],
         users?: snowflake[]
     }
-    override?: {
-        cooldown?: OverrideLangString<string>,
-        error?: OverrideLangString<string>
-    }; 
+    override?: OverrideLangString<Copy<Exclude<Command & {error?: string, cooldown?: string}, "override">>>,
     handler: (message: Message, ext: any) => Awaitable<void | any>;
 }
-
 
 interface Runner {
     name: string;
@@ -38,7 +36,13 @@ interface Runner {
     handler: (message: Message) => any;
 }
 
-type Awaitable<T> = T | PromiseLike<T>
-
 export type { Command, Message, Runner };
 
+
+type arr = [
+    {bar: 1},
+    {}
+]
+type IsNever<T> = [T] extends [never] ? true : false;
+type Bar<T> = IsNever<T> extends true ? T : never
+type bars = Bar<arr[number]>
