@@ -3,7 +3,7 @@ import { langs } from "./i18n";
 class InventoryManager{
     toDisplay(lang = "en", id, raw = true){
         let st = i18n.parse(lang, `-item.${id}`);
-        let icon = (raw ? "" : `${i18n.icon[`item.${id}`]} ` ?? `${i18n.icon["item.wip"]} `);
+        let icon = (raw ? "" : (i18n.icon[`item.${id}`] ?? i18n.icon["item.wip"]) + " ");
         return (st === "%s" ? `${icon}${id.replaceAll("_", " ")}` : `${icon}${st}`);
     }
     getItems(id, list: string[] = []){

@@ -61,7 +61,7 @@ async function botMain(client) {
                 0
             )} users`
         );
-        const botPresence = "{server} Servers | >help";
+        const botPresence = "{server} Servers | +help";
 
         const active = botPresence
             .replace(/{server}/g, `${client.guilds.cache.size}`)

@@ -15,9 +15,11 @@ exports.langAlias = {
     tw: ["tw", "zh-tw", "繁體中文"]
 };
 exports.globes = {
-    color: "#CFF2FF"
+    color: "CFF2FF"
 };
 class i18n {
+    globe;
+    icon;
     constructor() {
         this.globe = exports.globes;
         this.icon = icons_json_1.default;

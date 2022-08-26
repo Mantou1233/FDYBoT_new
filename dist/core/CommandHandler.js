@@ -54,8 +54,8 @@ async function HandleCommands(client, msg) {
         }
     }
     if (command.cooldown && Cooldown.has(msg.author.id))
-        return msg.channel.send((command.override?.cooldown?.[p.lang] ??
-            command.override?.cooldown?.["en"] ??
+        return msg.channel.send((command.override?.[p.lang]?.cooldown ??
+            command.override?.["en"]?.cooldown ??
             i18n.parse(p.lang, "command.run.cooldown")).replaceAll("%s", `${(0, ms_1.default)(Cooldown.get(msg.author.id))}`));
     let flags = {};
     for (let ou of ["-dout", ...command.flags ?? []]) {
@@ -75,8 +75,8 @@ async function HandleCommands(client, msg) {
     catch (e) {
         if (flags["-dout"])
             console.log(e);
-        return msg.channel.send((command.override?.error?.[p.lang] ??
-            command.override?.error?.["en"] ??
+        return msg.channel.send((command.override?.[p.lang]?.error ??
+            command.override?.["en"]?.error ??
             i18n.parse(p.lang, "command.run.error")).replaceAll("%s", `${e.message}`));
     }
     if (command.cooldown) {

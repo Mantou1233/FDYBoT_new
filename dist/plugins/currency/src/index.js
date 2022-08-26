@@ -8,6 +8,8 @@ const inventory_1 = __importDefault(require("./inventory"));
 const fish_1 = __importDefault(require("./fish"));
 const use_1 = __importDefault(require("./use"));
 const sell_1 = __importDefault(require("./sell"));
+const travel_1 = __importDefault(require("./travel"));
+const overload_1 = __importDefault(require("./overload"));
 /**
  * @returns void
  */
@@ -17,6 +19,8 @@ async function load(client, cm) {
     (0, fish_1.default)(client, cm);
     (0, use_1.default)(client, cm);
     (0, sell_1.default)(client, cm);
+    (0, travel_1.default)(client, cm);
+    (0, overload_1.default)(client, cm);
 }
 exports.default = load;
 //# sourceMappingURL=index.js.map

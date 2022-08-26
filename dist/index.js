@@ -49,7 +49,7 @@ async function botMain(client) {
         await loader.load();
         console.log("-> miraicle has started!");
         console.log(`-> watching ${client.guilds.cache.size} Servers, ${client.channels.cache.size} channels & ${client.guilds.cache.reduce((users, value) => users + value.memberCount, 0)} users`);
-        const botPresence = "{server} Servers | >help";
+        const botPresence = "{server} Servers | +help";
         const active = botPresence
             .replace(/{server}/g, `${client.guilds.cache.size}`)
             .replace(/{channels}/g, `${client.channels.cache.size}`)

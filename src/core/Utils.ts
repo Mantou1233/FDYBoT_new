@@ -46,6 +46,7 @@ export type Match<
     M extends boolean = true
 > = Pick<T, MatchNames<T, L, M>>;
 
+export type If<T extends boolean, A, B = null> = T extends true ? A : T extends false ? B : A | B;
 export type Reverse<T extends boolean> = true extends T ? false : true;
 
 export type Callback<T = void> = () => T;

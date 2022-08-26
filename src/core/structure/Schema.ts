@@ -1,6 +1,8 @@
 import { langTypes } from "../../services/i18n";
 import { Profile } from "../Database";
 import { Copy, RemoveIndex } from "../Utils";
+import { TLocations } from "../../plugins/currency/assets/data";
+
 
 export default {
     user: {
@@ -21,10 +23,9 @@ export default {
             bundle: 1
         },
         equip: {
-            rod: -1,
-            weapon: [-1, -1, -1], 
-            armor: [-1, -1, -1, -1]
+            rod: -1
         },
+        trip: "plains",
         chatCount: 0,
         commandInfo: {
             // 
@@ -55,9 +56,8 @@ export type RawUserSchema = {
     },
     equip: {
         rod: eq, // Fishing rod
-        weapon: [eq, eq, eq], // sword, wand, unused 
-        armor: [eq, eq, eq, eq] // head, chest, leg, shoe
     },
+    trip: TLocations
     chatCount: number,
     commandInfo: {
         // 

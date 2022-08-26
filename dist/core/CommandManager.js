@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 class CommandManager {
+    client;
+    commands;
+    beforeChat;
     constructor(client) {
         this.client = client;
         this.commands = new discord_js_1.Collection();

@@ -63,8 +63,8 @@ async function HandleCommands(client: Client, msg: Message) {
     if (command.cooldown && Cooldown.has(msg.author.id))
         return msg.channel.send(
             (
-                command.override?.cooldown?.[p.lang] ??
-                command.override?.cooldown?.["en"] ??
+                command.override?.[p.lang]?.cooldown ??
+                command.override?.["en"]?.cooldown ??
                 i18n.parse(p.lang, "command.run.cooldown")
             ).replaceAll("%s", `${ms(Cooldown.get(msg.author.id))}`));
 
@@ -86,8 +86,8 @@ async function HandleCommands(client: Client, msg: Message) {
         if(flags["-dout"]) console.log(e);
         return msg.channel.send(
             (
-                command.override?.error?.[p.lang] ??
-                command.override?.error?.["en"] ??
+                command.override?.[p.lang]?.error ??
+                command.override?.["en"]?.error ??
                 i18n.parse(p.lang, "command.run.error")
             ).replaceAll("%s", `${e.message}`));
     }

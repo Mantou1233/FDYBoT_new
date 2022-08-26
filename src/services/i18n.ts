@@ -26,7 +26,7 @@ export type langKeys =
 export type langTypes = keyof typeof langs;
 
 export let globes = {
-    color: "#CFF2FF"
+    color: "CFF2FF"
 };
 class i18n {
     public globe: any;

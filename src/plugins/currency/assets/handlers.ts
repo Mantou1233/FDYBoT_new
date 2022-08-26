@@ -1,4 +1,3 @@
-
 import im from "../../../services/inventory";
 export default {
     use: {
@@ -25,5 +24,17 @@ export default {
                 p.save();
             }
         }
+    },
+    buy: {
+        paketa: ({
+
+        } as ShopData)
     }
 };
+
+export type ShopData = {
+    /**
+     * @returns [price, DisplayName, Desc, isBlacklisted]
+     */
+    view: (count?: number) => [number, string, string, boolean] //
+}

@@ -32,6 +32,11 @@ const outpath = "../../";
 const log = (times, message) => console.log(`${"  ".repeat(times)}-> ${message}`);
 let temp = -1;
 class PluginLoader {
+    client;
+    loadedList;
+    unloadList;
+    loadedNames;
+    loadArgs;
     constructor(client) {
         global.loading = -1;
         client.manager = new CommandManager_1.default(client);

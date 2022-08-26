@@ -19,10 +19,9 @@ exports.default = {
             bundle: 1
         },
         equip: {
-            rod: -1,
-            weapon: [-1, -1, -1],
-            armor: [-1, -1, -1, -1]
+            rod: -1
         },
+        trip: "plains",
         chatCount: 0,
         commandInfo: {
             // 
