@@ -68,7 +68,7 @@ export default async (client: Discord.Client, msg: Discord.Message, prefix: stri
         usage = usage.replace(/%p/g, prefix).replace(/{prefix}/g, prefix);
         let desc = command?.desc;
         let alias = command?.alias ? command?.alias : [];
-        if (alias === []) {
+        if (alias.length == 0) {
             title = `\`${prefix}${name}\``;
         } else {
             title = `\`${prefix}${name}\``;

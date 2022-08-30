@@ -5,7 +5,9 @@ import { Profile } from "../../../core/Database";
 import { UserSchema } from "../../../core/structure/Schema";
 import callers from "../assets/handlers";
 import queue from "./queue";
+import { locations } from "../assets/data";
 import ms from "pretty-ms";
+import { toPercent } from "../../../services/math";
 
 /**
  * @returns void
@@ -18,18 +20,17 @@ async function load(client, cm: CommandManager) {
         handler: async (msg, { prefix }) => {
             let args = ap(msg.content, true);
             let p = new Profile(msg.author.id) as UserSchema;
-            if(!args[1]) return;
+            const current = queue.tripQueue.find((v) => v.id == msg.author.id);
+            if(current) return msg.channel.send(`Your duck is already on travel! (${toPercent(current.otime - current.time, current.otime)})`);
+            if(!args[1]) return msg.channel.send("invaild location! type `+map` to see a list of maps.");
+            if(!Object.keys(locations).includes(args[1])) return msg.channel.send("that is not a vaild place.");
             
             queue.tripQueue.push({
                 id: msg.author.id,
                 channel: msg.channel,
                 location: args[1],
-                time: 30,
-                lootOverride: {
-                    sussy: 1,
-                    aaaa: 1,
-                    fish: 114514
-                }
+                time: locations[args[1]].time,
+                otime: locations[args[1]].time,
             });
 
             msg.reply(`duck is now travling in ${args[1]}`);

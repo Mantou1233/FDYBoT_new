@@ -89,6 +89,7 @@ class PluginLoader {
                 continue;
             delete require.cache[uw];
         }
+        require("../plugins/currency/src/queue").default.tripQueue = [];
         require("../index");
     }
 }

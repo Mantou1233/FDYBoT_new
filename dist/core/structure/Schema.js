@@ -9,7 +9,6 @@ exports.default = {
         bankAmount: 5000,
         bankLastAction: 0,
         bankInterestFactor: -1,
-        bankFactor: 0.1,
         signCount: 0,
         lastSign: 0,
         exp: [0, 75, 9],
@@ -21,10 +20,11 @@ exports.default = {
         equip: {
             rod: -1
         },
-        trip: "plains",
+        location: "plains",
         chatCount: 0,
         commandInfo: {
-            // 
+            //
+            lastAction: Date.now(),
             help: -1,
             cooldownOverride: {},
             permissionLevel: 1

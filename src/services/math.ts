@@ -1,7 +1,7 @@
 import bar from "../assets/bars.json";
 
-export function toPercent(num, total) {
-    return Math.round((num / total) * 10000) / 100.0 + "%"; // 小数点后两位百分比
+export function toPercent(num, total): `${string}%` {
+    return `${Math.round((num / total) * 10000) / 100.0}%`; // 小数点后两位百分比
 }
 
 export function toSizing(num, total) {

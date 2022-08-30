@@ -64,7 +64,7 @@ exports.default = async (client, msg, prefix) => {
         usage = usage.replace(/%p/g, prefix).replace(/{prefix}/g, prefix);
         let desc = command?.desc;
         let alias = command?.alias ? command?.alias : [];
-        if (alias === []) {
+        if (alias.length == 0) {
             title = `\`${prefix}${name}\``;
         }
         else {

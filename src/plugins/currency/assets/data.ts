@@ -9,11 +9,17 @@ export type QueueType = {
     location: string //TLocations,
     lootOverride?: Record<string, number>
     time: number // in seconds
+    otime: number
 };
 export const locations = {
     plains: {
-        loot: {
-            
+        time: 55,
+        loots: {
+            stick: 1,
+            seeds: 3,
+            log: 5,
+            apple: 1,
+            "repeat-duck": 3,
         }
     }
 };

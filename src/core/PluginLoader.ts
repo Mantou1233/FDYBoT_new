@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { Client } from "discord.js";
 import fg from "fast-glob";
 import CommandManager from "./CommandManager";
@@ -77,6 +78,7 @@ class PluginLoader {
             if(uw.includes("node_modules")) continue;
             delete require.cache[uw];
         }
+        require("../plugins/currency/src/queue").default.tripQueue = [];
         require("../index");
     }
 }

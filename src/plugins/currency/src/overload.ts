@@ -4,9 +4,8 @@ import im from "../../../services/inventory";
 import { Profile } from "../../../core/Database";
 import { UserSchema } from "../../../core/structure/Schema";
 import queue from "./queue";
-const loots = {
+import { locations } from "../assets/data";
 
-};
 
 /**
  * @returns void
@@ -19,7 +18,7 @@ async function load(client: Discord.Client, cm: CommandManager) {
 			if(q.time == 0){
 				const p = new Profile(q.id) as UserSchema;
 				let result = {};
-				for(let [k, v] of (Object.entries(Object.assign({}, loots[q.location] ?? {}, q.lootOverride ?? {})))){
+				for(let [k, v] of (Object.entries(Object.assign({}, locations[q.location].loots ?? {}, q.lootOverride ?? {})))){
 					result[k] = random(0, v as number);
 					im.addItem(p, k, result[k]);
 				}
@@ -48,20 +47,7 @@ async function load(client: Discord.Client, cm: CommandManager) {
 				p.save();
 				continue;
 			}
-			if(random(0, 100) > 98 && q.time % 2 == 0){
-				q.channel.send(
-					{
-						content: `<@${q.id}>`,
-						embeds: [
-							new Discord.EmbedBuilder()
-								.setTitle("lmao")
-								.setDescription("ur duck fucking dead because imposter killed ur duck")
-								.setColor(i18n.globe.color)
-						]
-					}
-				);
-				queue.tripQueue.splice(index, 1);
-			}
+			
 			index++;
 		}
 	}, 1000);
