@@ -39,7 +39,7 @@ export default {
 export type RawUserSchema = {
 	lang: langTypes,
 	coin: number,
-	/** @deprecated */ coinFactor: number, 
+	coinFactor: number, 
 	bank: number,
 	bankAmount: number, // max val of bank saving
 	bankLastAction: number, // Date.now()
@@ -56,7 +56,7 @@ export type RawUserSchema = {
 	equip: {
 		rod: eq, // Fishing rod
 	},
-	trip: TLocations
+	location: TLocations
 	chatCount: number,
 	commandInfo: {
 		// 

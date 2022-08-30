@@ -1,5 +1,6 @@
 import db from "quick.db"; // TODO go fuck off quick db and use sqlite 
 import Schema from "./structure/Schema";
+import lodash from "lodash";
 const suffix = "";
 
 export class Profile {
@@ -27,7 +28,7 @@ export class Profile {
         if (!initType || initType == "none" || !Schema[initType]) return false;
         for(let k of Object.keys(this)) if(k !== "__id") delete this[k];
         let raw = this.raw;
-        Object.assign(this, Schema[initType], raw);
+        Object.assign(this, lodash.merge(Object.assign({}, Schema[initType]), raw));
         return void this.save() ?? this;
     }
 
