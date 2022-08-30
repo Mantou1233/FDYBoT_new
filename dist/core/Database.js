@@ -29,6 +29,9 @@ class Profile {
     updateSchema(initType = "user") {
         if (!initType || initType == "none" || !Schema_1.default[initType])
             return false;
+        for (let k of Object.keys(this))
+            if (k !== "__id")
+                delete this[k];
         let raw = this.raw;
         Object.assign(this, Schema_1.default[initType], raw);
         return void this.save() ?? this;
