@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
-    tripQueue: []
+    tripQueue: {}
 };
 //# sourceMappingURL=queue.js.map

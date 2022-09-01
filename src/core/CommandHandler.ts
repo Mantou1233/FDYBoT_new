@@ -4,6 +4,7 @@ import { Command } from "./structure/Types";
 import { Profile } from "./Database";
 import Schema from "./structure/Schema";
 import { langs } from "./../services/i18n";
+import queue from "./../plugins/currency/src/queue";
 
 const Cooldown = new Collection<string, number>();
 
@@ -27,18 +28,13 @@ async function HandleCommands(client: Client, msg: Message) {
         p.exp[2] += random(0, 4); //adding a addition so that it dont always add in a factor
     }
     p.save();
+    if(queue.tripQueue[msg.author.id]) queue.tripQueue[msg.author.id].time++;
 
     msg.lang = p.lang as keyof typeof langs;
     const mappings = client.manager.commands as Collection<
         string,
         Command
     >;
-    
-    
-    
-
-    if (client.manager.beforeChat.length > 0)
-        await client.manager.runBeforeChatEvents(msg);
 
     const isp = msg.content.startsWith(prefix);
     const launch = msg.content.trim().split(" ")[0].replace(prefix, "");
@@ -47,7 +43,6 @@ async function HandleCommands(client: Client, msg: Message) {
             ((cmd.command === launch || (cmd.alias ?? []).includes(launch)) && isp) ||
             (cmd.alias2 ?? []).includes(launch)
     ) as Command;
-
     if (!command) return;
     if (command.disabled) return;
     if (command.filter){

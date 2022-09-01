@@ -8,8 +8,9 @@ export type QueueType = {
     },
     location: string //TLocations,
     lootOverride?: Record<string, number>
+    flow: number
     time: number // in seconds
-    otime: number
+    lapse: number
 };
 export const locations = {
     plains: {

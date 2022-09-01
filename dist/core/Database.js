@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Profile = void 0;
 const quick_db_1 = __importDefault(require("quick.db")); // TODO go fuck off quick db and use sqlite 
 const Schema_1 = __importDefault(require("./structure/Schema"));
-const lodash_1 = __importDefault(require("lodash"));
 const suffix = "";
 class Profile {
     constructor(id) {
@@ -30,11 +29,10 @@ class Profile {
     updateSchema(initType = "user") {
         if (!initType || initType == "none" || !Schema_1.default[initType])
             return false;
-        for (let k of Object.keys(this))
-            if (k !== "__id")
-                delete this[k];
         let raw = this.raw;
-        Object.assign(this, lodash_1.default.merge(Object.assign({}, Schema_1.default[initType]), raw));
+        Object.assign(this, Schema_1.default[initType], raw, {
+            commandInfo: Object.assign({}, Schema_1.default[initType].commandInfo, raw.commandInfo)
+        });
         return void this.save() ?? this;
     }
     save() {

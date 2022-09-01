@@ -35,7 +35,7 @@ async function load(client, cm) {
                         for (let [k, v] of Object.entries(res)) {
                             if (v < 1)
                                 continue;
-                            str += i18n.parse(msg.lang, "currency.format.result", inventory_1.default.toDisplay(msg.lang, k, true), `${v}\n`);
+                            str += i18n.parse(msg.lang, "currency.format.result", inventory_1.default.toDisplay(msg.lang, k, false), `${v}\n`);
                         }
                         return str;
                     })(result))

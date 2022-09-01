@@ -1,1 +1,0 @@
-type imo = "a" & "b"

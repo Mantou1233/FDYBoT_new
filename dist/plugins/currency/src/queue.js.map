@@ -1,1 +1,1 @@
-{"version":3,"file":"queue.js","sourceRoot":"","sources":["../../../../src/plugins/currency/src/queue.ts"],"names":[],"mappings":";;AAEA,kBAAe;IACX,SAAS,EAAE,EAAiB;CAC/B,CAAC"}
+{"version":3,"file":"queue.js","sourceRoot":"","sources":["../../../../src/plugins/currency/src/queue.ts"],"names":[],"mappings":";;AAEA,kBAAe;IACX,SAAS,EAAE,EAA+B;CAC7C,CAAC"}

@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const ms_1 = __importDefault(require("ms"));
 const Database_1 = require("./Database");
+const queue_1 = __importDefault(require("./../plugins/currency/src/queue"));
 const Cooldown = new discord_js_1.Collection();
 const prefix = "+";
 async function HandleCommands(client, msg) {
@@ -26,10 +27,10 @@ async function HandleCommands(client, msg) {
         p.exp[2] += random(0, 4); //adding a addition so that it dont always add in a factor
     }
     p.save();
+    if (queue_1.default.tripQueue[msg.author.id])
+        queue_1.default.tripQueue[msg.author.id].time++;
     msg.lang = p.lang;
     const mappings = client.manager.commands;
-    if (client.manager.beforeChat.length > 0)
-        await client.manager.runBeforeChatEvents(msg);
     const isp = msg.content.startsWith(prefix);
     const launch = msg.content.trim().split(" ")[0].replace(prefix, "");
     const command = mappings.find(cmd => ((cmd.command === launch || (cmd.alias ?? []).includes(launch)) && isp) ||

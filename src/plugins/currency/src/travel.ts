@@ -20,20 +20,29 @@ async function load(client, cm: CommandManager) {
         handler: async (msg, { prefix }) => {
             let args = ap(msg.content, true);
             let p = new Profile(msg.author.id) as UserSchema;
-            const current = queue.tripQueue.find((v) => v.id == msg.author.id);
-            if(current) return msg.channel.send(`Your duck is already on travel! (${toPercent(current.otime - current.time, current.otime)})`);
-            if(!args[1]) return msg.channel.send("invaild location! type `+map` to see a list of maps.");
+            const current = queue.tripQueue[msg.author.id];
+            if(current) return msg.channel.send(`Your duck is already on travel! (${toPercent(current.lapse - current.time, current.lapse)})`);
+            if(!args[1]) return msg.channel.send("invaild location! use `+map` to see a list of maps.");
             if(!Object.keys(locations).includes(args[1])) return msg.channel.send("that is not a vaild place.");
             
-            queue.tripQueue.push({
+            queue.tripQueue[msg.author.id] = {
                 id: msg.author.id,
                 channel: msg.channel,
                 location: args[1],
                 time: locations[args[1]].time,
-                otime: locations[args[1]].time,
-            });
+                lapse: locations[args[1]].time,
+                flow: 0
+            };
 
             msg.reply(`duck is now travling in ${args[1]}`);
+        }
+    });
+    cm.register({
+        command: "map",
+        category: "Currency",
+        desc: "see le map",
+        handler: async (msg, { prefix }) => {
+            msg.channel.send(`Current locations: ${1}\n${i18n.parse(msg.lang, "currency.format.result", "Plains", "Great place for you dumb ass to touch grass")} `);
         }
     });
 }

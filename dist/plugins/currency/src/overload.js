@@ -12,11 +12,16 @@ const data_1 = require("../assets/data");
  * @returns void
  */
 async function load(client, cm) {
+    // cm.registerBeforeChatEvent({
+    // 	"name": "trip",
+    // 	handler: async (msg) => {
+    // 		if(queue.tripQueue[msg.author.id]) queue.tripQueue[msg.author.id].time -= random(1, 2);
+    // 	}
+    // });
     setInterval(() => {
-        let index = 0;
-        for (let q of queue_1.default.tripQueue) {
+        for (let [k, q] of Object.entries(queue_1.default.tripQueue)) {
             q.time -= 1;
-            if (q.time == 0) {
+            if (q.time <= 0) {
                 const p = new Database_1.Profile(q.id);
                 let result = {};
                 for (let [k, v] of (Object.entries(Object.assign({}, data_1.locations[q.location].loots ?? {}, q.lootOverride ?? {})))) {
@@ -32,18 +37,17 @@ async function load(client, cm) {
                             for (let [k, v] of Object.entries(res)) {
                                 if (v < 1)
                                     continue;
-                                str += i18n.parse("en", "currency.format.result", inventory_1.default.toDisplay("en", k, true), `${v}\n`);
+                                str += i18n.parse("en", "currency.format.result", inventory_1.default.toDisplay("en", k, false), `${v}\n`);
                             }
                             return str;
                         })(result))
                             .setColor(i18n.globe.color)
                     ]
                 });
-                queue_1.default.tripQueue.splice(index, 1);
+                delete queue_1.default.tripQueue[k];
                 p.save();
                 continue;
             }
-            index++;
         }
     }, 1000);
     // cm.register({

@@ -11,11 +11,17 @@ import { locations } from "../assets/data";
  * @returns void
  */
 async function load(client: Discord.Client, cm: CommandManager) {
+
+	// cm.registerBeforeChatEvent({
+	// 	"name": "trip",
+	// 	handler: async (msg) => {
+	// 		if(queue.tripQueue[msg.author.id]) queue.tripQueue[msg.author.id].time -= random(1, 2);
+	// 	}
+	// });
 	setInterval(() => {
-		let index = 0;
-		for(let q of queue.tripQueue){
+		for(let [k, q] of Object.entries(queue.tripQueue)){
 			q.time -= 1;
-			if(q.time == 0){
+			if(q.time <= 0){
 				const p = new Profile(q.id) as UserSchema;
 				let result = {};
 				for(let [k, v] of (Object.entries(Object.assign({}, locations[q.location].loots ?? {}, q.lootOverride ?? {})))){
@@ -33,7 +39,7 @@ async function load(client: Discord.Client, cm: CommandManager) {
 										function(res, str = ""){
 											for(let [k, v] of Object.entries(res)){
 												if((v as number) < 1) continue;
-												str += i18n.parse("en", "currency.format.result", im.toDisplay("en", k, true), `${v}\n`);
+												str += i18n.parse("en", "currency.format.result", im.toDisplay("en", k, false), `${v}\n`);
 											}
 											return str;
 										}
@@ -43,12 +49,10 @@ async function load(client: Discord.Client, cm: CommandManager) {
 						]
 					}
 				);
-				queue.tripQueue.splice(index, 1);
+				delete queue.tripQueue[k];
 				p.save();
 				continue;
 			}
-			
-			index++;
 		}
 	}, 1000);
 	
