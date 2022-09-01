@@ -1,3 +1,3 @@
 # FDYBoT
 
-Discord bot for FDY server.
+Discord bot, originally for FDY server.
