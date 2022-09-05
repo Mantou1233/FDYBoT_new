@@ -48,6 +48,8 @@ export type Match<
 	M extends boolean = true
 > = Pick<T, MatchNames<T, L, M>>;
 
+type x = "abcdefghijklmnop1234567890-+" extends `${infer _1}${infer _F}` ? [_1] : never
+
 export type If<T extends boolean, A, B = null> = T extends true ? A : T extends false ? B : A | B;
 export type FulFill<T extends boolean = true> = T;
 export type Capable<T> = T extends boolean ? T : never;
@@ -74,9 +76,14 @@ type InternalMinusOne<S extends string> = S extends `${infer Digit extends numbe
 	never;
 export type MinusOne<T extends number> = ParseInt<RemoveLeadingZeros<Revert<InternalMinusOne<Revert<`${T}`>>>>>;
 
+type InternalAddOne<S extends string> = S extends `${infer Digit extends number}${infer Rest}` ?
+	Digit extends 0 ?
+			`9${InternalAddOne<Rest>}` :
+		`${[1, 2, 3, 4, 5, 6, 7, 8, 9, 0][Digit]}${Rest}` :
+	never;
+export type AddOne<T extends number> = ParseInt<RemoveLeadingZeros<Revert<InternalAddOne<Revert<`${T}`>>>>>;
+
 export type ArrayConstruct<N extends number, Arr extends any[] = []> = N extends 0 ? Arr : ArrayConstruct<MinusOne<N>, [...Arr, unknown]>;
-
-
 
 // Object
 export type Get<T, K> = K extends keyof T
@@ -98,7 +105,8 @@ export type DeepPick<T extends Record<string, any>, P extends string> = UnionToI
 			never :
 		never
 >
-export type DeepGet<T extends Record<string, any>, P extends string> = P extends `${infer K}` ? Get<T, K> : never;
+
+export type DeepGet<T extends Record<string, any>, P extends string> = P extends infer K ? Get<T, K> : never;
 
 export type Camel<T> = T extends unknown[] ? {
   [K in keyof T]: T[K] extends object ? Camel<T[K]> : T[K]; 

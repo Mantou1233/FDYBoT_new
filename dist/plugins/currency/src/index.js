@@ -1,26 +1,46 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const economy_1 = __importDefault(require("./economy"));
-const inventory_1 = __importDefault(require("./inventory"));
-const fish_1 = __importDefault(require("./fish"));
-const use_1 = __importDefault(require("./use"));
-const sell_1 = __importDefault(require("./sell"));
-const travel_1 = __importDefault(require("./travel"));
-const overload_1 = __importDefault(require("./overload"));
+const QuickLoader_1 = __importStar(require("../../../core/util/QuickLoader"));
+let ql = new QuickLoader_1.default({
+    include: ["economy", "inventory", "fish", "use", "sell", "travel", "overload"],
+    pattern: [(0, QuickLoader_1.rez)(__dirname) + "/*.js"],
+});
+/**
+ * ImportDefaultable
+ * @param v module imported
+ * @returns module that is default or is expr or a object
+ */
+const impd = (v) => v.default ?? v ?? {};
 /**
  * @returns void
  */
 async function load(client, cm) {
-    (0, economy_1.default)(client, cm);
-    (0, inventory_1.default)(client, cm);
-    (0, fish_1.default)(client, cm);
-    (0, use_1.default)(client, cm);
-    (0, sell_1.default)(client, cm);
-    (0, travel_1.default)(client, cm);
-    (0, overload_1.default)(client, cm);
+    await ql.load(
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    v => impd(require(v))(client, cm));
 }
 exports.default = load;
 //# sourceMappingURL=index.js.map
