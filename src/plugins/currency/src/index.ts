@@ -1,25 +1,25 @@
 import CommandManager from "../../../core/CommandManager";
+import QuickLoader, {rez} from "../../../core/util/QuickLoaderer";
 
-import __0 from "./economy";
-import __1 from "./inventory";
-import __2 from "./fish";
-import __3 from "./use";
-import __4 from "./sell";
-import __5 from "./travel";
-import __6 from "./overload";
+let ql = new QuickLoader({
+    include: ["economy", "inventory", "fish", "use", "sell", "travel", "overload"],
+    pattern: [rez(__dirname) + "/*.js"],
 
-
+});
+/**
+ * ImportDefaultable
+ * @param v module imported
+ * @returns module that is default or is expr or a object
+ */
+const impd = (v) => v.default ?? v ?? {};
 /**
  * @returns void
  */
 async function load(client, cm: CommandManager) {
-    __0(client, cm);
-    __1(client, cm);
-    __2(client, cm);
-    __3(client, cm);
-    __4(client, cm);
-    __5(client, cm);
-    __6(client, cm);
+    await ql.load(
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        v => impd(require(v))(client, cm)
+    );
 }
 
 export default load;
