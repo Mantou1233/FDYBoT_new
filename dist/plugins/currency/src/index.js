@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const QuickLoader_1 = __importStar(require("../../../core/util/QuickLoader"));
+const QuickLoader_1 = __importStar(require("../../../services/QuickLoader"));
 let ql = new QuickLoader_1.default({
     include: ["economy", "inventory", "fish", "use", "sell", "travel", "overload"],
     pattern: [(0, QuickLoader_1.rez)(__dirname) + "/*.js"],

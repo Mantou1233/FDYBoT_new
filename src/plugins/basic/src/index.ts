@@ -318,13 +318,13 @@ async function load(client, cm: CommandManager) {
                                 )}\nFree Memory: ${pb(
                                     os.freemem()
                                 )} (${percentage(
-                                    os.totalmem(),
-                                    os.freemem()
+                                    os.freemem(),
+                                    os.totalmem()
                                 ).toFixed(1)}%)\nUsed Memory: ${pb(
                                     os.totalmem() - os.freemem()
                                 )} (${percentage(
-                                    os.totalmem(),
-                                    os.totalmem() - os.freemem()
+                                    os.totalmem() - os.freemem(),
+                                    os.totalmem()
                                 ).toFixed(1)}%)\n\`\`\``
                             ),
                             ux(

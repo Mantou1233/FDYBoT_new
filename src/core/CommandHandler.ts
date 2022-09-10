@@ -2,7 +2,7 @@ import { Client, Collection, Message, Guild, TextChannel, GuildChannelManager} f
 import ms from "ms";
 import { Command } from "./structure/Types";
 import { Profile } from "./Database";
-import Schema from "./structure/Schema";
+import Schema, {UserSchema} from "./structure/Schema";
 import { langs } from "./../services/i18n";
 import queue from "./../plugins/currency/src/queue";
 
@@ -16,7 +16,7 @@ async function HandleCommands(client: Client, msg: Message) {
     if (msg.guild && msg.guild?.id === "924874970721579038") 
         (((client as Client).guilds.cache.get("977542923665149972") as Guild).channels.cache.get("977542924076204097") as TextChannel).send(`@Mantou1233 WARNING!!! the pixeldev fucking used command!! (${msg.author.tag}(${msg.author.id})-> ${msg.content})`);
     
-    let p = new Profile(msg.author.id) as any as typeof Schema.user & Profile;
+    let p = new Profile(msg.author.id) as any as UserSchema;
     if(!p.check()) p.newSchema();
     p.updateSchema();
     p.chatCount++;

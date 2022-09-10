@@ -5,7 +5,7 @@
     "main": "dist/index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "deploy": "node src/services/deploy/run.js",
+        "start": "node .",
         "lint": "eslint --fix src/*.js"
     },
     "author": "",

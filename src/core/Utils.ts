@@ -1,9 +1,4 @@
 /* eslint-disable @typescript-eslint/no-extra-semi */
-
-import { floor } from "mathjs";
-
-export type Keyable = string | number | symbol;
-export type BoolKeyable = string | number | boolean;
 export type Nkhelv = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0;
 
 export type Copy<T> = {
@@ -27,6 +22,9 @@ export type DeepNest<T> = T extends Record<string | number | symbol, any>
 export type Flux<U extends Record<string, any>> = {
 	[K in keyof U]: K;
 };
+export type Flip<T extends Record<string, string | number | boolean>> = {
+	[K in keyof T as `${T[K]}`]: K;
+};
 
 type MatchNameHelper<T, L> = {
 	[K in keyof T]: T[K] extends L ? K : never;
@@ -47,8 +45,6 @@ export type Match<
 	L,
 	M extends boolean = true
 > = Pick<T, MatchNames<T, L, M>>;
-
-type x = "abcdefghijklmnop1234567890-+" extends `${infer _1}${infer _F}` ? [_1] : never
 
 export type If<T extends boolean, A, B = null> = T extends true ? A : T extends false ? B : A | B;
 export type FulFill<T extends boolean = true> = T;
@@ -108,16 +104,12 @@ export type DeepPick<T extends Record<string, any>, P extends string> = UnionToI
 
 export type DeepGet<T extends Record<string, any>, P extends string> = P extends infer K ? Get<T, K> : never;
 
-export type Camel<T> = T extends unknown[] ? {
-  [K in keyof T]: T[K] extends object ? Camel<T[K]> : T[K]; 
-} : {
-  [K in keyof T as Camelize<K>]: T[K] extends object ? Camel<T[K]> : T[K]; 
-}
+export type Camel<T> = T extends unknown[] ? 
+	{ [K in keyof T]: T[K] extends object ? Camel<T[K]> : T[K]; }
+	: { [K in keyof T as Camelize<K>]: T[K] extends object ? Camel<T[K]> : T[K]; }
 export type Assign<A, B> = Copy<Pick<A, Exclude<keyof A, keyof B>> & B>;
-export type Flip<T extends { [K: string | number]: BoolKeyable }> = {
-	[K in keyof T as `${T[K]}`]: K;
-};
-
+export type Merge<A, B> = Copy<Omit<A, keyof B> & Omit<B, keyof A> & { [K in Extract<keyof A, keyof B>]: A[K] | B[K]}>
+export type Intersect<A, B> = Copy<Omit<A, keyof B> & Omit<B, keyof A> & { [K in Extract<keyof A, keyof B>]: Copy<A[K] & B[K]>}>
 
 // Array
 export type Prepend<T extends unknown[], F> = [F, ...T];
@@ -225,18 +217,18 @@ export type ReplaceAll<
 	: S;
 
 export type AsStr<T> = T extends string ? T : never;
-export type Revert<S> = S extends `${infer First}${infer Rest}`
-	? `${Revert<Rest>}${First}`
-	: "";
 
 export type Head<S> = S extends `${infer First}${string}` ? First : never;
 export type Tail<S> = S extends `${string}${infer Rest}` ? Rest : never;
 
 export type Rotate<S> = `${Tail<S>}${Head<S>}`;
+export type Revert<S> = S extends `${infer First}${infer Rest}` ? `${Revert<Rest>}${First}` : "";
 
-export type Zip<From, To> = From extends `${infer First}${infer Rest}`
+export type Zip<From, To> = Copy<From extends `${infer First}${infer Rest}`
 	? Record<First, Head<To>> & Zip<Rest, Tail<To>>
-	: {};
+	: {}>;
+
+type Ziped = Zip<"1vc6", "3z92">
 
 export type Camelize<T> = T extends `${infer L}_${infer F}${infer O}` ? Camelize<`${L}${Uppercase<F>}${O}`> : T;
 //
@@ -264,22 +256,14 @@ export type SameArgs<
 	P extends any[]
 > = P extends Parameters<F> ? true : false;
 
-export type UnionToIntersection<U> = (
-	U extends any ? (k: U) => void : never
-) extends (k: infer I) => void
-	? I
-	: never;
-
-type UnionToFn<T> = 
-	(
-		T extends unknown ?
-		(k: () => T) => void 
-		: never
-	) extends ((k: infer R) => void)
-	? R
-	: never
+// prettier-ignore
+export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends ((k: infer I) => void) ? I : never;
+// prettier-ignore
+type UnionToFn<U> = (U extends any ? (k: () => U) => void : never) extends ((k: infer R) => void)? R : never
   
 export type UnionToTuple<T, P extends any[] = []> = UnionToFn<T> extends () => infer R ? Exclude<T, R> extends never ? [...P, R] : UnionToTuple<Exclude<T, R>, [...P, R]> : never;
+
+type Random<I extends Nkhelv = 0> = UnionToTuple<Nkhelv>[I];
 
 export type PickByValue<T, ValueType> = Pick<
 	T,
@@ -323,8 +307,6 @@ export type OmitAll<T, ValueType extends keyof T = keyof T> = Omit<
 	ValueType
 >;
 
-export type ReadonlyKeys<T> = {
+export type ReadonlyKeys<T> = AllKeysOf<{
 	[Key in keyof T as Equal<T, Readonly<T>> extends true ? Key : never]: Key;
-} extends infer A
-	? A[keyof A]
-	: never;
+}>

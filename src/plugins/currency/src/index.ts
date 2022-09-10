@@ -1,5 +1,5 @@
 import CommandManager from "../../../core/CommandManager";
-import QuickLoader, {rez} from "../../../core/util/QuickLoader";
+import QuickLoader, {rez} from "../../../services/QuickLoader";
 
 let ql = new QuickLoader({
     include: ["economy", "inventory", "fish", "use", "sell", "travel", "overload"],
