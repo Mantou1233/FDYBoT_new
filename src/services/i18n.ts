@@ -44,6 +44,7 @@ class i18n {
         if (!Object.keys(langs).includes(lang))
             throw new Error("No lang specified found!");
         let str = langs[lang][string] ?? langs["en"][string] ?? "%s";
+        if(typeof str != "string") return str;
         for (let ot of opt) str = str.replace("%s", `${ot}`);
         return str;
     }

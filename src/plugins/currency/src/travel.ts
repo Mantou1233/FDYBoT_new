@@ -21,9 +21,9 @@ async function load(client, cm: CommandManager) {
             let args = ap(msg.content, true);
             let p = new Profile(msg.author.id) as UserSchema;
             const current = queue.tripQueue[msg.author.id];
-            if(current) return msg.channel.send(`Your duck is already on travel! (${toPercent(current.lapse - current.time, current.lapse)})`);
-            if(!args[1]) return msg.channel.send("invaild location! use `+map` to see a list of maps.");
-            if(!Object.keys(locations).includes(args[1])) return msg.channel.send("that is not a vaild place.");
+            if(current) return msg.channel.send(i18n.parse(msg.lang, "trip.travel.or", toPercent(current.lapse - current.time, current.lapse)));
+            if(!args[1]) return msg.channel.send(i18n.parse(msg.lang, "trip.travel.invaild", prefix));
+            if(!Object.keys(locations).includes(args[1])) return msg.channel.send(i18n.parse(msg.lang, "trip.travel.invaild", prefix));
             
             queue.tripQueue[msg.author.id] = {
                 id: msg.author.id,
@@ -35,7 +35,7 @@ async function load(client, cm: CommandManager) {
                 lang: msg.lang
             };
 
-            msg.reply(`duck is now travling in ${args[1]}`);
+            msg.reply(`鴨鴨在 ${args[1]} 陸星了！ 耶耶耶\nduck is triping ok`);
         }
     });
     cm.register({

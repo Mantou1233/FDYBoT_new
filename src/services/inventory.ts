@@ -1,18 +1,18 @@
 
 import { langs } from "./i18n";
 class InventoryManager{
-    toDisplay(lang = "en", id, raw = true){
-        let st = i18n.parse(lang, `-item.${id}`);
-        let icon = (raw ? "" : (i18n.icon[`item.${id}`] ?? i18n.icon["item.wip"]) + " ");
+    toDisplay(lang = "en", id, raw = true, prefix = "item."){
+        let st = i18n.parse(lang, `-${prefix}${id}`);
+        let icon = prefix.includes("item") ? (raw ? "" : (i18n.icon[`item.${id}`] ?? i18n.icon["item.wip"]) + " ") : "";
         return (st === "%s" ? `${icon}${id.replaceAll("_", " ")}` : `${icon}${st}`);
     }
-    getItems(id, list: string[] = []){
+    getItems(id, list: string[] = [], prefix = "item."){
         if(list.length == 0) return;
         let obj: Record<string, string[]> = {};
         for(let ea of list){
             obj[ea] = [ea];
             for(let lang of Object.keys(langs)){
-                obj[ea].push(i18n.parse(lang, `-item.${ea}`).replace("%s", `${ea}`));
+                obj[ea].push(i18n.parse(lang, `-${prefix}${ea}`).replace("%s", `${ea}`));
             }
             obj[ea] = [...new Set(obj[ea])];
         }
