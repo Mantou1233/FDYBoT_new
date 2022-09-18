@@ -24,10 +24,22 @@
     "currency.fish.noRod": "You dont have a fishing rod equipped!\nif you have a fishing rod, you can use `%sequip <rod>` to equip.\nYou can get a starter fishing rod by opening a bundle using `%sopen bundle`.",
     "currency.equip.conflict": "You already equipped a item! please unequip it via `%sunequip`.",
     "currency.unequip.conflict": "You have no item equipped...",
+    "trip.travel.text": "you traveled at %s and got",
+    "trip.plains.travelquotes": [
+        "wow, the grass is 2 blocks tall!",
+        "what is this flower??",
+        "aa i got fucked by the berry blush, that hurts...",
+        "why you can get apple from the leaf??"
+    ],
     "item.cod": "cod",
     "item.fish": "fish",
     "item.salmon": "salmon",
-    "item.squid": "squid",
-    "item.bundle": "bundle",
-    "item.fishing_rod": "fishing rod"
+    "item.seed": "seeds",
+    "item.wood": "Oak Log",
+    "item.grass": "grass",
+    "item.apple": "apple",
+    "item.azure_bluet": "Azure Bluet",
+    "item.squid": "Squid",
+    "item.bundle": "Bundle",
+    "item.fishing_rod": "Fishing rod"
 }

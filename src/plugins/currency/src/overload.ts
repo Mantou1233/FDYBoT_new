@@ -33,13 +33,13 @@ async function load(client: Discord.Client, cm: CommandManager) {
 						content: `<@${q.id}>`,
 						embeds: [
 							new Discord.EmbedBuilder()
-								.setTitle(`you traveled at ${q.location} and got `)
+								.setTitle(i18n.parse(q.lang, "trip.travel.text", q.location))
 								.setDescription(
 									(
 										function(res, str = ""){
 											for(let [k, v] of Object.entries(res)){
 												if((v as number) < 1) continue;
-												str += i18n.parse("en", "currency.format.result", im.toDisplay("en", k, false), `${v}\n`);
+												str += i18n.parse(q.lang, "currency.format.result", im.toDisplay(q.lang, k, false), `${v}\n`);
 											}
 											return str;
 										}

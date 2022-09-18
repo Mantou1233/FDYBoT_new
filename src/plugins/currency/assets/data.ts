@@ -2,25 +2,26 @@ import Discord from "discord.js";
 
 // decided not to use JSON cause em types init here
 export type QueueType = {
-    id: string,
+    id: string
     channel: Discord.TextBasedChannel | {
         send: (...args: Parameters<Discord.TextBasedChannel["send"]>) => any
-    },
+    }
     location: string //TLocations,
     lootOverride?: Record<string, number>
     flow: number
     time: number // in seconds
-    lapse: number
+    lapse: number,
+    lang: string
 };
 export const locations = {
     plains: {
-        time: 55,
+        time: 180,
         loots: {
-            stick: 1,
             seeds: 3,
-            log: 5,
+            wood: 2,
+            azure_bluet: 1,
+            grass: 1,
             apple: 1,
-            "repeat-duck": 3,
         }
     }
 };

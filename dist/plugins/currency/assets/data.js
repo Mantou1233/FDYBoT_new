@@ -3,13 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.sell = exports.locations = void 0;
 exports.locations = {
     plains: {
-        time: 55,
+        time: 180,
         loots: {
-            stick: 1,
             seeds: 3,
-            log: 5,
+            wood: 2,
+            azure_bluet: 1,
+            grass: 1,
             apple: 1,
-            "repeat-duck": 3,
         }
     }
 };

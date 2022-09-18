@@ -32,12 +32,12 @@ async function load(client, cm) {
                     content: `<@${q.id}>`,
                     embeds: [
                         new discord_js_1.default.EmbedBuilder()
-                            .setTitle(`you traveled at ${q.location} and got `)
+                            .setTitle(i18n.parse(q.lang, "trip.travel.text", q.location))
                             .setDescription((function (res, str = "") {
                             for (let [k, v] of Object.entries(res)) {
                                 if (v < 1)
                                     continue;
-                                str += i18n.parse("en", "currency.format.result", inventory_1.default.toDisplay("en", k, false), `${v}\n`);
+                                str += i18n.parse(q.lang, "currency.format.result", inventory_1.default.toDisplay(q.lang, k, false), `${v}\n`);
                             }
                             return str;
                         })(result))

@@ -19,9 +19,21 @@
     "currency.format.subjectNotFoundOrUsable": "指定的物品不存在或無法使用。",
     "currency.format.subjectDontHave": "你沒有這個物品呢...",
     "currency.fish.noRod": "你沒有裝備上魚竿!\n如果你有魚竿,可以使用`%sequip <魚竿名>`裝備上.\n如果你沒有魚竿,可以使用`%sopen bundle`獲取新手魚竿.",
+    "trip.travel.text": "你在%s旅行，獲得：",
+    "trip.plains.travelquotes": [
+        "哇，這草好長啊！",
+        "這花是什麽花啊",
+        "被莓果扎到，嗚嗚，好痛",
+        "這蘋果好少"
+    ],
     "item.cod": "鱈魚",
     "item.fish": "魚",
     "item.salmon": "三文魚",
+    "item.seed": "種子",
+    "item.wood": "木頭",
+    "item.grass": "野草",
+    "item.apple": "蘋果",
+    "item.azure_bluet": "雛草",
     "item.squid": "墨魚",
     "item.bundle": "束口袋",
     "item.fishing_rod": "魚竿"

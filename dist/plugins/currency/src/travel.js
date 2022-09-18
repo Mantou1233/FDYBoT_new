@@ -31,7 +31,8 @@ async function load(client, cm) {
                 location: args[1],
                 time: data_1.locations[args[1]].time,
                 lapse: data_1.locations[args[1]].time,
-                flow: 0
+                flow: 0,
+                lang: msg.lang
             };
             msg.reply(`duck is now travling in ${args[1]}`);
         }

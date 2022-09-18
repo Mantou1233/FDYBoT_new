@@ -31,7 +31,8 @@ async function load(client, cm: CommandManager) {
                 location: args[1],
                 time: locations[args[1]].time,
                 lapse: locations[args[1]].time,
-                flow: 0
+                flow: 0,
+                lang: msg.lang
             };
 
             msg.reply(`duck is now travling in ${args[1]}`);
