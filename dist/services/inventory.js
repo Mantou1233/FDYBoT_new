@@ -2,19 +2,19 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const i18n_1 = require("./i18n");
 class InventoryManager {
-    toDisplay(lang = "en", id, raw = true) {
-        let st = i18n.parse(lang, `-item.${id}`);
-        let icon = (raw ? "" : (i18n.icon[`item.${id}`] ?? i18n.icon["item.wip"]) + " ");
+    toDisplay(lang = "en", id, raw = true, prefix = "item.") {
+        let st = i18n.parse(lang, `-${prefix}${id}`);
+        let icon = prefix.includes("item") ? (raw ? "" : (i18n.icon[`item.${id}`] ?? i18n.icon["item.wip"]) + " ") : "";
         return (st === "%s" ? `${icon}${id.replaceAll("_", " ")}` : `${icon}${st}`);
     }
-    getItems(id, list = []) {
+    getItems(id, list = [], prefix = "item.") {
         if (list.length == 0)
             return;
         let obj = {};
         for (let ea of list) {
             obj[ea] = [ea];
             for (let lang of Object.keys(i18n_1.langs)) {
-                obj[ea].push(i18n.parse(lang, `-item.${ea}`).replace("%s", `${ea}`));
+                obj[ea].push(i18n.parse(lang, `-${prefix}${ea}`).replace("%s", `${ea}`));
             }
             obj[ea] = [...new Set(obj[ea])];
         }

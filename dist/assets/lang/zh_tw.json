@@ -20,6 +20,8 @@
     "currency.format.subjectDontHave": "你沒有這個物品呢...",
     "currency.fish.noRod": "你沒有裝備上魚竿!\n如果你有魚竿,可以使用`%sequip <魚竿名>`裝備上.\n如果你沒有魚竿,可以使用`%sopen bundle`獲取新手魚竿.",
     "trip.travel.text": "你在%s旅行，獲得：",
+    "trip.travel.or": "鴨鴨已經在旅行啦！ (%s)",
+    "trip.travel.invaild": "啊？沒找到這地點。用 `%smap` 可以看地點。",
     "trip.plains.travelquotes": [
         "哇，這草好長啊！",
         "這花是什麽花啊",

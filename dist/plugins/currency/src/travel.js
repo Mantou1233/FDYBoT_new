@@ -20,11 +20,11 @@ async function load(client, cm) {
             let p = new Database_1.Profile(msg.author.id);
             const current = queue_1.default.tripQueue[msg.author.id];
             if (current)
-                return msg.channel.send(`Your duck is already on travel! (${(0, math_1.toPercent)(current.lapse - current.time, current.lapse)})`);
+                return msg.channel.send(i18n.parse(msg.lang, "trip.travel.or", (0, math_1.toPercent)(current.lapse - current.time, current.lapse)));
             if (!args[1])
-                return msg.channel.send("invaild location! use `+map` to see a list of maps.");
+                return msg.channel.send(i18n.parse(msg.lang, "trip.travel.invaild", prefix));
             if (!Object.keys(data_1.locations).includes(args[1]))
-                return msg.channel.send("that is not a vaild place.");
+                return msg.channel.send(i18n.parse(msg.lang, "trip.travel.invaild", prefix));
             queue_1.default.tripQueue[msg.author.id] = {
                 id: msg.author.id,
                 channel: msg.channel,
@@ -34,7 +34,7 @@ async function load(client, cm) {
                 flow: 0,
                 lang: msg.lang
             };
-            msg.reply(`duck is now travling in ${args[1]}`);
+            msg.reply(`鴨鴨在 ${args[1]} 陸星了！ 耶耶耶\nduck is triping ok`);
         }
     });
     cm.register({

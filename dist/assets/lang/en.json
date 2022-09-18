@@ -25,6 +25,8 @@
     "currency.equip.conflict": "You already equipped a item! please unequip it via `%sunequip`.",
     "currency.unequip.conflict": "You have no item equipped...",
     "trip.travel.text": "you traveled at %s and got",
+    "trip.travel.or": "your duck is already in travel! (%s)",
+    "trip.travel.invaild": "that is not a location. i, uh, at least didnt find it. use `%smap` to see locations.",
     "trip.plains.travelquotes": [
         "wow, the grass is 2 blocks tall!",
         "what is this flower??",

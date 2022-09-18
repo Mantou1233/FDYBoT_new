@@ -39,6 +39,8 @@ async function load(client, cm) {
                                     continue;
                                 str += i18n.parse(q.lang, "currency.format.result", inventory_1.default.toDisplay(q.lang, k, false), `${v}\n`);
                             }
+                            const quotes = i18n.parse(q.lang, "trip.plains.travelquotes");
+                            str += quotes[random(0, quotes.length - 1)];
                             return str;
                         })(result))
                             .setColor(i18n.globe.color)
