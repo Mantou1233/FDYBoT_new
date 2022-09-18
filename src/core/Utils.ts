@@ -1,4 +1,10 @@
 /* eslint-disable @typescript-eslint/no-extra-semi */
+export enum Comparison {
+	Lower = -1,
+	Equal,
+	Greater
+}
+
 export type Nkhelv = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0;
 
 export type Copy<T> = {
@@ -13,7 +19,7 @@ export type NestedKeys<T> = {
 	[K in keyof T]: keyof T[K];
 }[keyof T];
 
-export type DeepNest<T> = T extends Record<string | number | symbol, any>
+export type DeepNest<T> = T extends Record<keyof any, any>
 	? {
 		[K in keyof T]: DeepNest<T[K]>;
 	}
@@ -46,7 +52,11 @@ export type Match<
 	M extends boolean = true
 > = Pick<T, MatchNames<T, L, M>>;
 
-export type If<T extends boolean, A, B = null> = T extends true ? A : T extends false ? B : A | B;
+export type If<T extends boolean, A, B = null> = T extends true
+	? A
+	: T extends false
+	? B
+	: A | B;
 export type FulFill<T extends boolean = true> = T;
 export type Capable<T> = T extends boolean ? T : never;
 export type Reverse<T extends boolean = true> = true extends T ? false : true;
@@ -54,32 +64,104 @@ export type Reverse<T extends boolean = true> = true extends T ? false : true;
 export type Callback<T = void> = () => T;
 export type FuncCallback<P extends any[], R> = (...args: P) => R;
 
+// Extract
 export type SetIntersection<A, B> = A extends B ? A : never;
+// Exclude
 export type SetDifference<A, B> = A extends B ? never : A;
+
 export type SetComplement<A, B extends A> = SetDifference<A, B>;
 export type SymmetricDifference<A, B> = SetDifference<A | B, A & B>;
 //
 
-export type ParseInt<S extends string | number> = `${S}` extends `${infer I extends number}` ? I : never;
-export type Floor<S extends string | number> = `${S}` extends `${infer I extends number}.${infer _ extends number}`? I : `${S}`;
+export type Comparator<
+	A extends number,
+	B extends number
+> = `${A}` extends `-${infer AbsA}`
+	? `${B}` extends `-${infer AbsB}`
+		? ComparePositives<AbsB, AbsA>
+		: Comparison.Lower
+	: `${B}` extends `-${number}`
+	? Comparison.Greater
+	: ComparePositives<`${A}`, `${B}`>;
 
-export type RemoveLeadingZeros<S extends string> = S extends "0" ? S : S extends `${"0"}${infer R}` ? RemoveLeadingZeros<R> : S;
+type ComparePositives<
+	A extends string,
+	B extends string,
+	ByLength = CompareByLength<A, B>
+> = ByLength extends Comparison.Equal ? CompareByDigits<A, B> : ByLength;
 
-type InternalMinusOne<S extends string> = S extends `${infer Digit extends number}${infer Rest}` ?
-	Digit extends 0 ?
-			`9${InternalMinusOne<Rest>}` :
-		`${[9, 0, 1, 2, 3, 4, 5, 6, 7, 8][Digit]}${Rest}` :
-	never;
-export type MinusOne<T extends number> = ParseInt<RemoveLeadingZeros<Revert<InternalMinusOne<Revert<`${T}`>>>>>;
+type CompareByLength<
+	A extends string,
+	B extends string
+> = A extends `${infer AF}${infer AR}`
+	? B extends `${infer BF}${infer BR}`
+		? CompareByLength<AR, BR>
+		: Comparison.Greater
+	: B extends `${infer BF}${infer BR}`
+	? Comparison.Lower
+	: Comparison.Equal;
 
-type InternalAddOne<S extends string> = S extends `${infer Digit extends number}${infer Rest}` ?
-	Digit extends 0 ?
-			`9${InternalAddOne<Rest>}` :
-		`${[1, 2, 3, 4, 5, 6, 7, 8, 9, 0][Digit]}${Rest}` :
-	never;
-export type AddOne<T extends number> = ParseInt<RemoveLeadingZeros<Revert<InternalAddOne<Revert<`${T}`>>>>>;
+type CompareByDigits<
+	A extends string,
+	B extends string
+> = `${A}|${B}` extends `${infer AF}${infer AR}|${infer BF}${infer BR}`
+	? CompareDigits<AF, BF> extends Comparison.Equal
+		? CompareByDigits<AR, BR>
+		: CompareDigits<AF, BF>
+	: Comparison.Equal;
 
-export type ArrayConstruct<N extends number, Arr extends any[] = []> = N extends 0 ? Arr : ArrayConstruct<MinusOne<N>, [...Arr, unknown]>;
+type CompareDigits<A extends string, B extends string> = A extends B
+	? Comparison.Equal
+	: "0123456789" extends `${string}${A}${string}${B}${string}`
+	? Comparison.Lower
+	: Comparison.Greater;
+
+export type ParseInt<S extends string | number> =
+	`${S}` extends `${infer I extends number}` ? I : never;
+
+export type Floor<S extends string | number> =
+	`${S}` extends `${infer I extends number}.${infer _ extends number}`
+		? I
+		: `${S}` extends `${infer I1 extends number}`
+		? I1
+		: S;
+
+export type RemoveLeadingZeros<S extends string> = S extends "0"
+	? S
+	: S extends `${"0"}${infer R}`
+	? RemoveLeadingZeros<R>
+	: S;
+
+type InternalMinusOne<S extends string> =
+	S extends `${infer Digit extends number}${infer Rest}`
+		? Digit extends 0
+			? `9${InternalMinusOne<Rest>}`
+			: `${[9, 0, 1, 2, 3, 4, 5, 6, 7, 8][Digit]}${Rest}`
+		: never;
+export type MinusOne<T extends number> = ParseInt<
+	RemoveLeadingZeros<Revert<InternalMinusOne<Revert<`${T}`>>>>
+>;
+
+type InternalAddOne<S extends string> =
+	S extends `${infer Digit extends number}${infer Rest}`
+		? Digit extends 0
+			? `9${InternalAddOne<Rest>}`
+			: `${[1, 2, 3, 4, 5, 6, 7, 8, 9, 0][Digit]}${Rest}`
+		: never;
+export type AddOne<T extends number | string> = ParseInt<
+	RemoveLeadingZeros<Revert<InternalAddOne<Revert<`${T}`>>>>
+>;
+
+export type ArrayConstruct<
+	N extends number,
+	Arr extends any[] = []
+> = N extends 0 ? Arr : ArrayConstruct<MinusOne<N>, [...Arr, unknown]>;
+
+export type ArrayLikeConstruct<N extends number, Obj = {}> = N extends 0
+	? Obj
+	: {
+		[K in MinusOne<N>]: unknown;
+	} & ArrayLikeConstruct<MinusOne<N>>;
 
 // Object
 export type Get<T, K> = K extends keyof T
@@ -90,26 +172,59 @@ export type Get<T, K> = K extends keyof T
 		: never
 	: never;
 
-export type DeepPick<T extends Record<string, any>, P extends string> = UnionToIntersection<
-	P extends P ?
-		P extends `${infer Key}.${infer Rest}` ?
-		{
-			[K in Key]: DeepPick<T[K], Rest>
-		} :
-		P extends keyof T ?
-			Pick<T, P> :
-			never :
-		never
->
+export type DeepPick<
+	T extends Record<string, any>,
+	P extends string
+> = UnionToIntersection<
+	P extends P
+		? P extends `${infer Key}.${infer Rest}`
+			? {
+				[K in Key]: DeepPick<T[K], Rest>;
+			}
+			: P extends keyof T
+			? Pick<T, P>
+			: never
+		: never
+>;
 
-export type DeepGet<T extends Record<string, any>, P extends string> = P extends infer K ? Get<T, K> : never;
+type LengthOf<T extends Record<keyof any, any>> = UnionToTuple<
+	keyof T
+> & { length: number } extends { length: infer L extends number }
+	? L
+	: 0;
 
-export type Camel<T> = T extends unknown[] ? 
-	{ [K in keyof T]: T[K] extends object ? Camel<T[K]> : T[K]; }
-	: { [K in keyof T as Camelize<K>]: T[K] extends object ? Camel<T[K]> : T[K]; }
+type x = LengthOf<{
+	az: 2;
+	c2: 1;
+}>;
+type y = LengthOf<{
+	a: 23;
+	4: 1;
+}>;
+
+export type DeepGet<
+	T extends Record<string, any>,
+	P extends string
+> = P extends infer K ? Get<T, K> : never;
+
+export type Camel<T> = T extends unknown[]
+	? { [K in keyof T]: T[K] extends object ? Camel<T[K]> : T[K] }
+	: {
+		[K in keyof T as Camelize<K>]: T[K] extends object
+			? Camel<T[K]>
+			: T[K];
+	};
 export type Assign<A, B> = Copy<Pick<A, Exclude<keyof A, keyof B>> & B>;
-export type Merge<A, B> = Copy<Omit<A, keyof B> & Omit<B, keyof A> & { [K in Extract<keyof A, keyof B>]: A[K] | B[K]}>
-export type Intersect<A, B> = Copy<Omit<A, keyof B> & Omit<B, keyof A> & { [K in Extract<keyof A, keyof B>]: Copy<A[K] & B[K]>}>
+export type Merge<A, B> = Copy<
+	Omit<A, keyof B> &
+		Omit<B, keyof A> & { [K in Extract<keyof A, keyof B>]: A[K] | B[K] }
+>;
+export type Intersect<A, B> = Copy<
+	Omit<A, keyof B> &
+		Omit<B, keyof A> & {
+			[K in Extract<keyof A, keyof B>]: Copy<A[K] & B[K]>;
+		}
+>;
 
 // Array
 export type Prepend<T extends unknown[], F> = [F, ...T];
@@ -138,14 +253,21 @@ export type Shift<T extends unknown[]> = T extends [...infer Rest, infer L]
 	: T[0];
 
 export type Concat<A extends unknown[], B extends unknown[]> = [...A, ...B];
-export type Mix<T extends any[], R extends any[], Res extends any[] = []> = 
-  T extends [infer A, ...infer B]
+export type Mix<T extends any[], R extends any[]> = T extends [
+	infer A,
+	...infer B
+]
 	? R extends [infer M, ...infer N]
 		? [M, A, ...Mix<B, N>]
 		: []
 	: [];
-	
-export type ToArray<T> = T extends any[] ? T : [T];
+
+export type ToArray<T> = T extends Record<number, any>
+	? ObjToArray<T>
+	: T extends any[]
+	? T
+	: [T];
+export type ObjToArray<T, Acc extends unknown[] = []> = T extends Record<`${Acc["length"]}`, infer U> ? ObjToArray<T, [...Acc, U]> : Acc;
 
 export type Excludes<T, U> = T extends [infer First, ...infer Rest]
 	? Equal<U, First> extends true
@@ -222,15 +344,18 @@ export type Head<S> = S extends `${infer First}${string}` ? First : never;
 export type Tail<S> = S extends `${string}${infer Rest}` ? Rest : never;
 
 export type Rotate<S> = `${Tail<S>}${Head<S>}`;
-export type Revert<S> = S extends `${infer First}${infer Rest}` ? `${Revert<Rest>}${First}` : "";
+export type Revert<S> = S extends `${infer First}${infer Rest}`
+	? `${Revert<Rest>}${First}`
+	: "";
 
-export type Zip<From, To> = Copy<From extends `${infer First}${infer Rest}`
-	? Record<First, Head<To>> & Zip<Rest, Tail<To>>
-	: {}>;
-
-type Ziped = Zip<"1vc6", "3z92">
-
-export type Camelize<T> = T extends `${infer L}_${infer F}${infer O}` ? Camelize<`${L}${Uppercase<F>}${O}`> : T;
+export type Zip<From, To> = Copy<
+	From extends `${infer First}${infer Rest}`
+		? Record<First, Head<To>> & Zip<Rest, Tail<To>>
+		: {}
+>;
+export type Camelize<T> = T extends `${infer L}_${infer F}${infer O}`
+	? Camelize<`${L}${Uppercase<F>}${O}`>
+	: T;
 //
 export type AllKeysOf<T> = T extends T ? keyof T : never;
 
@@ -247,6 +372,8 @@ export type NotEqual<X, Y> = Reverse<Equal<X, Y>>;
 export type Diff<T extends object, U extends object> = Pick<T, SetDifference<keyof T, keyof U>>;
 export type IsAny<T> = 0 extends 1 & T ? true : false;
 export type NotAny<T> = Reverse<IsAny<T>>;
+export type IsNever<T> = [T] extends [never] ? true : false;
+export type NotNever<T> = Reverse<IsNever<T>>;
 
 export type Alike<X, Y> = Equal<DeepNest<X>, DeepNest<Y>>;
 export type ExpectExtends<V, E> = E extends V ? true : false;
@@ -260,8 +387,15 @@ export type SameArgs<
 export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends ((k: infer I) => void) ? I : never;
 // prettier-ignore
 type UnionToFn<U> = (U extends any ? (k: () => U) => void : never) extends ((k: infer R) => void)? R : never
-  
-export type UnionToTuple<T, P extends any[] = []> = UnionToFn<T> extends () => infer R ? Exclude<T, R> extends never ? [...P, R] : UnionToTuple<Exclude<T, R>, [...P, R]> : never;
+
+export type UnionToTuple<
+	T,
+	P extends any[] = []
+> = UnionToFn<T> extends () => infer R
+	? Exclude<T, R> extends never
+		? [...P, R]
+		: UnionToTuple<Exclude<T, R>, [...P, R]>
+	: [];
 
 type Random<I extends Nkhelv = 0> = UnionToTuple<Nkhelv>[I];
 
@@ -309,4 +443,4 @@ export type OmitAll<T, ValueType extends keyof T = keyof T> = Omit<
 
 export type ReadonlyKeys<T> = AllKeysOf<{
 	[Key in keyof T as Equal<T, Readonly<T>> extends true ? Key : never]: Key;
-}>
+}>;

@@ -7,4 +7,5 @@ json.sqlite
 package-lock.json
 .VSCodeCounter/
 **/*.temp
-rs
+rs/
+arcaea/

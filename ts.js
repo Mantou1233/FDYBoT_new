@@ -8,9 +8,7 @@ console.log(
     percentage(
         os.freemem(),
         os.totalmem()
-    ).toFixed(1)
-    ,os.totalmem()
-    ,os.freemem()
+    ).toFixed(1) + "%"
 )
 
 
@@ -18,7 +16,5 @@ console.log(
     percentage(
         os.totalmem() - os.freemem(),
         os.totalmem()
-    ).toFixed(1)
-    ,os.totalmem()
-    ,os.freemem()
+    ).toFixed(1) + "%"
 )
