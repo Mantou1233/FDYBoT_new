@@ -29,6 +29,7 @@
     "trip.travel.text": "you traveled at %s and got",
     "trip.travel.or": "your duck is already in travel! (%s)",
     "trip.travel.invaild": "that is not a location. i, uh, at least didnt find it. use `%smap` to see locations.",
+    "trip.travel.success": "duck is now travelling at %s!",
 
     "trip.plains.travelquotes": [
         "wow, the grass is 2 blocks tall!",
@@ -41,10 +42,10 @@
     "item.fish": "fish",
     "item.salmon": "salmon",
 
-    "item.seed": "seeds",
+    "item.seed": "Seeds",
     "item.wood": "Oak Log",
-    "item.grass": "grass",
-    "item.apple": "apple",
+    "item.grass": "Grass",
+    "item.apple": "Apple",
     "item.azure_bluet": "Azure Bluet",
 
     "item.squid": "Squid",

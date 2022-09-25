@@ -27,4 +27,5 @@ declare module "discord.js" {
         lang: langTypes;
     }
 }
+
 export {};

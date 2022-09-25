@@ -24,6 +24,7 @@
     "trip.travel.text": "你在%s旅行，獲得：",
     "trip.travel.or": "鴨鴨已經在旅行啦！ (%s)",
     "trip.travel.invaild": "啊？沒找到這地點。用 `%smap` 可以看地點。",
+    "trip.travel.success": "鴨鴨正在前往%s旅行啦！",
 
     "trip.plains.travelquotes": [
         "哇，這草好長啊！",

@@ -31,4 +31,13 @@ export const sell = {
     salmon: 40,
     squid: 50
 };
+export const craft = {
+    planks: {
+        wood: 4
+    },
+    x0z: {
+        oxygen: 32,
+        iupar: 2 ** 31
+    }
+};
 export type TLocations = keyof typeof locations;
