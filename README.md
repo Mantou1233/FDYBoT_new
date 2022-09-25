@@ -1,3 +1,3 @@
-# FDYBoT
+# FDYBoT V3
 
-Discord bot, originally for FDY server.
+rewrite using decorators + RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR fuck off stupid systems

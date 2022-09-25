@@ -1,25 +1,9 @@
 import "reflect-metadata";
 const info = Symbol("PluginInfo");
 //function reg<T extends { new (...args: any[]): {} }>(constructor: T, K) {}
-function RegisterPlugin(a: string | object) {
-    if(typeof a == "string"){
-        a = {
-            name: a
-        };
-    }
+export function DefinePlugin() {
     return function <T extends { new (...args: any[]): {} }>(constructor: T){
-        return class Plugin extends constructor {
-            [info] = {
-                ...{
-                    info: {
-        
-                    },
-                    commands: [],
-                    events: []
-                },
-                info: a
-            };
-        };
+        return class Plugin extends constructor{};
     };
 }
 
@@ -44,7 +28,7 @@ function Command(a) {
     };
 }
 
-@RegisterPlugin("test")
+@DefinePlugin()
 class BasicPlugin {
     @Inject client;
     @Command({ override: {

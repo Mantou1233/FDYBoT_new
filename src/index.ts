@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import "./services/i18n";
 import "./services/random";
 import "./services/ap";
@@ -7,7 +8,7 @@ import PluginLoader from "./core/PluginLoader";
 import CommandHandler from "./core/CommandHandler";
 console.log("Starting miraicle...");
 
-const {GatewayIntentBits, Partials} = Discord;
+const { GatewayIntentBits, Partials } = Discord;
 dotenv.config();
 
 async function main() {

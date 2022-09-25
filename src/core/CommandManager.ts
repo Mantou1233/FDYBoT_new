@@ -1,5 +1,5 @@
 import { Collection, Client } from "discord.js";
-import type { Command, Runner } from "./structure/Types";
+import type { Command } from "./structure/Types";
 class CommandManager {
     client: Client;
     commands: Collection<string, Command>;
@@ -15,7 +15,6 @@ class CommandManager {
         this.commands.set(cmd.command, {
             disabled: false,
             hidden: false,
-            from: global.loading as string,
             category: "Basic",
             desc: "",
             usage: `%p${cmd.command}`,

@@ -1,12 +1,10 @@
-import { Message } from "discord.js";
+import { Message, ClientEvents } from "discord.js";
 import { langs } from "./../../services/i18n";
 import { Awaitable, Copy } from "../Utils";
+import { PluginLike } from "./Plugin";
 
-type OverrideLangString<T> = {
-    [key in keyof typeof langs]?: T
-}
-type snowflake = string
-interface Command {
+type snowflake = string;
+export interface Command {
     display?: string; 
     command: string; 
     force?: boolean;
@@ -19,30 +17,32 @@ interface Command {
     disabled?: boolean;
     hidden?: boolean;
     flags?: string[],
-    from?: string;
-    filter?: {
-        /** @description true = whitelist, false = blacklist*/
-        mode?: boolean
-        guilds?: snowflake[],
-        users?: snowflake[]
-    }
-    override?: OverrideLangString<Copy<Exclude<Command & {error?: string, cooldown?: string}, "override">>>,
-    handler: (message: Message, ext: any) => Awaitable<void | any>;
+    /** [class, method] */ from: [PluginLike, string];
 }
 
-interface Runner {
+export interface Event{
+    event: string;
+    desc?: string;
+    hierarchy: number; 
+    /** [class, method] */ from: [PluginLike, string];
+}
+
+export interface PluginInfo{
     name: string;
-    disabled?: boolean;
-    handler: (message: Message) => any;
+    desc?: string;
 }
 
-export type { Command, Message, Runner };
+export interface PluginData{
+    commands: {
+        [K: string]: Command
+    };
+    events: {
+        [K in keyof ClientEvents]: ((...args: ClientEvents[K]) => any)[]
+    };
+    dependencies: string[];
+}
 
+export interface PluginExtensiveData extends PluginData{
+    parent: PluginLike;
+}
 
-type arr = [
-    {bar: 1},
-    {}
-]
-type IsNever<T> = [T] extends [never] ? true : false;
-type Bar<T> = IsNever<T> extends true ? T : never
-type bars = Bar<arr[number]>

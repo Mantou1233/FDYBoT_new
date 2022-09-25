@@ -14,17 +14,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -32,34 +21,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 exports.__esModule = true;
+exports.DefinePlugin = void 0;
 require("reflect-metadata");
 var info = Symbol("PluginInfo");
 //function reg<T extends { new (...args: any[]): {} }>(constructor: T, K) {}
-function RegisterPlugin(a) {
-    if (typeof a == "string") {
-        a = {
-            name: a
-        };
-    }
+function DefinePlugin() {
     return function (constructor) {
-        var _a, _b;
-        return _b = /** @class */ (function (_super) {
-                __extends(Plugin, _super);
-                function Plugin() {
-                    var _this = _super !== null && _super.apply(this, arguments) || this;
-                    _this[_a] = __assign({
-                        info: {},
-                        commands: [],
-                        events: []
-                    }, { info: a });
-                    return _this;
-                }
-                return Plugin;
-            }(constructor)),
-            _a = info,
-            _b;
+        return /** @class */ (function (_super) {
+            __extends(Plugin, _super);
+            function Plugin() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            return Plugin;
+        }(constructor));
     };
 }
+exports.DefinePlugin = DefinePlugin;
 function Inject(target, propKey) {
     if (!propKey[info]) {
         target[info] = {
@@ -92,7 +69,7 @@ var BasicPlugin = /** @class */ (function () {
             } })
     ], BasicPlugin.prototype, "echo");
     BasicPlugin = __decorate([
-        RegisterPlugin("test")
+        DefinePlugin()
     ], BasicPlugin);
     return BasicPlugin;
 }());
