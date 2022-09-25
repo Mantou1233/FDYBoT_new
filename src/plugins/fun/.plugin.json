@@ -1,0 +1,7 @@
+{
+    "name": "fun",
+    "desc": "?",
+    "version": "3.46^aprx",
+    "author": "Mantou",
+    "entry": "src/index.js"
+}
