@@ -13,7 +13,19 @@ class PluginLoader {
     loadedNames: string[];
     loadArgs: any;
     constructor(client) {
-        global.loading = -1;
+        registrys.set("client", client);
+        registrys.set("status", 
+            {
+                status: -1,
+                plugins: [
+                    
+                ],
+                inheritances: [
+                    
+                ]
+            }            
+        ); 
+        registrys.set("plugins", []);
         client.manager = new CommandManager(client);
         this.client = client;
         this.loadedList = [];

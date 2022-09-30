@@ -1,4 +1,4 @@
-import { PluginDataSymbol, PluginExtensiveSymbol, PluginInfoSymbol } from "./../../services/constants";
+import { PluginDataSymbol, PluginInfoSymbol } from "./../../services/constants";
 import { PluginData, PluginExtensiveData, PluginInfo } from "./Types";
 
 export interface PluginLike{
@@ -13,11 +13,5 @@ export class PluginBase implements PluginLike{
 
 export class ExtendedPluginBase extends PluginBase{
     [PluginInfoSymbol]: PluginInfo;
-    [PluginDataSymbol]: PluginData;
-    [PluginExtensiveSymbol]: PluginExtensiveData;
-}
-
-
-export class PluginManager<T = any>{
-
+    [PluginDataSymbol]: PluginExtensiveData;
 }

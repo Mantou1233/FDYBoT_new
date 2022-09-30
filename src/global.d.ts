@@ -16,6 +16,7 @@ declare global {
     };
     var random: (min: number, max: number) => number;
     var ap: (msg: string, mode?: boolean, flags?: any) => string[];
+    var registrys: Map<string, any>;
 }
 
 declare module "discord.js" {

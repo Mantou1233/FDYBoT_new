@@ -5,7 +5,7 @@ import "./services/ap";
 import dotenv from "dotenv";
 import Discord from "discord.js";
 import PluginLoader from "./core/PluginLoader";
-import CommandHandler from "./core/CommandHandler";
+//import CommandHandler from "./core/CommandHandler";
 console.log("Starting miraicle...");
 
 const { GatewayIntentBits, Partials } = Discord;
@@ -29,13 +29,14 @@ async function main() {
         }
     });
 
+
     client.once("ready", async () => {
-        console.log(`[miraicle] DiscordJS logged in as ${client.user?.tag}!`);
+        console.log(`[FDYBoT v3] logged in as ${client.user?.tag}!`);
         await botMain(client);
     });
 
     client.on("messageCreate", async msg => {
-        await CommandHandler(client, msg);
+        //await CommandHandler(client, msg);
     });
 
     client.login(process.env.TOKEN).then(r => {});
