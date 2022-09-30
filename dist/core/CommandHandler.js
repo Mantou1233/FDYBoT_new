@@ -8,7 +8,7 @@ const ms_1 = __importDefault(require("ms"));
 const Database_1 = require("./Database");
 const queue_1 = __importDefault(require("./../plugins/currency/src/queue"));
 const Cooldown = new discord_js_1.Collection();
-const prefix = process.env.PREFIX;
+const prefix = "-";//process.env.PREFIX;
 async function HandleCommands(client, msg) {
     if (msg.author.bot)
         return;
