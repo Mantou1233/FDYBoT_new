@@ -75,7 +75,7 @@ async function botMain(client: Client) {
             );
 
         client.user!.setPresence({
-            activities: [{ name: active, type: ActivityType.Custom }]
+            activities: [{ name: active, type: ActivityType.Watching }]
         });
     } catch (e) {
         console.error("Failed to start miraicle:");
