@@ -18,3 +18,4 @@ console.log(
         os.totalmem()
     ).toFixed(1) + "%"
 )
+

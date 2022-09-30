@@ -9,3 +9,5 @@ package-lock.json
 **/*.temp
 rs/
 arcaea/
+tokens.*
+v13.js

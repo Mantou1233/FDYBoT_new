@@ -2,7 +2,7 @@ import "./services/i18n";
 import "./services/random";
 import "./services/ap";
 import dotenv from "dotenv";
-import Discord from "discord.js";
+import Discord, { ActivityType, Client } from "discord.js";
 import PluginLoader from "./core/PluginLoader";
 import CommandHandler from "./core/CommandHandler";
 console.log("Starting miraicle...");
@@ -42,7 +42,7 @@ async function main() {
 
 main();
 //Main Function
-async function botMain(client) {
+async function botMain(client: Client) {
     try {
         // Load Plugins
 
@@ -74,10 +74,8 @@ async function botMain(client) {
                 )}`
             );
 
-        const botType = "WATCHING";
-
-        client.user.setPresence({
-            activities: [{ name: active, type: botType }]
+        client.user!.setPresence({
+            activities: [{ name: active, type: ActivityType.Custom }]
         });
     } catch (e) {
         console.error("Failed to start miraicle:");

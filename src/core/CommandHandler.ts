@@ -8,7 +8,7 @@ import queue from "./../plugins/currency/src/queue";
 
 const Cooldown = new Collection<string, number>();
 
-const prefix = "+";
+const prefix = process.env.PREFIX;
 
 
 async function HandleCommands(client: Client, msg: Message) {
