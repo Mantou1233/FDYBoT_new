@@ -1,5 +1,5 @@
 import Discord from "discord.js";
-const ux = (name, value, inline = false) => ({ name, value, inline });
+const toNewFields = (name, value, inline = false) => ({ name, value, inline });
 
 export default async (client: Discord.Client, msg: Discord.Message, prefix: string) => {
     /* prettier-ignore */
@@ -7,7 +7,7 @@ export default async (client: Discord.Client, msg: Discord.Message, prefix: stri
 
     const args = ap(msg.content);
     if (!args[1]) {
-        let categorys: any = {};
+        let categorys: Record<string, string> = {};
         for(let c of commands){
             if(c?.disabled || c?.hidden) continue;
             if("category" in c){
@@ -28,7 +28,7 @@ export default async (client: Discord.Client, msg: Discord.Message, prefix: stri
                 "do `$h module` to see a description of a command you need more info on! For example `/h jrrp`"
             );
         for (let [key, value] of Object.entries(categorys)) {
-            newEmbed.addFields(ux(`**${key}**`, value));
+            newEmbed.addFields(toNewFields(`**${key}**`, value));
         }
 
         return msg.channel.send({ embeds: [newEmbed] });
