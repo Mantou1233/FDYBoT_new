@@ -22,7 +22,7 @@ async function load(client, cm: CommandManager) {
                 .setColor("#CFF2FF")
                 .setTitle(`${msg.author.username}'s profile`)
                 .setDescription(
-                    `Wallet: ${p.coin}\nBank: ${p.bank} / ${p.bankAmount} (${bar}${percent})`
+                    `Wallet: ${p.coin}\nBank: ${p.bank} / ${p.bankAmount} (${bar} ${percent})`
                 );
 
             msg.channel.send({ embeds: [embed] });

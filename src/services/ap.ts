@@ -8,7 +8,7 @@ function argumentParser(msg, mode = false, flags = []) {
 }
 
 function getArguments(body) {
-    let args: any[] = [];
+    let args: string[] = [];
     let str = body.trim();
     while (str.length) {
         let arg;

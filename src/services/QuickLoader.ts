@@ -1,8 +1,6 @@
 import fg from "fast-glob";
 import { filter } from "mathjs";
-export const rez: (s: string) => string = (s) => s.replaceAll("\\", "/");
-
-type TypeBoolean = 0 | 1 
+export const cook: (s: string) => string = (s) => s.replaceAll("\\", "/");
 
 export default class QuickLoader{
 	cfg: Partial<{
