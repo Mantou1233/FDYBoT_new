@@ -4,7 +4,7 @@
     "description": "core",
     "main": "dist/index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "ts-node test.ts",
         "start": "node .",
         "lint": "eslint --fix src/*.js"
     },
@@ -26,12 +26,10 @@
         "he": "^1.2.0",
         "jimp": "^0.16.1",
         "lodash": "^4.17.21",
-        "lodash.get": "^4.4.2",
         "mathjs": "^10.6.1",
-        "node-lipsum": "^1.0.1",
-        "pretty-bytes": "^6.0.0",
         "pretty-ms": "^7.0.1",
-        "quick.db": "^7.1.3"
+        "quick.db": "^7.1.3",
+        "reflect-metadata": "^0.1.13"
     },
     "devDependencies": {
         "@types/lodash": "^4.14.184",

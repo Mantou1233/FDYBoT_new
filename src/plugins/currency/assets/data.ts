@@ -23,6 +23,16 @@ export const locations = {
             grass: 1,
             apple: 1,
         }
+    },
+    setUncaughtExceptionCaptureCallbackSuperiorRandomTypingPlaceBecauseIAmLazy: {
+        time: 180,
+        loots: {
+            paketa: 43,
+            kirb: 30,
+            mantou: 69,
+            fdy: 10382,
+            infinity: 1
+        }
     }
 };
 export const sell = {

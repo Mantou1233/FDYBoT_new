@@ -16,16 +16,29 @@ async function load(client, cm) {
         category: "Currency",
         desc: "See what do you got in your inventory",
         handler: async (msg, { prefix }) => {
+            const args = ap(msg.content, true);
             let p = new Database_1.Profile(msg.author.id);
             let result = {};
             let price = 0;
-            for (let [i, n] of Object.entries(data_1.sell)) {
-                if (inventory_1.default.hasItem(p, i)) {
-                    result[i] = p.inv[i];
-                    price += p.inv[i] * n;
-                    inventory_1.default.deleteItem(p, i);
+            if (args[1] == "all") {
+                for (let [i, n] of Object.entries(data_1.sell)) {
+                    if (inventory_1.default.hasItem(p, i)) {
+                        result[i] = p.inv[i];
+                        price += p.inv[i] * n;
+                        inventory_1.default.deleteItem(p, i);
+                    }
+                    continue;
                 }
-                continue;
+            }
+            else {
+                let item = inventory_1.default.getItems(args[1], Object.keys(data_1.sell));
+                if (!item)
+                    return msg.channel.send(i18n.parse(msg.lang, "currency.format.notFoundOrUsable"));
+                if (inventory_1.default.hasItem(p, item)) {
+                    result[item] = p.inv[item];
+                    price += p.inv[item] * data_1.sell[item];
+                    inventory_1.default.deleteItem(p, item);
+                }
             }
             p.coin += price;
             p.save();

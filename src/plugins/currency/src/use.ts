@@ -19,8 +19,8 @@ async function load(client, cm: CommandManager) {
             if(!args[1]) return;
 
             let item = im.getItems(args[1], Object.keys(callers.use));
-            if(!item) return msg.channel.send(i18n.parse(msg.lang, "currency.format.subjectNotFoundOrUsable"));
-            if(!p.inv[item]) return msg.channel.send(i18n.parse(msg.lang, "currency.format.subjectDontHave"));
+            if(!item) return msg.channel.send(i18n.parse(msg.lang, "currency.format.notFoundOrUsable"));
+            if(!p.inv[item]) return msg.channel.send(i18n.parse(msg.lang, "currency.format.noItemFail"));
 
             await callers.use[item](msg, p);
         }
@@ -35,8 +35,8 @@ async function load(client, cm: CommandManager) {
             if(!args[1]) return;
 
             let item = im.getItems(args[1], Object.keys(callers.equip));
-            if(!item) return msg.channel.send(i18n.parse(msg.lang, "currency.format.subjectNotFoundOrUsable"));
-            if(!p.inv[item]) return msg.channel.send(i18n.parse(msg.lang, "currency.format.subjectDontHave"));
+            if(!item) return msg.channel.send(i18n.parse(msg.lang, "currency.format.notFoundOrUsable"));
+            if(!p.inv[item]) return msg.channel.send(i18n.parse(msg.lang, "currency.format.noItemFail"));
 
             if(p.equip.rod !== -1) return msg.channel.send(i18n.parse(msg.lang, "currency.equip.conflict", prefix));
             await callers.equip[item].add(msg, p);

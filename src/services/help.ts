@@ -13,11 +13,9 @@ export default async (client: Discord.Client, msg: Discord.Message, prefix: stri
             if("category" in c){
                 if(c.category! in categorys){
                     categorys[c.category!] += `, \`${prefix}${c.command}\``;
+                    continue;
                 }
-                else
-                {
-                    categorys[c.category!] = "`" + prefix + c.command + "`";
-                }
+                categorys[c.category!] = "`" + prefix + c.command + "`";
             }
         }
 

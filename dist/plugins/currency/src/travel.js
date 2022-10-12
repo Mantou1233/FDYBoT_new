@@ -34,7 +34,7 @@ async function load(client, cm) {
                 flow: 0,
                 lang: msg.lang
             };
-            msg.reply(`鴨鴨在 ${args[1]} 陸星了！ 耶耶耶\nduck is triping ok`);
+            msg.reply(`duck travelin  ${args[1]} ok`);
         }
     });
     cm.register({
@@ -42,7 +42,7 @@ async function load(client, cm) {
         category: "Currency",
         desc: "see le map",
         handler: async (msg, { prefix }) => {
-            msg.channel.send(`Current locations: ${1}\n${i18n.parse(msg.lang, "currency.format.result", "Plains", "Great place for you dumb ass to touch grass")} `);
+            msg.channel.send(`Current locations: ${1}\n${i18n.parse(msg.lang, "currency.format.result", "Plains", "Great place for you dumb ass to touch grass")}\n${i18n.parse(msg.lang, "currency.format.result", "setUncaughtExceptionCaptureCallbackSuperiorRandomTypingPlaceBecauseIAmLazy", "tf?")} `);
         }
     });
 }

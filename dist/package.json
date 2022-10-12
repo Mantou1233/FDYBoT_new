@@ -4,7 +4,7 @@
     "description": "newest core",
     "main": "dist/index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "tsc vec3.ts --",
         "deploy": "node src/services/deploy/run.js",
         "lint": "eslint --fix src/*.js"
     },

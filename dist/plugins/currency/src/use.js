@@ -22,9 +22,9 @@ async function load(client, cm) {
                 return;
             let item = inventory_1.default.getItems(args[1], Object.keys(handlers_1.default.use));
             if (!item)
-                return msg.channel.send(i18n.parse(msg.lang, "currency.format.subjectNotFoundOrUsable"));
+                return msg.channel.send(i18n.parse(msg.lang, "currency.format.notFoundOrUsable"));
             if (!p.inv[item])
-                return msg.channel.send(i18n.parse(msg.lang, "currency.format.subjectDontHave"));
+                return msg.channel.send(i18n.parse(msg.lang, "currency.format.noItemFail"));
             await handlers_1.default.use[item](msg, p);
         }
     });
@@ -39,9 +39,9 @@ async function load(client, cm) {
                 return;
             let item = inventory_1.default.getItems(args[1], Object.keys(handlers_1.default.equip));
             if (!item)
-                return msg.channel.send(i18n.parse(msg.lang, "currency.format.subjectNotFoundOrUsable"));
+                return msg.channel.send(i18n.parse(msg.lang, "currency.format.notFoundOrUsable"));
             if (!p.inv[item])
-                return msg.channel.send(i18n.parse(msg.lang, "currency.format.subjectDontHave"));
+                return msg.channel.send(i18n.parse(msg.lang, "currency.format.noItemFail"));
             if (p.equip.rod !== -1)
                 return msg.channel.send(i18n.parse(msg.lang, "currency.equip.conflict", prefix));
             await handlers_1.default.equip[item].add(msg, p);

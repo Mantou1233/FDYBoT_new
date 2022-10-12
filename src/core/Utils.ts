@@ -5,7 +5,11 @@ export enum Comparison {
 	Greater
 }
 
-export type Nkhelv = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0;
+export type Nkhelv = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+
+export type NkhelvTuple = {
+	[N in Nkhelv]: NumbericArrayConstruct<N>
+}
 
 export type Copy<T> = {
 	[K in keyof T]: T[K];
@@ -58,8 +62,17 @@ export type If<T extends boolean, A, B = null> = T extends true
 	? B
 	: A | B;
 export type FulFill<T extends boolean = true> = T;
-export type Capable<T> = T extends boolean ? T : never;
+export type Capable<T, Type> = T extends infer U extends Type ? U : T;
 export type Reverse<T extends boolean = true> = true extends T ? false : true;
+export type And<X extends boolean, Y extends boolean> = 
+	Equal<
+		[Equal<X, true>, Equal<Y, true>],
+		[true, true]
+	>;
+export type Or<X extends boolean, Y extends boolean> = 
+	Equal<X, true> extends true ? true :
+	Equal<Y, true> extends true ? true : false;
+
 
 export type Callback<T = void> = () => T;
 export type FuncCallback<P extends any[], R> = (...args: P) => R;
@@ -72,6 +85,19 @@ export type SetDifference<A, B> = A extends B ? never : A;
 export type SetComplement<A, B extends A> = SetDifference<A, B>;
 export type SymmetricDifference<A, B> = SetDifference<A | B, A & B>;
 //
+
+
+// export type InternalSum<N1 extends number[], N2 extends number[]> = 
+// 	Or<Equal<N1["length"], 0>, Equal<N2["length"], 0>> extends true ?
+// 		[N1["length"], N2["length"]] extends [1, 1] ?
+// 		SimpleSum<N1[0], N2[0]>
+// 		: never
+// 	: 3
+	
+
+// export type Sum<N1 extends string | number | bigint, N2 extends string | number | bigint> = InternalSum<Split<`${N1}`>, Split<`${N2}`>>;
+
+// type num = InternalSum<[1], []>
 
 export type Comparator<
 	A extends number,
@@ -142,26 +168,50 @@ export type MinusOne<T extends number> = ParseInt<
 	RemoveLeadingZeros<Revert<InternalMinusOne<Revert<`${T}`>>>>
 >;
 
+
+
+export type SimpleSum<A extends number, B extends number> = [...ArrayConstruct<A>, ...ArrayConstruct<B>]["length"];
+
+export type SumDigits<A extends number, B extends number> = {};
+export type SumL<A extends number, B extends number, C extends { [L in Nkhelv]? : any } = {}> = 0;
+
+export type SumA<A extends number, B extends number> = 
+	Split<`${A}`>["length"] extends 1 ? 
+		Split<`${B}`>["length"] extends 1 ?
+			SimpleSum<A, B>
+		: SumL<A, B>
+	: SumL<A, B>;
+
+type Sum<A extends number, B extends number> = SumA<A, B>;
+
 type InternalAddOne<S extends string> =
 	S extends `${infer Digit extends number}${infer Rest}`
 		? Digit extends 0
 			? `9${InternalAddOne<Rest>}`
 			: `${[1, 2, 3, 4, 5, 6, 7, 8, 9, 0][Digit]}${Rest}`
 		: never;
+
 export type AddOne<T extends number | string> = ParseInt<
 	RemoveLeadingZeros<Revert<InternalAddOne<Revert<`${T}`>>>>
 >;
 
 export type ArrayConstruct<
 	N extends number,
+	V = unknown,
 	Arr extends any[] = []
-> = N extends 0 ? Arr : ArrayConstruct<MinusOne<N>, [...Arr, unknown]>;
+> = N extends 0 ? Arr : ArrayConstruct<MinusOne<N>, V, [...Arr, V]>;
 
-export type ArrayLikeConstruct<N extends number, Obj = {}> = N extends 0
+export type NumbericArrayConstruct<
+	N extends number,
+	V = unknown,
+	Arr extends any[] = []
+> = N extends 0 ? Arr : NumbericArrayConstruct<MinusOne<N>, V, [...Arr, N]>;
+
+export type ArrayLikeConstruct<N extends number, V = unknown, Obj = {}> = N extends 0
 	? Obj
 	: {
-		[K in MinusOne<N>]: unknown;
-	} & ArrayLikeConstruct<MinusOne<N>>;
+		[K in MinusOne<N>]: V;
+	} & ArrayLikeConstruct<MinusOne<N>, V>;
 
 // Object
 export type Get<T, K> = K extends keyof T
@@ -193,14 +243,32 @@ type LengthOf<T extends Record<keyof any, any>> = UnionToTuple<
 	? L
 	: 0;
 
-type x = LengthOf<{
-	az: 2;
-	c2: 1;
-}>;
-type y = LengthOf<{
-	a: 23;
-	4: 1;
-}>;
+type Vec2Construct<X, Y> = {
+	x: X,
+	y: Y
+}
+
+type Vec2Parse<T extends object> = T extends {
+	x: infer X extends number,
+	y: infer Y extends number
+} ? [X, Y] : [0, 0, 0];
+
+type Vec3Construct<X, Y, Z> = {
+	x: X,
+	y: Y,
+	z: Z
+}
+
+type Vec3Parse<T extends object> = T extends {
+	x: infer X extends number,
+	y: infer Y extends number,
+	z: infer Z extends number
+} ? [X, Y, Z] : [0, 0, 0];
+
+type x = Vec2Parse<Vec2Construct<20, 0>>[0];
+type y = Vec2Parse<Vec2Construct<0, 20>>[1];
+type z = Vec3Parse<Vec3Construct<0, 0, 20>>[2];
+type t = Vec3Parse<Vec3Construct<0, 0, 20>>;
 
 export type DeepGet<
 	T extends Record<string, any>,
@@ -219,16 +287,12 @@ export type Merge<A, B> = Copy<
 	Omit<A, keyof B> &
 		Omit<B, keyof A> & { [K in Extract<keyof A, keyof B>]: A[K] | B[K] }
 >;
-export type Intersect<A, B> = Copy<
-	Omit<A, keyof B> &
-		Omit<B, keyof A> & {
-			[K in Extract<keyof A, keyof B>]: Copy<A[K] & B[K]>;
-		}
->;
 
 // Array
 export type Prepend<T extends unknown[], F> = [F, ...T];
 export type Append<T extends unknown[], L> = [...T, L];
+
+export type IsTuple<T extends unknown[]> = number extends T["length"] ? false : true
 
 export type Fill<
 	T extends unknown[],
@@ -340,8 +404,11 @@ export type ReplaceAll<
 
 export type AsStr<T> = T extends string ? T : never;
 
+
 export type Head<S> = S extends `${infer First}${string}` ? First : never;
 export type Tail<S> = S extends `${string}${infer Rest}` ? Rest : never;
+
+export type Split<S> = S extends `${infer First}${infer Rest}` ? [First, ...Split<Rest>] : [];
 
 export type Rotate<S> = `${Tail<S>}${Head<S>}`;
 export type Revert<S> = S extends `${infer First}${infer Rest}`
@@ -368,8 +435,9 @@ export type Awaitable<T> = T | PromiseLike<T>;
 // prettier-ignore
 export type Equal<X, Y> = (<T>() => T extends X ? 1 : 2) extends (<T>() => T extends Y ? 1 : 2) ? true : false;
 export type NotEqual<X, Y> = Reverse<Equal<X, Y>>;
+
 // prettier-ignore
-export type Diff<T extends object, U extends object> = Pick<T, SetDifference<keyof T, keyof U>>;
+export type Diff<T extends object, U extends object> = Pick<T, Exclude<keyof T, keyof U>>;
 export type IsAny<T> = 0 extends 1 & T ? true : false;
 export type NotAny<T> = Reverse<IsAny<T>>;
 export type IsNever<T> = [T] extends [never] ? true : false;
