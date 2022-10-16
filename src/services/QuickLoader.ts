@@ -4,7 +4,7 @@ export const cook: (s: string) => string = (s) => s.replaceAll("\\", "/");
 
 export default class QuickLoader{
 	cfg: Partial<{
-		filter: (file: string) => boolean | TypeBoolean;
+		filter: (file: string) => boolean;
 		pattern: Parameters<typeof fg>[0];
 		include: string[]
 		excludes: string[]

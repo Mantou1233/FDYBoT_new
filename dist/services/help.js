@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = __importDefault(require("discord.js"));
-const ux = (name, value, inline = false) => ({ name, value, inline });
+const toNewFields = (name, value, inline = false) => ({ name, value, inline });
 exports.default = async (client, msg, prefix) => {
     /* prettier-ignore */
     let commands = [...client.manager.commands.values()];
@@ -17,10 +17,9 @@ exports.default = async (client, msg, prefix) => {
             if ("category" in c) {
                 if (c.category in categorys) {
                     categorys[c.category] += `, \`${prefix}${c.command}\``;
+                    continue;
                 }
-                else {
-                    categorys[c.category] = "`" + prefix + c.command + "`";
-                }
+                categorys[c.category] = "`" + prefix + c.command + "`";
             }
         }
         const newEmbed = new discord_js_1.default.EmbedBuilder()
@@ -28,7 +27,7 @@ exports.default = async (client, msg, prefix) => {
             .setTitle("fdybot help menu")
             .setDescription("do `$h module` to see a description of a command you need more info on! For example `/h jrrp`");
         for (let [key, value] of Object.entries(categorys)) {
-            newEmbed.addFields(ux(`**${key}**`, value));
+            newEmbed.addFields(toNewFields(`**${key}**`, value));
         }
         return msg.channel.send({ embeds: [newEmbed] });
     }

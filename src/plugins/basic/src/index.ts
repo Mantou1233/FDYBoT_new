@@ -7,7 +7,7 @@ import * as lodash from "lodash";
 
 import axios from "axios";
 import os from "os";
-import ms from "pretty-ms";
+import ms from "ms";
 import fs from "fs/promises";
 
 import CommandManager from "../../../core/CommandManager";
@@ -67,10 +67,11 @@ async function load(client, cm: CommandManager) {
             }
             msg.channel
                 .send(result)
-                .catch(err =>
-                    msg.channel.send(
-                        i18n.parse(msg.lang, "basic.say.error.invaildparams")
-                    )
+                    .catch(() => {
+                        msg.channel.send(
+                            i18n.parse(msg.lang, "basic.say.error.invaildparams")
+                        );
+                    }
                 );
         }
     });
@@ -155,10 +156,11 @@ async function load(client, cm: CommandManager) {
                 result.embeds = [...(result.embeds ?? []), data.embed];
                 delete result.embed;
             }
-            msg2.edit(result).catch(err =>
-                msg.channel.send(
-                    i18n.parse(msg.lang, "basic.say.error.invaildparams")
-                )
+            msg2.edit(result).catch(() => {
+                    msg.channel.send(
+                        i18n.parse(msg.lang, "basic.say.error.invaildparams")
+                    );
+                }
             );
         }
     });

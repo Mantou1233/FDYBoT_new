@@ -1,14 +1,20 @@
+
 import "./services/i18n";
 import "./services/random";
 import "./services/ap";
+
+import _db from "quick.db2";
+_db.init("json.sqlite");
+
 import dotenv from "dotenv";
-import Discord, { ActivityType, Client } from "discord.js";
+dotenv.config();
+
+import Discord, { ActivityType, Client, GatewayIntentBits, Partials } from "discord.js";
+
 import PluginLoader from "./core/PluginLoader";
 import CommandHandler from "./core/CommandHandler";
-console.log("Starting miraicle...");
 
-const {GatewayIntentBits, Partials} = Discord;
-dotenv.config();
+console.log("Starting miraicle...");
 
 async function main() {
     // Legacy DiscordJS Client

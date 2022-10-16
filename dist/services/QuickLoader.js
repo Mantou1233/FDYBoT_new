@@ -3,10 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.rez = void 0;
+exports.cook = void 0;
 const fast_glob_1 = __importDefault(require("fast-glob"));
-const rez = (s) => s.replaceAll("\\", "/");
-exports.rez = rez;
+const cook = (s) => s.replaceAll("\\", "/");
+exports.cook = cook;
 class QuickLoader {
     cfg;
     constructor(cfg) {

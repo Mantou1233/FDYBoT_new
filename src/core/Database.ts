@@ -1,6 +1,8 @@
-import db from "quick.db"; // TODO go fuck off quick db and use sqlite 
+import dbIns from "quick.db2";
 import Schema from "./structure/Schema";
 import lodash from "lodash";
+
+const db = dbIns("json");
 const suffix = "";
 
 export class Profile {

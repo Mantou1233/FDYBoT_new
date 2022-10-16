@@ -22,7 +22,7 @@ async function load(client, cm) {
             const embed = new discord_js_1.default.EmbedBuilder()
                 .setColor("#CFF2FF")
                 .setTitle(`${msg.author.username}'s profile`)
-                .setDescription(`Wallet: ${p.coin}\nBank: ${p.bank} / ${p.bankAmount} (${bar}${percent})`);
+                .setDescription(`Wallet: ${p.coin}\nBank: ${p.bank} / ${p.bankAmount} (${bar} ${percent})`);
             msg.channel.send({ embeds: [embed] });
         }
     });

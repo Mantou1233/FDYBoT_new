@@ -26,21 +26,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const QuickLoader_1 = __importStar(require("../../../services/QuickLoader"));
 let ql = new QuickLoader_1.default({
     include: ["economy", "inventory", "fish", "use", "sell", "travel", "overload"],
-    pattern: [(0, QuickLoader_1.rez)(__dirname) + "/*.js"],
+    pattern: [(0, QuickLoader_1.cook)(__dirname) + "/*.js"],
 });
 /**
  * ImportDefaultable
  * @param v module imported
  * @returns module that is default or is expr or a object
  */
-const impd = (v) => v.default ?? v ?? {};
+const importDefaultable = (v) => v.default ?? v ?? {};
 /**
  * @returns void
  */
 async function load(client, cm) {
     await ql.load(
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    v => impd(require(v))(client, cm));
+    v => importDefaultable(require(v))(client, cm));
 }
 exports.default = load;
 //# sourceMappingURL=index.js.map

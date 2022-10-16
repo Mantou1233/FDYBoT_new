@@ -29,25 +29,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("./services/i18n");
 require("./services/random");
 require("./services/ap");
+const quick_db2_1 = __importDefault(require("quick.db2"));
+quick_db2_1.default.init("json.sqlite");
 const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const discord_js_1 = __importStar(require("discord.js"));
 const PluginLoader_1 = __importDefault(require("./core/PluginLoader"));
 const CommandHandler_1 = __importDefault(require("./core/CommandHandler"));
 console.log("Starting miraicle...");
-const { GatewayIntentBits, Partials } = discord_js_1.default;
-dotenv_1.default.config();
 async function main() {
     // Legacy DiscordJS Client
     const client = new discord_js_1.default.Client({
         intents: [
-            GatewayIntentBits.Guilds,
-            GatewayIntentBits.GuildMessages,
-            GatewayIntentBits.GuildPresences,
-            GatewayIntentBits.GuildMessageReactions,
-            GatewayIntentBits.DirectMessages,
-            GatewayIntentBits.MessageContent
+            discord_js_1.GatewayIntentBits.Guilds,
+            discord_js_1.GatewayIntentBits.GuildMessages,
+            discord_js_1.GatewayIntentBits.GuildPresences,
+            discord_js_1.GatewayIntentBits.GuildMessageReactions,
+            discord_js_1.GatewayIntentBits.DirectMessages,
+            discord_js_1.GatewayIntentBits.MessageContent
         ],
-        partials: [Partials.Channel, Partials.Message, Partials.User, Partials.GuildMember, Partials.Reaction],
+        partials: [discord_js_1.Partials.Channel, discord_js_1.Partials.Message, discord_js_1.Partials.User, discord_js_1.Partials.GuildMember, discord_js_1.Partials.Reaction],
         allowedMentions: {
             parse: ["everyone", "roles", "users"],
             repliedUser: false

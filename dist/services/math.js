@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.progressBar = exports.toSizing = exports.toPercent = void 0;
 const bars_json_1 = __importDefault(require("../assets/bars.json"));
 function toPercent(num, total) {
-    return `${Math.round((num / total) * 10000) / 100.0}%`; // 小数点后两位百分比
+    return `${Math.round((num / total) * 10000) / 100.0}%`;
 }
 exports.toPercent = toPercent;
 function toSizing(num, total) {

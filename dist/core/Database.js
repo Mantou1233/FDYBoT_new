@@ -4,13 +4,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Profile = void 0;
-const quick_db_1 = __importDefault(require("quick.db")); // TODO go fuck off quick db and use sqlite 
+const quick_db2_1 = __importDefault(require("quick.db2"));
 const Schema_1 = __importDefault(require("./structure/Schema"));
+const db = (0, quick_db2_1.default)("json");
 const suffix = "";
 class Profile {
     constructor(id) {
         this.__id = id;
-        const data = quick_db_1.default.get(`${id}${suffix}`) ?? -1;
+        const data = db.get(`${id}${suffix}`) ?? -1;
         if (data == -1)
             return this;
         for (const [key, value] of Object.entries(data)) {
@@ -18,7 +19,7 @@ class Profile {
         }
     }
     check() {
-        return Boolean(quick_db_1.default.get(`${this.__id}${suffix}`) ?? false);
+        return Boolean(db.get(`${this.__id}${suffix}`) ?? false);
     }
     newSchema(initType = "user") {
         if (!initType || initType == "none" || !Schema_1.default[initType])
@@ -38,7 +39,7 @@ class Profile {
     save() {
         const data = JSON.parse(JSON.stringify(this));
         delete data["__id"];
-        return void quick_db_1.default.set(`${this.__id}${suffix}`, data) ?? this;
+        return void db.set(`${this.__id}${suffix}`, data) ?? this;
     }
     get raw() {
         const tmp = JSON.parse(JSON.stringify(this));
