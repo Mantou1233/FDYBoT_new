@@ -18,8 +18,8 @@ async function load(client, cm: CommandManager) {
         category: "Currency",
         desc: "go travel",
         handler: async (msg, { prefix }) => {
-            let args = ap(msg.content, true);
             let p = new Profile(msg.author.id) as UserSchema;
+            let args = ap(msg.content, true) ?? [0, p.location];
             const current = queue.tripQueue[msg.author.id];
             if(current) return msg.channel.send(i18n.parse(msg.lang, "trip.travel.or", toPercent(current.lapse - current.time, current.lapse)));
             if(!args[1]) return msg.channel.send(i18n.parse(msg.lang, "trip.travel.invaild", prefix));
@@ -34,6 +34,8 @@ async function load(client, cm: CommandManager) {
                 flow: 0,
                 lang: msg.lang
             };
+            p.location = args[1] as any;
+            p.save();
 
             msg.reply(`duck travelin  ${args[1]} ok`);
         }
@@ -43,7 +45,13 @@ async function load(client, cm: CommandManager) {
         category: "Currency",
         desc: "see le map",
         handler: async (msg, { prefix }) => {
-            msg.channel.send(`Current locations: ${1}\n${i18n.parse(msg.lang, "currency.format.result", "Plains", "Great place for you dumb ass to touch grass")}\n${i18n.parse(msg.lang, "currency.format.result", "setUncaughtExceptionCaptureCallbackSuperiorRandomTypingPlaceBecauseIAmLazy", "tf?")} `);
+            msg.channel.send(`Current locations: ${Object.keys(locations).length}\n${(function(){
+                let txt = "";
+                for(let [place, location] of Object.entries(locations)){
+                    txt += i18n.parse(msg.lang, "currency.format.result", place, ms(location.time * 1000));
+                }
+                return txt;
+            })()} `);
         }
     });
 }

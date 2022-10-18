@@ -24,14 +24,22 @@ export const locations = {
             apple: 1,
         }
     },
-    setUncaughtExceptionCaptureCallbackSuperiorRandomTypingPlaceBecauseIAmLazy: {
-        time: 180,
+    lake: {
+        time: 3200,
         loots: {
-            paketa: 43,
-            kirb: 30,
-            mantou: 69,
-            fdy: 10382,
-            infinity: 1
+            cat: 10,
+            cats: 1,
+            duck: 1,
+            hynosis: 1
+        }
+    },
+    cat_town: {
+        time: 12800,
+        loots: {
+            cat: 10,
+            cats: 1,
+            duck: 1,
+            hynosis: 1
         }
     }
 };

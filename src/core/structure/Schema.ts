@@ -29,6 +29,7 @@ export default {
 		commandInfo: {
 			//
 			lastAction: Date.now(),
+			usedTime: 0,
 			help: -1,
 			cooldownOverride: {},
 			permissionLevel: 1
@@ -61,6 +62,7 @@ export type RawUserSchema = {
 	commandInfo: {
 		// 
 		lastAction: ReturnType<typeof Date.now>,
+		usedTime: number,
 		help: number
 		cooldownOverride: {
 			//[K in keyof commands]: number,

@@ -25,6 +25,7 @@ exports.default = {
         commandInfo: {
             //
             lastAction: Date.now(),
+            usedTime: 0,
             help: -1,
             cooldownOverride: {},
             permissionLevel: 1

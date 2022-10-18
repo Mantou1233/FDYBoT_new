@@ -27,6 +27,8 @@ async function HandleCommands(client, msg) {
         p.exp[2] += random(0, 4); //adding a addition so that it dont always add in a factor
     }
     p.save();
+    p.commandInfo.usedTime++;
+    p.commandInfo.lastAction = Date.now();
     if (queue_1.default.tripQueue[msg.author.id])
         queue_1.default.tripQueue[msg.author.id].time++;
     msg.lang = p.lang;

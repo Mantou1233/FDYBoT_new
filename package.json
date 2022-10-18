@@ -29,7 +29,7 @@
         "mathjs": "^10.6.1",
         "pretty-ms": "^7.0.1",
         "quick.db": "^7.1.3",
-        "quick.db2": "^7.2.5",
+        "quick.db2": "^7.2.7",
         "reflect-metadata": "^0.1.13"
     },
     "devDependencies": {
