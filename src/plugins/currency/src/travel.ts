@@ -48,7 +48,7 @@ async function load(client, cm: CommandManager) {
             msg.channel.send(`Current locations: ${Object.keys(locations).length}\n${(function(){
                 let txt = "";
                 for(let [place, location] of Object.entries(locations)){
-                    txt += i18n.parse(msg.lang, "currency.format.result", place, ms(location.time * 1000));
+                    txt += i18n.parse(msg.lang, "currency.format.result", place, ms(location.time * 1000)) + "\n";
                 }
                 return txt;
             })()} `);

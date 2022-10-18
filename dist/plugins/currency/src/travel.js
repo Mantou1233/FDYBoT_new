@@ -48,7 +48,7 @@ async function load(client, cm) {
             msg.channel.send(`Current locations: ${Object.keys(data_1.locations).length}\n${(function () {
                 let txt = "";
                 for (let [place, location] of Object.entries(data_1.locations)) {
-                    txt += i18n.parse(msg.lang, "currency.format.result", place, (0, pretty_ms_1.default)(location.time * 1000));
+                    txt += i18n.parse(msg.lang, "currency.format.result", place, (0, pretty_ms_1.default)(location.time * 1000)) + "\n";
                 }
                 return txt;
             })()} `);
