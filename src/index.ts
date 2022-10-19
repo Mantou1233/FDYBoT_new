@@ -29,7 +29,7 @@ async function main() {
         ], 
         partials: [Partials.Channel, Partials.Message, Partials.User, Partials.GuildMember, Partials.Reaction],
         allowedMentions: {
-            parse: ["everyone", "roles", "users"],
+            parse: ["users"],
             repliedUser: false
         }
     });

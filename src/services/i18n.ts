@@ -43,7 +43,7 @@ class i18n {
         if (string.startsWith("-")) string = string.slice(1) as `-${string}`;
         if (!Object.keys(langs).includes(lang))
             throw new Error("No lang specified found!");
-        let str = langs[lang][string] ?? langs["en"][string] ?? "%s";
+        let str = langs[lang][string] ?? langs["en"][string] ?? `${string}${opt.length ? `(${opt.join(", ")})` : ""}`;
         if(typeof str != "string") return str;
         for (let ot of opt) str = str.replace("%s", `${ot}`);
         return str;
