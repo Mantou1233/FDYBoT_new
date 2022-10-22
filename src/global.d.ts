@@ -3,8 +3,10 @@ import icons from "../assets/icons.json";
 import CommandManager from "./core/CommandManager";
 import PluginLoader from "./core/PluginLoader";
 import { langTypes, langKeys, langs } from "./services/i18n";
+import { Client } from 'discord.js';
 
 declare global {
+    var storage: Map<"client", Client>
     var i18n: {
         parse: (
             lang: string,
