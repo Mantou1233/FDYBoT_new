@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Database_1 = require("../../../core/Database");
-const queue_1 = __importDefault(require("./queue"));
+const caching_1 = require("../caching");
 const data_1 = require("../assets/data");
 const pretty_ms_1 = __importDefault(require("pretty-ms"));
 const math_1 = require("../../../services/math");
@@ -19,14 +19,14 @@ async function load(client, cm) {
         handler: async (msg, { prefix }) => {
             let p = new Database_1.Profile(msg.author.id);
             let args = ap(msg.content, true) ?? [0, p.location];
-            const current = queue_1.default.tripQueue[msg.author.id];
+            const current = caching_1.queue[msg.author.id];
             if (current)
                 return msg.channel.send(i18n.parse(msg.lang, "trip.travel.or", (0, math_1.toPercent)(current.lapse - current.time, current.lapse)));
             if (!args[1])
                 return msg.channel.send(i18n.parse(msg.lang, "trip.travel.invaild", prefix));
             if (!Object.keys(data_1.locations).includes(args[1]))
                 return msg.channel.send(i18n.parse(msg.lang, "trip.travel.invaild", prefix));
-            queue_1.default.tripQueue[msg.author.id] = {
+            caching_1.queue[msg.author.id] = {
                 id: msg.author.id,
                 channel: msg.channel,
                 location: args[1],

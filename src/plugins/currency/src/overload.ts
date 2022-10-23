@@ -3,7 +3,7 @@ import Discord from "discord.js";
 import im from "../../../services/inventory";
 import { Profile } from "../../../core/Database";
 import { UserSchema } from "../../../core/structure/Schema";
-import queue from "./queue";
+import { queue } from "../caching";
 import { locations } from "../assets/data";
 
 
@@ -19,7 +19,7 @@ async function load(client: Discord.Client, cm: CommandManager) {
 	// 	}
 	// });
 	setInterval(() => {
-		for(let [k, q] of Object.entries(queue.tripQueue)){
+		for(let [k, q] of Object.entries(queue)){
 			q.time -= 1;
 			if(q.time <= 0){
 				const p = new Profile(q.id) as UserSchema;
@@ -51,7 +51,7 @@ async function load(client: Discord.Client, cm: CommandManager) {
 						]
 					}
 				);
-				delete queue.tripQueue[k];
+				delete queue[k];
 				p.save();
 				continue;
 			}

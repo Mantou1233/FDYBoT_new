@@ -9,7 +9,7 @@ export type Nkhelv = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
 export type NkhelvTuple = {
 	[N in Nkhelv]: NumbericArrayConstruct<N>
-}
+};
 
 export type Copy<T> = {
 	[K in keyof T]: T[K];
@@ -19,9 +19,9 @@ export type RemoveIndex<T> = {
 	[K in keyof T as {} extends Record<K, 1> ? never : K]: T[K];
 };
 
-export type NestedKeys<T> = {
+export type NestedKeys<T> = T extends any ? {
 	[K in keyof T]: keyof T[K];
-}[keyof T];
+}[keyof T] : never;
 
 export type DeepNest<T> = T extends Record<keyof any, any>
 	? {

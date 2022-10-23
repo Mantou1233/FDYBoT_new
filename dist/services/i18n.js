@@ -29,7 +29,7 @@ class i18n {
             string = string.slice(1);
         if (!Object.keys(exports.langs).includes(lang))
             throw new Error("No lang specified found!");
-        let str = exports.langs[lang][string] ?? exports.langs["en"][string] ?? "%s";
+        let str = exports.langs[lang][string] ?? exports.langs["en"][string] ?? `${string}${opt.length ? `(${opt.join(", ")})` : ""}`;
         if (typeof str != "string")
             return str;
         for (let ot of opt)

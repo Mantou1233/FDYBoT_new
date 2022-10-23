@@ -50,7 +50,7 @@ async function main() {
         ],
         partials: [discord_js_1.Partials.Channel, discord_js_1.Partials.Message, discord_js_1.Partials.User, discord_js_1.Partials.GuildMember, discord_js_1.Partials.Reaction],
         allowedMentions: {
-            parse: ["everyone", "roles", "users"],
+            parse: ["users"],
             repliedUser: false
         }
     });

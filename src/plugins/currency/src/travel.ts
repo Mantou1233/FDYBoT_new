@@ -4,7 +4,7 @@ import im from "../../../services/inventory";
 import { Profile } from "../../../core/Database";
 import { UserSchema } from "../../../core/structure/Schema";
 import callers from "../assets/handlers";
-import queue from "./queue";
+import { queue } from "../caching";
 import { locations } from "../assets/data";
 import ms from "pretty-ms";
 import { toPercent } from "../../../services/math";
@@ -20,12 +20,12 @@ async function load(client, cm: CommandManager) {
         handler: async (msg, { prefix }) => {
             let p = new Profile(msg.author.id) as UserSchema;
             let args = ap(msg.content, true) ?? [0, p.location];
-            const current = queue.tripQueue[msg.author.id];
+            const current = queue[msg.author.id];
             if(current) return msg.channel.send(i18n.parse(msg.lang, "trip.travel.or", toPercent(current.lapse - current.time, current.lapse)));
             if(!args[1]) return msg.channel.send(i18n.parse(msg.lang, "trip.travel.invaild", prefix));
             if(!Object.keys(locations).includes(args[1])) return msg.channel.send(i18n.parse(msg.lang, "trip.travel.invaild", prefix));
             
-            queue.tripQueue[msg.author.id] = {
+            queue[msg.author.id] = {
                 id: msg.author.id,
                 channel: msg.channel,
                 location: args[1],

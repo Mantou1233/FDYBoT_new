@@ -5,7 +5,7 @@
     "command.run.error": "Oops! a error appeared: %s",
     "command.run.notfound": "Command not found.",
     "command.run.invaild": "You have to fill a argument.",
-    "basic.say.description": "Say something you want to say. supports raw ctx.",
+    "basic.say.description": "Say something you want to say -> ([json builder](https://glitchii.github.io/embedbuilder/?username=FDYBoT&guitabs=title,fields,description&avatar=https://cdn.discordapp.com/avatars/977542041670152212/cf54c7c185fa433014bfd2ec79df0f21.png&data=JTdCJTIyZW1iZWQlMjIlM0ElN0IlMjJ0aXRsZSUyMiUzQSUyMkxvcmVtJTIwaXBzdW0lMjIlMkMlMjJkZXNjcmlwdGlvbiUyMiUzQSUyMkRvbG9yJTIwc2l0JTIwYW1ldC4uLiUyMiUyQyUyMmNvbG9yJTIyJTNBMzkxMjklN0QlN0Q=))",
     "basic.say.usage": "Say something you want to say. supports raw ctx.",
     "basic.say.error.invaildparams": "there is a error when sending a embed, try again and check is the embed legal or not.",
     "basic.say.error.noargs": "what do you want to say??",
@@ -28,6 +28,12 @@
     "trip.travel.or": "your duck is already in travel! (%s)",
     "trip.travel.invaild": "that is not a location. i, uh, at least didnt find it. use `%smap` to see locations.",
     "trip.plains.travelquotes": [
+        "wow, the grass is 2 blocks tall!",
+        "what is this flower??",
+        "aa i got fucked by the berry blush, that hurts...",
+        "why you can get apple from the leaf??"
+    ],
+    "trip.sea.travelquotes": [
         "wow, the grass is 2 blocks tall!",
         "what is this flower??",
         "aa i got fucked by the berry blush, that hurts...",

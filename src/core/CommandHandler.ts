@@ -4,11 +4,11 @@ import { Command } from "./structure/Types";
 import { Profile } from "./Database";
 import Schema, {UserSchema} from "./structure/Schema";
 import { langs } from "./../services/i18n";
-import queue from "./../plugins/currency/src/queue";
+import { queue } from "./../plugins/currency/caching";
 
 const Cooldown = new Collection<string, number>();
 
-const prefix = "-";//process.env.PREFIX as string;
+const prefix = process.env.PREFIX as string;
 
 
 async function HandleCommands(client: Client, msg: Message) {
@@ -30,7 +30,7 @@ async function HandleCommands(client: Client, msg: Message) {
     p.save();
     p.commandInfo.usedTime++;
     p.commandInfo.lastAction = Date.now();
-    if(queue.tripQueue[msg.author.id]) queue.tripQueue[msg.author.id].time++;
+    if(queue[msg.author.id]) queue[msg.author.id].time-=12;
 
     msg.lang = p.lang as keyof typeof langs;
     const mappings = client.manager.commands as Collection<

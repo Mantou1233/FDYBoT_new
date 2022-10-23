@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const ms_1 = __importDefault(require("ms"));
 const Database_1 = require("./Database");
-const queue_1 = __importDefault(require("./../plugins/currency/src/queue"));
+const caching_1 = require("./../plugins/currency/caching");
 const Cooldown = new discord_js_1.Collection();
-const prefix = "-"; //process.env.PREFIX as string;
+const prefix = process.env.PREFIX;
 async function HandleCommands(client, msg) {
     if (msg.author.bot)
         return;
@@ -29,8 +29,8 @@ async function HandleCommands(client, msg) {
     p.save();
     p.commandInfo.usedTime++;
     p.commandInfo.lastAction = Date.now();
-    if (queue_1.default.tripQueue[msg.author.id])
-        queue_1.default.tripQueue[msg.author.id].time++;
+    if (caching_1.queue[msg.author.id])
+        caching_1.queue[msg.author.id].time -= 12;
     msg.lang = p.lang;
     const mappings = client.manager.commands;
     const isp = msg.content.startsWith(prefix);

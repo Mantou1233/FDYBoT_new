@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = __importDefault(require("discord.js"));
 const inventory_1 = __importDefault(require("../../../services/inventory"));
 const Database_1 = require("../../../core/Database");
-const queue_1 = __importDefault(require("./queue"));
+const caching_1 = require("../caching");
 const data_1 = require("../assets/data");
 /**
  * @returns void
@@ -19,7 +19,7 @@ async function load(client, cm) {
     // 	}
     // });
     setInterval(() => {
-        for (let [k, q] of Object.entries(queue_1.default.tripQueue)) {
+        for (let [k, q] of Object.entries(caching_1.queue)) {
             q.time -= 1;
             if (q.time <= 0) {
                 const p = new Database_1.Profile(q.id);
@@ -46,7 +46,7 @@ async function load(client, cm) {
                             .setColor(i18n.globe.color)
                     ]
                 });
-                delete queue_1.default.tripQueue[k];
+                delete caching_1.queue[k];
                 p.save();
                 continue;
             }

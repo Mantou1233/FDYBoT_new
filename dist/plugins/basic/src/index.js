@@ -409,7 +409,7 @@ async function load(client, cm) {
         desc: "Display bot information",
         hidden: true,
         handler: async (msg, ext) => {
-            if (ext.info.commandInfo.permissionLevel < 2 && msg.author.id !== "842757573709922314")
+            if (ext.info.commandInfo.permissionLevel < 2 && msg.author.id !== "644504218798915634")
                 return msg.channel.send("Insuffent permission.");
             let args = ap(msg.content, true);
             const code = args[1];
